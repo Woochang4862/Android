@@ -1,6 +1,9 @@
 package com.example.usw_random_chat.Screen
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -70,20 +73,6 @@ fun SignUpDoneScreen() {
 
         )
         Animation(visible1 = visibleCircle.value, visible2 = visibleCheck.value)
-        /*AnimatedVisibility(
-            visible = visible.value,
-            enter = expandHorizontally() + fadeIn()
-        ){
-            Image(
-                painter = painterResource(id = R.drawable.check),
-                contentDescription = "image description",
-                contentScale = ContentScale.None,
-                modifier = Modifier
-                    .padding(0.dp)
-                    .width(100.dp)
-                    .height(160.dp)
-            )
-        }*/
 
         Text(
             text = buildAnnotatedString {
@@ -113,7 +102,6 @@ fun SignUpDoneScreen() {
                 .border(
                     width = 1.dp,
                     color = Color(0xFF2D64D8),
-                    shape = RoundedCornerShape(size = 10.dp)
                 )
                 .width(326.dp)
                 .height(56.dp)
@@ -134,7 +122,10 @@ fun SignUpDoneScreen() {
 
 @Composable
 fun Animation(visible1: Boolean,visible2: Boolean) {
-    Box() {
+    Box(
+        modifier = Modifier.width(100.dp).height(160.dp),
+        contentAlignment = Alignment.Center
+    ) {
         AnimatedVisibility(
             visible = visible1,
             enter = fadeIn()
@@ -163,7 +154,6 @@ fun Animation(visible1: Boolean,visible2: Boolean) {
                     .height(160.dp)
             )
         }
-
 
     }
 

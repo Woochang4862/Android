@@ -1,6 +1,4 @@
 package com.example.usw_random_chat.Screen
-
-import android.widget.ImageButton
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -15,11 +13,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.usw_random_chat.R
 
 @Composable
 fun ProfileScreen() {
@@ -47,7 +48,8 @@ fun ProfileScreen() {
             text = "프로필은 언제든 자유롭게\n수정할 수 있습니다",
             textAlign = TextAlign.Center,
             fontSize = 14.sp,
-            modifier = Modifier.padding(top = 15.dp)
+            modifier = Modifier.padding(top = 15.dp),
+            fontFamily = FontFamily(Font(R.font.kcc_chassam))
         )
     }
 }
@@ -69,6 +71,7 @@ fun setTitle() {
             textAlign = TextAlign.Center,
             fontSize = 18.sp,
             fontWeight = FontWeight(600),
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 12.dp, end = 40.dp)
@@ -85,13 +88,14 @@ fun getNickName(nickname: MutableState<String>) {
                 text = "(필수)",
                 color = Color.Red,
                 fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                 modifier = Modifier.padding(start = 3.dp, top = 2.dp)
             )
         }
         TextField(
             value = nickname.value,
             onValueChange = { nicknameValue -> nickname.value = nicknameValue },
-            placeholder = { Text(text = "#NICKNAME") },
+            placeholder = { Text(text = "#NICKNAME",fontFamily = FontFamily(Font(R.font.pretendard_regular)),) },
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
                 backgroundColor = Color.Transparent,
@@ -106,7 +110,7 @@ fun getNickName(nickname: MutableState<String>) {
                 .height(50.dp)
                 .width(326.dp)
         )
-        Text(text = "* 닉네임은 8자 이내로 작성해 주세요", color = Color(0xFFFF6565), fontSize = 12.sp)
+        Text(text = "* 닉네임은 8자 이내로 작성해 주세요", color = Color(0xFFFF6565), fontSize = 12.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),)
     }
 }
 
@@ -114,9 +118,10 @@ fun getNickName(nickname: MutableState<String>) {
 fun getMBTI(mbti: MutableState<String>) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
-            Text(text = "MBTI", fontSize = 16.sp)
+            Text(text = "MBTI", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)))
             Text(
                 text = "(선택)",
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                 color = Color.Gray,
                 fontSize = 10.sp,
                 modifier = Modifier.padding(start = 3.dp, top = 5.dp)
@@ -125,7 +130,7 @@ fun getMBTI(mbti: MutableState<String>) {
         TextField(
             value = mbti.value,
             onValueChange = { nicknameValue -> mbti.value = nicknameValue },
-            placeholder = { Text(text = "#MBTI") },
+            placeholder = { Text(text = "#MBTI",fontFamily = FontFamily(Font(R.font.pretendard_regular)),) },
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
                 backgroundColor = Color.Transparent,
@@ -147,18 +152,19 @@ fun getMBTI(mbti: MutableState<String>) {
 fun getSelfIntroduce(introduce: MutableState<String>) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
-            Text(text = "자기소개", fontSize = 16.sp)
+            Text(text = "자기소개", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),)
             Text(
                 text = "(선택)",
                 color = Color.Gray,
                 fontSize = 10.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                 modifier = Modifier.padding(start = 3.dp, top = 5.dp)
             )
         }
         TextField(
             value = introduce.value,
             onValueChange = { nicknameValue -> introduce.value = nicknameValue },
-            placeholder = { Text(text = "학과, 학번 등 소개를 자유롭게 입력하세요", fontSize = 14.sp) },
+            placeholder = { Text(text = "학과, 학번 등 소개를 자유롭게 입력하세요",fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 14.sp) },
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
                 backgroundColor = Color.Transparent,
@@ -195,6 +201,7 @@ fun startButton() {
                 text = "시작하기",
                 fontSize = 18.sp,
                 lineHeight = 20.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                 fontWeight = FontWeight(600),
                 textAlign = TextAlign.Center,
             )

@@ -88,7 +88,7 @@ fun SignUpDoneScreen() {
             color = Color(0xFF111111),
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .height(114.dp)
+                .height(134.dp)
                 .fillMaxWidth()
         )
         Button(
@@ -101,6 +101,7 @@ fun SignUpDoneScreen() {
             modifier = Modifier
                 .border(
                     width = 1.dp,
+                    shape = RoundedCornerShape(10.dp),
                     color = Color(0xFF2D64D8),
                 )
                 .width(326.dp)
@@ -115,6 +116,27 @@ fun SignUpDoneScreen() {
                 textAlign = TextAlign.Center,
             )
         }
+        Button(
+            onClick = { },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Black,
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier
+                .padding(top = 15.dp)
+                .width(326.dp)
+                .height(56.dp)
+                .background(color = Color.White)
+        ) {
+            Text(
+                text = "메일 재발송",
+                fontSize = 18.sp,
+                lineHeight = 20.sp,
+                fontWeight = FontWeight(600),
+                textAlign = TextAlign.Center,
+            )
+        }
 
     }
 
@@ -123,7 +145,9 @@ fun SignUpDoneScreen() {
 @Composable
 fun Animation(visible1: Boolean,visible2: Boolean) {
     Box(
-        modifier = Modifier.width(100.dp).height(160.dp),
+        modifier = Modifier
+            .width(100.dp)
+            .height(160.dp),
         contentAlignment = Alignment.Center
     ) {
         AnimatedVisibility(
@@ -163,5 +187,5 @@ fun Animation(visible1: Boolean,visible2: Boolean) {
 @Preview(showBackground = true)
 @Composable
 fun SignUpDoneScreenPreview() {
-    LoadingScreen()
+    SignUpDoneScreen()
 }

@@ -246,9 +246,6 @@ fun getSelfIntroducePreview() {
 @Preview(showBackground = true)
 @Composable
 fun startButtonPreview() {
-    val qwe = remember {
-        mutableStateOf("#학과 학번등 소개를 자유롭게 해주세요")
-    }
     startButton()
 }
 

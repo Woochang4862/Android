@@ -43,6 +43,18 @@ import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
 
 
+
+
+@Composable
+fun SignInScreen() {
+    LoginTextField()
+    OnLoginBtn()
+    OnLoginFindIdAndPassword()
+    MadeAccountText()
+    OnSignInBtn()
+    OnLoginImage()
+    LogInTextTitle()
+}
 @Composable
 fun OnLoginImage() {
     Box(
@@ -322,7 +334,7 @@ fun OnSignInBtn() {
 
 @Preview(showBackground = true)
 @Composable
-fun AllFunPreview() {
+fun SignInScreenPreview() {
     LoginTextField()
     OnLoginBtn()
     OnLoginFindIdAndPassword()

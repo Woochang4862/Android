@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -61,7 +62,7 @@ fun SignUpDoneScreen() {
                 }
                 append("를 발송 했습니다.")
             },
-            fontFamily = FontFamily.SansSerif,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             fontSize = 18.sp,
             lineHeight = 24.sp,
             fontWeight = FontWeight(400),
@@ -84,11 +85,12 @@ fun SignUpDoneScreen() {
             },
             fontSize = 18.sp,
             lineHeight = 24.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             fontWeight = FontWeight(400),
             color = Color(0xFF111111),
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .height(114.dp)
+                .height(134.dp)
                 .fillMaxWidth()
         )
         Button(
@@ -101,6 +103,7 @@ fun SignUpDoneScreen() {
             modifier = Modifier
                 .border(
                     width = 1.dp,
+                    shape = RoundedCornerShape(10.dp),
                     color = Color(0xFF2D64D8),
                 )
                 .width(326.dp)
@@ -110,6 +113,29 @@ fun SignUpDoneScreen() {
             Text(
                 text = "로그인",
                 fontSize = 18.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                lineHeight = 20.sp,
+                fontWeight = FontWeight(600),
+                textAlign = TextAlign.Center,
+            )
+        }
+        Button(
+            onClick = { },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Black,
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier
+                .padding(top = 15.dp)
+                .width(326.dp)
+                .height(56.dp)
+                .background(color = Color.White)
+        ) {
+            Text(
+                text = "메일 재발송",
+                fontSize = 18.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                 lineHeight = 20.sp,
                 fontWeight = FontWeight(600),
                 textAlign = TextAlign.Center,
@@ -123,7 +149,9 @@ fun SignUpDoneScreen() {
 @Composable
 fun Animation(visible1: Boolean,visible2: Boolean) {
     Box(
-        modifier = Modifier.width(100.dp).height(160.dp),
+        modifier = Modifier
+            .width(100.dp)
+            .height(160.dp),
         contentAlignment = Alignment.Center
     ) {
         AnimatedVisibility(
@@ -163,5 +191,5 @@ fun Animation(visible1: Boolean,visible2: Boolean) {
 @Preview(showBackground = true)
 @Composable
 fun SignUpDoneScreenPreview() {
-    LoadingScreen()
+    SignUpDoneScreen()
 }

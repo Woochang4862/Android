@@ -110,7 +110,7 @@ fun LogInTextTitle(){
 @Composable
 fun LoginTextField() {
     var password by rememberSaveable { mutableStateOf("") }
-    var text by rememberSaveable { mutableStateOf("") }
+    var id by rememberSaveable { mutableStateOf("") }
     val customFont = Font(R.font.pretendard_regular)
     Column(
         modifier = Modifier
@@ -121,8 +121,9 @@ fun LoginTextField() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
-            value = text,
-            onValueChange = { text = it },
+            value = id,
+            onValueChange = { id = it },
+            shape = RoundedCornerShape(10.dp),
             placeholder = {
                 Text(
                     text = "ID",
@@ -136,15 +137,12 @@ fun LoginTextField() {
             modifier = Modifier
                 .width(326.dp)
                 .height(48.dp)
-                .background(
-                    color = Color.Transparent,
-                    shape = RoundedCornerShape(10.dp)
-                )
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
+            shape = RoundedCornerShape(10.dp),
             placeholder = {
                 Text(
                     text = "PASSWORD",
@@ -157,10 +155,6 @@ fun LoginTextField() {
             },
             modifier = Modifier
                 .width(326.dp)
-                .background(
-                    color = Color.Transparent,
-                    shape = RoundedCornerShape(10.dp)
-                )
                 .height(48.dp),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -180,12 +174,9 @@ fun OnLoginBtn() {
     ) {
         Button(
             onClick = { /* Do something */ },
+            shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .height(56.dp)
-                .background(
-                    color = Color.Transparent,
-                    shape = RoundedCornerShape(10.dp)
-                )
                 .width(326.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF2D64D8))
         ) {
@@ -310,12 +301,9 @@ fun OnSignInBtn() {
     ) {
         Button(
             onClick = { /* Do something */ },
+            shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .height(56.dp)
-                .background(
-                    color = Color.Transparent,
-                    shape = RoundedCornerShape(10.dp)
-                )
                 .width(326.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF111111))
         ) {

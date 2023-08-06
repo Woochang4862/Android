@@ -2,5 +2,6 @@
 
 수원대학교 랜덤채팅 어플
 
-language : Kotlin \n
+language : Kotlin
+
 skills : compose

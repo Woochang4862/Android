@@ -275,7 +275,7 @@ fun MadeAccountText() {
             style = TextStyle(
                 fontFamily = FontFamily(customFont)
             )
-            )
+        )
         Divider(
             color = Color(0xFFBFBFBF),
             thickness = 1.dp,

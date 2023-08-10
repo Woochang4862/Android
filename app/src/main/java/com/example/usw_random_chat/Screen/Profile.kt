@@ -6,10 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,13 +17,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.ViewModel.ProfileViewModel
 
 @Composable
-fun ProfileScreen() {
-    val nickname = remember {
-        mutableStateOf("")
-    }
+fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel()) {
+   // val nickname = remember {
+        //mutableStateOf(profileViewModel.nickname)
+    //}
     val mbti = remember {
         mutableStateOf("")
     }
@@ -40,9 +39,9 @@ fun ProfileScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         setTitle()
-        getNickName(nickname = nickname)
-        getMBTI(mbti = mbti)
-        getSelfIntroduce(introduce = selfintroduce)
+        getNickName(profileViewModel._nickname) { profileViewModel.updateNickname(it) }
+        getMBTI(mbti = profileViewModel.mbti)
+        getSelfIntroduce(introduce = profileViewModel.selfintroduce.value)
         startButton()
         Text(
             text = "프로필은 언제든 자유롭게\n수정할 수 있습니다",
@@ -80,7 +79,7 @@ fun setTitle() {
 }
 
 @Composable
-fun getNickName(nickname: MutableState<String>) {
+fun getNickName(nickname: String, onNicknameChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 40.dp)) {
         Row() {
             Text(text = "닉네임", fontSize = 16.sp)
@@ -93,8 +92,8 @@ fun getNickName(nickname: MutableState<String>) {
             )
         }
         TextField(
-            value = nickname.value,
-            onValueChange = { nicknameValue -> nickname.value = nicknameValue },
+            value = nickname,
+            onValueChange = onNicknameChanged,
             placeholder = { Text(text = "#NICKNAME",fontFamily = FontFamily(Font(R.font.pretendard_regular)),) },
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
@@ -115,7 +114,7 @@ fun getNickName(nickname: MutableState<String>) {
 }
 
 @Composable
-fun getMBTI(mbti: MutableState<String>) {
+fun getMBTI(mbti: State<String>) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
             Text(text = "MBTI", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)))
@@ -129,7 +128,7 @@ fun getMBTI(mbti: MutableState<String>) {
         }
         TextField(
             value = mbti.value,
-            onValueChange = { nicknameValue -> mbti.value = nicknameValue },
+            onValueChange = { mbti},
             placeholder = { Text(text = "#MBTI",fontFamily = FontFamily(Font(R.font.pretendard_regular)),) },
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
@@ -149,7 +148,7 @@ fun getMBTI(mbti: MutableState<String>) {
 }
 
 @Composable
-fun getSelfIntroduce(introduce: MutableState<String>) {
+fun getSelfIntroduce(introduce: String) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
             Text(text = "자기소개", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),)
@@ -162,8 +161,8 @@ fun getSelfIntroduce(introduce: MutableState<String>) {
             )
         }
         TextField(
-            value = introduce.value,
-            onValueChange = { nicknameValue -> introduce.value = nicknameValue },
+            value = introduce,
+            onValueChange = { introduce},
             placeholder = { Text(text = "학과, 학번 등 소개를 자유롭게 입력하세요",fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 14.sp) },
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
@@ -213,7 +212,7 @@ fun startButton() {
 @Preview(showBackground = true)
 @Composable
 fun ProfilePreview() {
-    ProfileScreen()
+    ProfileScreen(profileViewModel = ProfileViewModel())
 }
 
 @Preview(showBackground = true)
@@ -222,7 +221,7 @@ fun getNickNamePreview() {
     val qwe = remember {
         mutableStateOf("#NICKNAME")
     }
-    getNickName(qwe)
+    //getNickName(qwe)
 }
 
 @Preview(showBackground = true)
@@ -231,7 +230,7 @@ fun getMBTIPreview() {
     val qwe = remember {
         mutableStateOf("#MBTI")
     }
-    getMBTI(qwe)
+    //getMBTI(qwe)
 }
 
 @Preview(showBackground = true)
@@ -240,7 +239,7 @@ fun getSelfIntroducePreview() {
     val qwe = remember {
         mutableStateOf("#학과 학번등 소개를 자유롭게 해주세요")
     }
-    getSelfIntroduce(introduce = qwe)
+    //getSelfIntroduce(introduce = qwe)
 }
 
 @Preview(showBackground = true)

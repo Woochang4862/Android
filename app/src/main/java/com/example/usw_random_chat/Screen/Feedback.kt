@@ -1,6 +1,7 @@
 package com.example.usw_random_chat.Screen
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Top
 import androidx.compose.foundation.layout.Box
@@ -16,17 +17,21 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,16 +40,17 @@ import com.example.usw_random_chat.R
 
 @Composable
 fun FeedbackShow(){
+    val edittext = remember {
+        mutableStateOf("")
+    }
     FeedbackText()
     FeedbackExit()
-    FeedbackTextField()
+    FeedbackTextField(text = edittext)
     FeedbackSubmitBtn()
 }
 
 @Composable
 fun FeedbackText(){
-    val customFont = Font(R.font.pretendard_regular)
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,9 +62,10 @@ fun FeedbackText(){
         Text(
             text = "피드백",
             color = Color(0xFF111111),
+            fontWeight = FontWeight(600),
             style = TextStyle(
                 fontSize = 18.sp,
-                fontFamily = FontFamily(customFont)
+                fontFamily = FontFamily(Font(R.font.pretendard_regular))
             )
         )
     }
@@ -69,48 +76,29 @@ fun FeedbackExit(){
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(
-                start = 322.dp,
-                top = 80.dp
-            )
     ){
         TextButton(
             onClick = { /*TODO*/ },
             modifier = Modifier
-                .width(36.dp)
-                .height(36.dp)
-
+                .padding(
+                    top = 72.dp,
+                    start = 307.dp
+                )
         ) {
-            Canvas(
+            Image(
+                painter = painterResource(id = R.drawable.cancle),
+                contentDescription = "image description",
                 modifier = Modifier
-                    .width(16.dp)
-                    .height(16.dp)
-            ) {
-                val canvasWidth = size.width
-                val canvasHeight = size.height
-                drawLine(
-                    start = Offset(x = canvasWidth, y = 0f),
-                    end = Offset(x = 0f, y = canvasHeight),
-                    color = Color(0xFF767676),
-                    strokeWidth = 1.5F
-
-                )
-                drawLine(
-                    start = Offset(x = 0f, y = 0f),
-                    end = Offset(x = canvasWidth, y = canvasHeight),
-                    color = Color(0xFF767676),
-                    strokeWidth = 1.5F
-                )
-            }
+                    .background(color = Color(0x00FFFFFF))
+                    .width(36.dp)
+                    .height(36.dp)
+            )
         }
     }
 }
 
 @Composable
-fun FeedbackTextField(){
-    var text by rememberSaveable { mutableStateOf("") }
-    val customFont = Font(R.font.pretendard_regular)
-
+fun FeedbackTextField(text: MutableState<String>){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -120,8 +108,8 @@ fun FeedbackTextField(){
             )
     ){
         OutlinedTextField(
-            value = text,
-            onValueChange = { text = it },
+            value = text.value,
+            onValueChange = {textValue -> text.value = textValue},
             shape = RoundedCornerShape(10.dp),
             placeholder = {
                 Text(
@@ -130,7 +118,7 @@ fun FeedbackTextField(){
                     color = Color(0xFF989898),
                     style = TextStyle(
                         fontSize = 16.sp,
-                        fontFamily = FontFamily(customFont)
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular))
                     )
                 )
             },
@@ -143,8 +131,6 @@ fun FeedbackTextField(){
 
 @Composable
 fun FeedbackSubmitBtn(){
-    val customFont = Font(R.font.kcc_chassam)
-
     Box(
         modifier = Modifier
             .padding(
@@ -165,7 +151,7 @@ fun FeedbackSubmitBtn(){
                 color = Color(0xFFFFFFFF),
                 style = TextStyle(
                     fontSize = 20.sp,
-                    fontFamily = FontFamily(customFont)
+                    fontFamily = FontFamily(Font(R.font.kcc_chassam))
                 ),
             )
         }
@@ -175,10 +161,7 @@ fun FeedbackSubmitBtn(){
 @Preview(showBackground = true)
 @Composable
 fun FeedbackShowPreview(){
-    FeedbackText()
-    FeedbackExit()
-    FeedbackTextField()
-    FeedbackSubmitBtn()
+    FeedbackShow()
 }
 
 @Preview(showBackground = true)
@@ -187,10 +170,6 @@ fun FeedbackTextPreview(){
     FeedbackText()
 }
 @Preview(showBackground = true)
-@Composable
-fun FeedbackTextFieldPreview(){
-    FeedbackTextField()
-}@Preview(showBackground = true)
 @Composable
 fun FeedbackExitPreview(){
     FeedbackExit()

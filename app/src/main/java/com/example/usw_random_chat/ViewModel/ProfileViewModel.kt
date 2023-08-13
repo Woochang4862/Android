@@ -12,16 +12,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class ProfileViewModel : ViewModel() {
-    var _nickname by mutableStateOf("")
-        private set
-    private var _mbti = mutableStateOf("")
+    private val _nickname = mutableStateOf("")
+    private val _mbti = mutableStateOf("")
     private val _selfintroduce = mutableStateOf("")
 
-    //val nickname : String = _nickname.value
-    val mbti : State<String>  get() = _mbti
-    val selfintroduce : State<String>  get() = _selfintroduce
+    val nickname : State<String> = _nickname
+    val mbti : State<String>  = _mbti
+    val selfintroduce : State<String>  = _selfintroduce
 
     fun updateNickname(newValue : String){
-        _nickname = newValue
+        _nickname.value = newValue
+    }
+    fun updateMBTI(newValue : String){
+        _mbti.value = newValue
+    }
+    fun updateSelfIntroduce(newValue : String){
+        _selfintroduce.value = newValue
     }
 }

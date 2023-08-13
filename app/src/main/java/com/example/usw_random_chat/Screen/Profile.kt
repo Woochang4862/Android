@@ -39,7 +39,7 @@ fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         setTitle()
-        getNickName(profileViewModel._nickname) { profileViewModel.updateNickname(it) }
+        getNickName(profileViewModel.nickname) { profileViewModel.updateNickname(it) }
         getMBTI(mbti = profileViewModel.mbti)
         getSelfIntroduce(introduce = profileViewModel.selfintroduce.value)
         startButton()
@@ -79,7 +79,7 @@ fun setTitle() {
 }
 
 @Composable
-fun getNickName(nickname: String, onNicknameChanged: (String) -> Unit) {
+fun getNickName(nickname: State<String>, onNicknameChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 40.dp)) {
         Row() {
             Text(text = "닉네임", fontSize = 16.sp)
@@ -92,7 +92,7 @@ fun getNickName(nickname: String, onNicknameChanged: (String) -> Unit) {
             )
         }
         TextField(
-            value = nickname,
+            value = nickname.value,
             onValueChange = onNicknameChanged,
             placeholder = { Text(text = "#NICKNAME",fontFamily = FontFamily(Font(R.font.pretendard_regular)),) },
             colors = TextFieldDefaults.textFieldColors(

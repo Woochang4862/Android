@@ -1,6 +1,5 @@
 package com.example.usw_random_chat.Screen
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,37 +11,31 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Colors
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,33 +44,71 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
 
+
 @Composable
 fun SignUpScreen() {
+    val rememberId = remember {
+        mutableStateOf("")
+    }
+    val rememberPw = remember {
+        mutableStateOf("")
+    }
+    val rememberPwCheck = remember {
+        mutableStateOf("")
+    }
+    val rememberEmail = remember {
+        mutableStateOf("")
+    }
+    var rememberPwVisible = remember {
+        mutableStateOf(false)
+    }
+
+    var rememberPwCheckVisible = remember {
+        mutableStateOf(false)
+    }
+
+    val rememberPwEqualOrNot = remember{
+        mutableStateOf(false)
+    }
+    rememberPwEqualOrNot.value = rememberPw.value == rememberPwCheck.value
+
+    val rememberTrigger = remember{
+        mutableStateOf(false)
+    }
+    rememberTrigger.value = rememberPw.value == rememberPwCheck.value &&
+            rememberId.value.isNotEmpty() &&
+            rememberEmail.value.isNotEmpty()
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(color = Color(0xFFFFFFFF))
     ) {
 
         title()
 
-        Column(Modifier.padding(15.dp)
-        ){
-            TextFieldWithButton("아이디 입력 (4~16자)","아이디", "*4자 이상 16자 이내로 작성해주세요")
+        Column(
+            Modifier.padding(15.dp)
+        ) {
+            IdWrite(id = rememberId)
             Spacer(Modifier.padding(15.dp))
-            TextFieldWithIcon( "비밀번호 입력 (문자,숫자 포함 6~20자)", "비밀번호", "*6자 이상 20자 이내로 작성해 주세요" )
-            TextFieldWithIcon("","비밀번호 확인", "*비밀번호가 일치하지 않습니다")
+            PwWrite(pw = rememberPw)
+            PwCheck(
+                pwCheck = rememberPwCheck,
+                pwEqualOrNot = rememberPwEqualOrNot.value)
         }
-        EmailTextField("* 이메일 형식이 올바르지 않습니다")
-        signUpBotton()
+        EmailTextFieldSignUp(email = rememberEmail)
+        signUpBotton(trigger = rememberTrigger)
     }
+
 }
 
 
-
 @Composable
-fun title(){
-    Row(Modifier
-        ,horizontalArrangement = Arrangement.Center)
+fun title() {
+    Row(
+        Modifier, horizontalArrangement = Arrangement.Center
+    )
     {
         Spacer(Modifier.width(16.dp))
         IconButton(onClick = { /*TODO*/ }) {
@@ -102,18 +133,14 @@ fun title(){
 }
 
 @Composable
-fun TextFieldWithButton(inWord:String,
-                        name: String,
-                        subname: String) {
-    var text = remember { mutableStateOf("") }
+fun IdWrite(id: MutableState<String>) {
 
     Row(
-        Modifier
-        ,horizontalArrangement = Arrangement.Start
+        Modifier, horizontalArrangement = Arrangement.Start
 
     ) {
         Text(
-            text = name,
+            text = "아이디",
             fontFamily = FontFamily.SansSerif,
             fontSize = 18.sp,
             lineHeight = 24.sp,
@@ -121,20 +148,22 @@ fun TextFieldWithButton(inWord:String,
             color = Color(0xFF000000),
             textAlign = TextAlign.Left,
             modifier = Modifier
-                .padding(start = 10.dp)
+                .padding(start = 15.dp)
 
         )
-        Text(
-            text = subname,
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 10.sp,
-            lineHeight = 24.sp,
-            fontWeight = FontWeight(400),
-            color = Color(0xFFFF0000),
-            textAlign = TextAlign.Left,
-            modifier = Modifier
-                .padding(start = 10.dp, top = 10.dp)
-        )
+        if(id.value.length < 4 || id.value.length > 16) {
+            Text(
+                text = "*4자 이상 16자 이내로 작성해주세요",
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 10.sp,
+                lineHeight = 24.sp,
+                fontWeight = FontWeight(400),
+                color = Color(0xFFFF0000),
+                textAlign = TextAlign.Left,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 10.dp)
+            )
+        }
     }
 
     Row(
@@ -148,11 +177,12 @@ fun TextFieldWithButton(inWord:String,
             )
     ) {
         TextField(
-            value = text.value,
-            onValueChange = { newText ->
-                text.value = newText
+            value = id.value,
+            onValueChange = { idValue -> id.value = idValue
             },
-            placeholder = { Text(text = inWord, color = Color.Gray) },
+
+            placeholder = { Text(text = "아이디 입력 (4~16자)", color = Color.Gray) },
+
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
                 focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
@@ -167,13 +197,13 @@ fun TextFieldWithButton(inWord:String,
         )
         Button(
             onClick = { /* Do something when the button is clicked */ },
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier
+                .padding(10.dp)
                 .align(Alignment.CenterVertically)
                 .width(100.dp)
                 .height(38.dp),
 
-            shape = RoundedCornerShape(10.dp)
-            ,
+            shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 backgroundColor = Color(0xFF2D64D8)
@@ -185,24 +215,18 @@ fun TextFieldWithButton(inWord:String,
     }
 }
 
+
 //@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextFieldWithIcon(
-    inWord: String,
-    name: String, subname: String,
-    modifier: Modifier = Modifier,
-    fontSize: TextUnit = 17.sp
-)
-{
-    var text = rememberSaveable {
-        mutableStateOf("")
-    }
+fun PwWrite(pw: MutableState<String>,
+            fontSize: TextUnit = 17.sp
+) {
+
     Row(
-        Modifier
-        , horizontalArrangement = Arrangement.Start
+        Modifier, horizontalArrangement = Arrangement.Start
     ) {
         Text(
-            text = name,
+            text = "비밀번호",
             fontFamily = FontFamily.SansSerif,
             fontSize = 18.sp,
             lineHeight = 24.sp,
@@ -210,23 +234,27 @@ fun TextFieldWithIcon(
             color = Color(0xFF000000),
             textAlign = TextAlign.Left,
             modifier = Modifier
-                .padding(start = 10.dp)
+                .padding(start = 15.dp)
 
         )
-        Text(
-            text = subname,
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 10.sp,
-            lineHeight = 24.sp,
-            fontWeight = FontWeight(400),
-            color = Color(0xFFFF0000),
-            textAlign = TextAlign.Left,
-            modifier = Modifier
-                .padding(start = 10.dp, top = 10.dp)
-        )
+        if(pw.value.length < 6 || pw.value.length > 20) {
+            Text(
+                text = "*6자 이상 20자 이내로 작성해 주세요",
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 10.sp,
+                lineHeight = 24.sp,
+                fontWeight = FontWeight(400),
+                color = Color(0xFFFF0000),
+                textAlign = TextAlign.Left,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 10.dp)
+            )
+        }
     }
+    val passwordVisible = remember { mutableStateOf(false) }
 
-    Row(verticalAlignment = Alignment.CenterVertically,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             //.fillMaxWidth()
             .padding(8.dp)
@@ -234,14 +262,14 @@ fun TextFieldWithIcon(
                 width = 1.dp, color = Color(0xFFBFBFBF),
                 shape = RoundedCornerShape(8.dp)
             )
-    ){
+    ) {
         TextField(
-            value = text.value,
-            onValueChange = { textValue -> text.value = textValue },
-            placeholder = { Text(text = inWord, color = Color.Gray) },
+            value = pw.value,
+            onValueChange = { pwValue -> pw.value = pwValue },
+            visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+            placeholder = { Text(text = "비밀번호 입력 (문자,숫자 포함 6~20자)", color = Color.Gray) },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
-                textColor = Color.LightGray,
                 focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
                 unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
                 disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
@@ -251,9 +279,9 @@ fun TextFieldWithIcon(
                 .height(50.dp)
                 .width(300.dp)
         )//baseline_visibility_24
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = {   passwordVisible.value = !passwordVisible.value     }) {
             Icon(
-                painter = painterResource(id = R.drawable.visibility),
+                painter = painterResource(id = if (passwordVisible.value) R.drawable.visibility else R.drawable.visibility_off),
                 contentDescription = null // decorative element
 
             )
@@ -261,18 +289,92 @@ fun TextFieldWithIcon(
     }
 }
 
+@Composable
+fun PwCheck(
+    pwCheck: MutableState<String>,
+    pwEqualOrNot: Boolean,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 17.sp
+) {
 
+
+    Row(
+        Modifier, horizontalArrangement = Arrangement.Start
+    ) {
+        Text(
+            text = "비밀번호 확인",
+            fontFamily = FontFamily.SansSerif,
+            fontSize = 18.sp,
+            lineHeight = 24.sp,
+            fontWeight = FontWeight(400),
+            color = Color(0xFF000000),
+            textAlign = TextAlign.Left,
+            modifier = Modifier
+                .padding(start = 15.dp)
+
+        )
+        if (!pwEqualOrNot) {
+            Text(
+                text = "*비밀번호가 일치하지 않습니다",
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 10.sp,
+                lineHeight = 24.sp,
+                fontWeight = FontWeight(400),
+                color = Color(0xFFFF0000),
+                textAlign = TextAlign.Left,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 10.dp)
+            )
+        }
+    }
+
+    val passwordCheckVisible = remember { mutableStateOf(false) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            //.fillMaxWidth()
+            .padding(8.dp)
+            .border(
+                width = 1.dp, color = Color(0xFFBFBFBF),
+                shape = RoundedCornerShape(8.dp)
+            )
+    ){
+        TextField(
+            value = pwCheck.value,
+            onValueChange = { pwCheckValue -> pwCheck.value = pwCheckValue },
+            visualTransformation = if (passwordCheckVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+            placeholder = { Text(text = "", color = Color.Gray) },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.White,
+                focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
+                unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
+                disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
+            ),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .height(50.dp)
+                .width(300.dp)
+        )//baseline_visibility_24
+        IconButton(onClick = { passwordCheckVisible.value = !passwordCheckVisible.value }) {
+            Icon(
+                painter = painterResource(id = if (passwordCheckVisible.value) R.drawable.visibility else R.drawable.visibility_off),
+                contentDescription = null // decorative element
+
+            )
+        }
+    }
+}
 
 @Composable
-fun EmailTextField(name: String) {
-    var textState = rememberSaveable { mutableStateOf("") }
+fun EmailTextFieldSignUp(email: MutableState<String>) {
 
-    Column(Modifier.padding(30.dp)
+    Column(
+        Modifier.padding(30.dp)
 
     ) {
         TextField(
-            value = textState.value,
-            onValueChange = {textStateValue -> textState.value = textStateValue},
+            value = email.value,
+            onValueChange = { emailValue -> email.value = emailValue },
             placeholder = { Text("포털 이메일 입력") },
             trailingIcon = { Text("@suwon.ac.kr    ", color = Color(0xFF000000)) },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
@@ -282,7 +384,7 @@ fun EmailTextField(name: String) {
 
         )
         Text(
-            text = name,
+            text = "* 이메일 형식이 올바르지 않습니다",
             fontFamily = FontFamily.SansSerif,
             fontSize = 10.sp,
             lineHeight = 24.sp,
@@ -296,9 +398,10 @@ fun EmailTextField(name: String) {
 }
 
 @Composable
-fun signUpBotton(){
-    Column(Modifier.padding(30.dp)
-        ,horizontalAlignment = Alignment.CenterHorizontally) {
+fun signUpBotton(trigger: MutableState<Boolean>) {
+    Column(
+        Modifier.padding(30.dp), horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Button(modifier = Modifier
             .width(326.dp)
             .height(56.dp),
@@ -307,7 +410,8 @@ fun signUpBotton(){
                 contentColor = Color.White,
                 backgroundColor = Color.Black
             ),
-            onClick = {}
+            enabled = trigger.value,
+            onClick = { /*TODO*/}
         ) {
             Text("회원가입")
         }
@@ -320,13 +424,13 @@ fun signUpBotton(){
                 withStyle(style = SpanStyle(color = Color.Blue)) {
                     append("서비스 이용약관 ")
                 }
-                withStyle(style = SpanStyle(color = Color.Gray)){
+                withStyle(style = SpanStyle(color = Color.Gray)) {
                     append(" 및 ")
                 }
                 withStyle(style = SpanStyle(color = Color.Blue)) {
                     append("개인정보 처리방침")
                 }
-                withStyle(style = SpanStyle(color = Color.Gray)){
+                withStyle(style = SpanStyle(color = Color.Gray)) {
                     append("에 동의하신 것으로 간주됩니다")
                 }
             },
@@ -339,7 +443,7 @@ fun signUpBotton(){
             modifier = Modifier
                 .height(50.dp)
                 .width(273.dp)
-                .padding(3.dp,top = 10.dp)
+                .padding(3.dp, top = 10.dp)
         )
     }
 

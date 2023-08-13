@@ -10,6 +10,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.usw_random_chat.Screen.LoadingScreen
+import com.example.usw_random_chat.Screen.PolicyScreen
 import com.example.usw_random_chat.ui.theme.USW_Random_ChatTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,12 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             USW_Random_ChatTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                PolicyScreen()
             }
         }
     }

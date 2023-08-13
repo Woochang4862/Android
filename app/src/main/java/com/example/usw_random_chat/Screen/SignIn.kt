@@ -22,6 +22,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,7 +48,13 @@ import com.example.usw_random_chat.R
 
 @Composable
 fun SignInScreen() {
-    LoginTextField()
+    val editidState = remember {
+        mutableStateOf("")
+    }
+    val editpasswordState = remember {
+        mutableStateOf("")
+    }
+    LoginTextField(id = editidState, password = editpasswordState)
     OnLoginBtn()
     OnLoginFindIdAndPassword()
     MadeAccountText()
@@ -76,13 +83,12 @@ fun OnLoginImage() {
 
 @Composable
 fun LogInTextTitle(){
-    val customFont = Font(R.font.kcc_chassam)
     Text(
         text = "티키타카를 원해?",
         color = Color(0xFF698AFF),
         style = TextStyle(
             fontSize = 36.sp,
-            fontFamily = FontFamily(customFont)
+            fontFamily = FontFamily(Font(R.font.kcc_chassam))
         ),
         modifier = Modifier
             .padding(
@@ -95,7 +101,7 @@ fun LogInTextTitle(){
         color = Color(0xFF111111),
         style = TextStyle(
             fontSize = 24.sp,
-            fontFamily = FontFamily(customFont)
+            fontFamily = FontFamily(Font(R.font.kcc_chassam))
         ),
         modifier = Modifier
             .padding(
@@ -108,10 +114,10 @@ fun LogInTextTitle(){
 
 
 @Composable
-fun LoginTextField() {
-    var password by rememberSaveable { mutableStateOf("") }
-    var id by rememberSaveable { mutableStateOf("") }
-    val customFont = Font(R.font.pretendard_regular)
+fun LoginTextField(
+    id: MutableState<String>,
+    password: MutableState<String>
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -121,8 +127,8 @@ fun LoginTextField() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
-            value = id,
-            onValueChange = { id = it },
+            value = id.value,
+            onValueChange = {idValue -> id.value = idValue},
             shape = RoundedCornerShape(10.dp),
             placeholder = {
                 Text(
@@ -130,7 +136,7 @@ fun LoginTextField() {
                     color = Color(0xFF989898),
                     style = TextStyle(
                         fontSize = 14.sp,
-                        fontFamily = FontFamily(customFont)
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular))
                     )
                 )
             },
@@ -140,8 +146,8 @@ fun LoginTextField() {
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
+            value = password.value,
+            onValueChange = {passwordValue -> password.value = passwordValue},
             shape = RoundedCornerShape(10.dp),
             placeholder = {
                 Text(
@@ -149,7 +155,7 @@ fun LoginTextField() {
                     color = Color(0xFF989898),
                     style = TextStyle(
                         fontSize = 14.sp,
-                        fontFamily = FontFamily(customFont)
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular))
                     )
                 )
             },
@@ -164,7 +170,6 @@ fun LoginTextField() {
 
 @Composable
 fun OnLoginBtn() {
-    val customFont = Font(R.font.pretendard_regular)
 
     Box(
         modifier = Modifier
@@ -185,7 +190,7 @@ fun OnLoginBtn() {
                 fontSize = 18.sp,
                 color = Color.White,
                 style = TextStyle(
-                    fontFamily = FontFamily(customFont)
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
                 )
             )
         }
@@ -194,8 +199,6 @@ fun OnLoginBtn() {
 
 @Composable
 fun OnLoginFindIdAndPassword() {
-    val customFont = Font(R.font.pretendard_regular)
-
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -211,7 +214,7 @@ fun OnLoginFindIdAndPassword() {
                 text = "아이디 찾기",
                 color = Color(0xFF232323),
                 style = TextStyle(
-                    fontFamily = FontFamily(customFont)
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
                 )
             )
         }
@@ -227,7 +230,7 @@ fun OnLoginFindIdAndPassword() {
                 ),
             color = Color(0xFFBFBFBF),
             style = TextStyle(
-                fontFamily = FontFamily(customFont)
+                fontFamily = FontFamily(Font(R.font.pretendard_regular))
             )
         )
 
@@ -242,7 +245,7 @@ fun OnLoginFindIdAndPassword() {
                 text = "비밀번호 찾기",
                 color = Color(0xFF232323),
                 style = TextStyle(
-                    fontFamily = FontFamily(customFont)
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
                 )
             )
         }
@@ -252,8 +255,6 @@ fun OnLoginFindIdAndPassword() {
 
 @Composable
 fun MadeAccountText() {
-    val customFont = Font(R.font.pretendard_regular)
-
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -273,7 +274,7 @@ fun MadeAccountText() {
         Text(
             text = "계정이 없으신가요?",
             style = TextStyle(
-                fontFamily = FontFamily(customFont)
+                fontFamily = FontFamily(Font(R.font.pretendard_regular))
             )
         )
         Divider(
@@ -291,7 +292,6 @@ fun MadeAccountText() {
 
 @Composable
 fun OnSignInBtn() {
-    val customFont = Font(R.font.pretendard_regular)
 
     Box(
         modifier = Modifier
@@ -312,7 +312,7 @@ fun OnSignInBtn() {
                 fontSize = 18.sp,
                 color = Color.White,
                 style = TextStyle(
-                    fontFamily = FontFamily(customFont)
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
                 )
             )
         }
@@ -323,20 +323,7 @@ fun OnSignInBtn() {
 @Preview(showBackground = true)
 @Composable
 fun SignInScreenPreview() {
-    LoginTextField()
-    OnLoginBtn()
-    OnLoginFindIdAndPassword()
-    MadeAccountText()
-    OnSignInBtn()
-    OnLoginImage()
-    LogInTextTitle()
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun LoginTextFieldPreview() {
-    LoginTextField()
+    SignInScreen()
 }
 
 

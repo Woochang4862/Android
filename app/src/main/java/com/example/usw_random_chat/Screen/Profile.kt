@@ -80,7 +80,7 @@ fun setTitle() {
 
 @Composable
 fun getNickName(nickname: State<String>, onNicknameChanged: (String) -> Unit) {
-    Column(Modifier.padding(top = 40.dp)) {
+    Column(Modifier.padding(top = 40.dp, start = 32.dp)) {
         Row() {
             Text(text = "닉네임", fontSize = 16.sp)
             Text(
@@ -91,24 +91,56 @@ fun getNickName(nickname: State<String>, onNicknameChanged: (String) -> Unit) {
                 modifier = Modifier.padding(start = 3.dp, top = 2.dp)
             )
         }
-        TextField(
-            value = nickname.value,
-            onValueChange = onNicknameChanged,
-            placeholder = { Text(text = "#NICKNAME",fontFamily = FontFamily(Font(R.font.pretendard_regular)),) },
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Color.Black,
-                backgroundColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledLabelColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(10.dp),
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .border(width = 1.dp, color = Color(0xFFBFBFBF), shape = RoundedCornerShape(8.dp))
-                .height(50.dp)
-                .width(326.dp)
-        )
+                .padding(top = 5.dp, end = 32.dp)
+                .border(
+                    width = 1.dp, color = Color(0xFFBFBFBF),
+                    shape = RoundedCornerShape(8.dp)
+                )
+        ) {
+            TextField(
+                value = nickname.value,
+                onValueChange = onNicknameChanged,
+                placeholder = { Text(text = "#NICKNAME", color = Color.Gray) },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
+                    unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
+                    disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
+                ),
+                // shape 속성 주석 처리
+                // shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .width(326.dp)
+                    .height(50.dp)
+            )
+            Button(
+                onClick = { /* Do something when the button is clicked */ },
+                modifier = Modifier
+                    .padding(6.dp)
+                    .align(Alignment.CenterVertically)
+                    .width(100.dp)
+                    .height(38.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    backgroundColor = Color(0xFF2D64D8)
+                ),
+            ) {
+                Text(
+                    "중복 확인",
+                    fontSize = 14.sp,
+                    color = Color.White,
+                    lineHeight = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                    fontWeight = FontWeight(600),
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
         Text(text = "* 닉네임은 8자 이내로 작성해 주세요", color = Color(0xFFFF6565), fontSize = 12.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),)
     }
 }
@@ -123,7 +155,7 @@ fun getMBTI(mbti: State<String>) {
                 fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                 color = Color.Gray,
                 fontSize = 10.sp,
-                modifier = Modifier.padding(start = 3.dp, top = 5.dp)
+                modifier = Modifier.padding(top = 5.dp, start = 3.dp)
             )
         }
         TextField(

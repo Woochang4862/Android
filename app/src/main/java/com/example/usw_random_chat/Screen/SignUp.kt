@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.ui.button
 
 
 @Composable
@@ -402,19 +403,17 @@ fun signUpBotton(trigger: MutableState<Boolean>) {
     Column(
         Modifier.padding(30.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(modifier = Modifier
-            .width(326.dp)
-            .height(56.dp),
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                backgroundColor = Color.Black
-            ),
-            enabled = trigger.value,
-            onClick = { /*TODO*/}
-        ) {
-            Text("회원가입")
-        }
+        button(
+            "회원가입",
+            enable = trigger.value,
+            Color.White,
+            Color.Black,
+            Modifier
+                .padding(top = 12.dp)
+                .width(326.dp)
+                .height(56.dp)
+                .background(color = Color.White)
+        )
 
         Text(
             text = buildAnnotatedString {

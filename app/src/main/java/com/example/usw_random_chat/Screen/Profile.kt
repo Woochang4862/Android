@@ -51,6 +51,7 @@ fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel()) {
             fontFamily = FontFamily(Font(R.font.kcc_chassam))
         )
     }
+
 }
 
 @Composable

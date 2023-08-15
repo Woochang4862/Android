@@ -40,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.ui.button
 
 @Composable
 fun PwSearchScreen() {
@@ -63,7 +64,7 @@ fun PwSearchScreen() {
         inputId(id = id)
         inputEmail(email = email)
         explainText()
-        sendNumber()
+        sendNumberButton()
         inputCode(code = code)
     }
 }
@@ -146,27 +147,17 @@ fun explainText() {
 }
 
 @Composable
-fun sendNumber() {
-    Button(
-        enabled = false,
-        onClick = { /* Do something */ },
-        shape = RoundedCornerShape(10.dp),
+fun sendNumberButton() {
+    button(
+        text = "인증코드 전송",
+        enable = true,
+        content = Color.White,
+        back = Color(0xFF2D64D8),
         modifier = Modifier
             .padding(top = 12.dp)
+            .width(326.dp)
             .height(56.dp)
-            .width(326.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF2D64D8))
-    ) {
-        Text(
-            "인증코드 전송",
-            fontSize = 18.sp,
-            color = Color.White,
-            lineHeight = 20.sp,
-            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-            fontWeight = FontWeight(600),
-            textAlign = TextAlign.Center,
-        )
-    }
+    )
 }
 
 @Composable
@@ -174,8 +165,9 @@ fun inputCode(code: MutableState<String>) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .fillMaxWidth()
             .padding(top = 24.dp, start = 32.dp, end = 32.dp)
+            .width(326.dp)
+            .height(56.dp)
             .border(
                 width = 1.dp, color = Color(0xFFBFBFBF),
                 shape = RoundedCornerShape(8.dp)

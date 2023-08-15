@@ -42,8 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
-
-
+import com.example.usw_random_chat.ui.button
 
 
 @Composable
@@ -170,30 +169,21 @@ fun LoginTextField(
 
 @Composable
 fun OnLoginBtn() {
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 491.dp),
         contentAlignment = Alignment.TopCenter
     ) {
-        Button(
-            onClick = { /* Do something */ },
-            shape = RoundedCornerShape(10.dp),
+        button(
+            text = "로그인",
+            enable = true,
+            content = Color.White,
+            back = Color(0xFF2D64D8),
             modifier = Modifier
+                .width(326.dp)
                 .height(56.dp)
-                .width(326.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF2D64D8))
-        ) {
-            Text(
-                "로그인",
-                fontSize = 18.sp,
-                color = Color.White,
-                style = TextStyle(
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
-                )
-            )
-        }
+        )
     }
 }
 
@@ -299,23 +289,17 @@ fun OnSignInBtn() {
             .padding(top = 647.dp),
         contentAlignment = Alignment.TopCenter
     ) {
-        Button(
-            onClick = { /* Do something */ },
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier
+        button(
+            "회원가입",
+            enable = true,
+            Color.White,
+            Color.Black,
+            Modifier
+                .padding(top = 12.dp)
+                .width(326.dp)
                 .height(56.dp)
-                .width(326.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF111111))
-        ) {
-            Text(
-                "회원가입",
-                fontSize = 18.sp,
-                color = Color.White,
-                style = TextStyle(
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
-                )
-            )
-        }
+                .background(color = Color.White)
+        )
     }
 }
 

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.ui.button
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -90,17 +91,16 @@ fun SignUpDoneScreen() {
             color = Color(0xFF111111),
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .height(134.dp)
                 .fillMaxWidth()
+                .height(24.dp)
         )
-        Button(
-            onClick = { },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.White,
-                contentColor = Color.Black
-            ),
-            shape = RoundedCornerShape(10.dp),
+        button(
+            text = "로그인",
+            enable = true,
+            content = Color.Black,
+            back = Color.White,
             modifier = Modifier
+                .padding(top = 126.dp)
                 .border(
                     width = 1.dp,
                     shape = RoundedCornerShape(10.dp),
@@ -108,40 +108,18 @@ fun SignUpDoneScreen() {
                 )
                 .width(326.dp)
                 .height(56.dp)
-                .background(color = Color.White)
-        ) {
-            Text(
-                text = "로그인",
-                fontSize = 18.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                lineHeight = 20.sp,
-                fontWeight = FontWeight(600),
-                textAlign = TextAlign.Center,
-            )
-        }
-        Button(
-            onClick = { },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Black,
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier
-                .padding(top = 15.dp)
+                .background(color = Color.White))
+        button(
+            "메일 재발송",
+            enable = true,
+            Color.White,
+            Color.Black,
+            Modifier
+                .padding(top = 12.dp)
                 .width(326.dp)
                 .height(56.dp)
                 .background(color = Color.White)
-        ) {
-            Text(
-                text = "메일 재발송",
-                fontSize = 18.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                lineHeight = 20.sp,
-                fontWeight = FontWeight(600),
-                textAlign = TextAlign.Center,
-            )
-        }
-
+        )
     }
 
 }
@@ -186,6 +164,7 @@ fun Animation(visible1: Boolean,visible2: Boolean) {
     }
 
 }
+
 
 
 @Preview(showBackground = true)

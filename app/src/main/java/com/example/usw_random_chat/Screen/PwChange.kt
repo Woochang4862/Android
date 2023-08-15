@@ -40,11 +40,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.ui.button
 
 @Composable
-fun PwChangeScreen(){
-    Column( modifier = Modifier.fillMaxSize()
-        .background(color = Color(0xFFFFFFFF))) {
+fun PwChangeScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFFFFFFFF))
+    ) {
 
         Spacer(Modifier.padding(20.dp))
 
@@ -52,10 +56,10 @@ fun PwChangeScreen(){
 
         Spacer(Modifier.padding(15.dp))
 
-        TextFieldOfPwChange("새 비밀번호 입력 (문자,숫자 포함 6~20자)","비밀번호","* 6자 이상 20자 이내로 작성해 주세요")
+        TextFieldOfPwChange("새 비밀번호 입력 (문자,숫자 포함 6~20자)", "비밀번호", "* 6자 이상 20자 이내로 작성해 주세요")
         Spacer(Modifier.padding(5.dp))
 
-        TextFieldOfPwChange("","비밀번호 확인","* 비밀번호가 일치하지 않습니다")
+        TextFieldOfPwChange("", "비밀번호 확인", "* 비밀번호가 일치하지 않습니다")
 
         Spacer(Modifier.padding(10.dp))
         PwChangeBotton()
@@ -64,14 +68,19 @@ fun PwChangeScreen(){
 
 
 @Composable
-fun titleOfPwChange(){
-    Row(Modifier
-        ,horizontalArrangement = Arrangement.Center)
+fun titleOfPwChange() {
+    Row(
+        Modifier, horizontalArrangement = Arrangement.Center
+    )
     {
         Spacer(Modifier.width(32.dp))
         IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = ""
-                ,Modifier.height(36.dp).width(36.dp))
+            Icon(
+                imageVector = Icons.Filled.ArrowBack, contentDescription = "",
+                Modifier
+                    .height(36.dp)
+                    .width(36.dp)
+            )
         }
         Text(
             text = buildAnnotatedString {
@@ -86,21 +95,22 @@ fun titleOfPwChange(){
             modifier = Modifier
                 .height(48.dp)
                 .width(232.dp)
-                .padding(start = 32.dp,top = 10.dp)
+                .padding(start = 32.dp, top = 10.dp)
         )
     }
 }
 
 
 @Composable
-fun TextFieldOfPwChange(inWord:String,
-                        name: String,
-                        subname: String) {
+fun TextFieldOfPwChange(
+    inWord: String,
+    name: String,
+    subname: String
+) {
     var text = remember { mutableStateOf("") }
 
     Row(
-        Modifier
-        ,horizontalArrangement = Arrangement.Start
+        Modifier, horizontalArrangement = Arrangement.Start
 
     ) {
         Text(
@@ -136,7 +146,7 @@ fun TextFieldOfPwChange(inWord:String,
             text.value = newText
         },
 
-        placeholder = { Text(text = inWord, color = Color.Gray, fontSize = 14.sp,) },
+        placeholder = { Text(text = inWord, color = Color.Gray, fontSize = 14.sp) },
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.White,
             focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
@@ -159,31 +169,19 @@ fun TextFieldOfPwChange(inWord:String,
 }
 
 @Composable
-fun PwChangeBotton(){
-    Column(Modifier.padding(42.dp)
-        ,horizontalAlignment = Alignment.CenterHorizontally) {
-        Button(modifier = Modifier
-            .width(326.dp)
-            .height(56.dp),
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                backgroundColor = Color(0XFF2D64D8)
-            ),
-            onClick = {}
-        ) {
-            Text(
-                text = "변경 완료",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 20.sp,
-                    //fontFamily = FontFamily(Font(R.font.pretendard)),
-                    fontWeight = FontWeight(600),
-                    color = Color(0xFFFFFFFF),
-                    textAlign = TextAlign.Center,
-                )
-            )
-        }
+fun PwChangeBotton() {
+    Column(
+        Modifier.padding(42.dp), horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        button(
+            text = "변경완료",
+            enable = true,
+            content = Color.White,
+            back = Color(0xFF2D64D8),
+            modifier = Modifier
+                .width(326.dp)
+                .height(56.dp)
+        )
     }
 
 }

@@ -49,6 +49,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.ui.button
 
 @Composable
 fun IdSearch(){
@@ -180,49 +181,27 @@ fun IdSearchEmailBtn(flag: Boolean){
         )
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(
+        button(
+            text = "로그인",
+            enable = flag,
+            content = Color.White,
+            back = Color(0xFF2D64D8),
             modifier = Modifier
                 .width(326.dp)
-                .height(56.dp),
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color(0xFF2D64D8)
-            ),
-            onClick = {},
-            enabled = flag
-        ) {
-            Text(
-                text = "확인메일 전송",
-                fontWeight = FontWeight(600),
-                color = Color(0xFFFFFFFF),
-                fontSize = 18.sp,
-                style = TextStyle(
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
-                )
-            )
-        }
+                .height(56.dp)
+        )
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(
-            modifier = Modifier
+        button(
+            "메일 재발송",
+            enable = true,
+            Color.White,
+            Color.Black,
+            Modifier
                 .width(326.dp)
-                .height(56.dp),
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color(0xFF111111)
-            ),
-            onClick = {}
-        ) {
-            Text(
-                text = "로그인 하러가기",
-                fontWeight = FontWeight(600),
-                color = Color(0xFFFFFFFF),
-                fontSize = 18.sp,
-                style = TextStyle(
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
-                )
-            )
-        }
+                .height(56.dp)
+                .background(color = Color.White)
+        )
     }
 }
 

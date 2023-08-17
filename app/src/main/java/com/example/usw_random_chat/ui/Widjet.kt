@@ -39,7 +39,7 @@ fun button(text: String, enable: Boolean, content: Color, back: Color, modifier:
 }
 
 @Composable
-fun 채copyRightByFlag(modifier: Modifier) {
+fun copyRightByFlag(modifier: Modifier) {
     Text(
         text = "@copyright by Flag",
         fontSize = 12.sp,

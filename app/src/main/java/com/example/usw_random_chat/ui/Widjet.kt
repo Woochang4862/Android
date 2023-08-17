@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
 
 @Composable
-fun button(text : String, enable : Boolean, content : Color, back : Color, modifier: Modifier){
+fun button(text: String, enable: Boolean, content: Color, back: Color, modifier: Modifier) {
     Button(
         onClick = { },
         colors = ButtonDefaults.buttonColors(
@@ -36,4 +36,19 @@ fun button(text : String, enable : Boolean, content : Color, back : Color, modif
             textAlign = TextAlign.Center,
         )
     }
+}
+
+@Composable
+fun 채copyRightByFlag(modifier: Modifier) {
+    Text(
+        text = "@copyright by Flag",
+        fontSize = 12.sp,
+        lineHeight = 20.sp,
+        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+        fontWeight = FontWeight(400),
+        color = Color(0xFF767676),
+        textAlign = TextAlign.Center,
+        letterSpacing = 0.3.sp,
+        modifier = modifier
+    )
 }

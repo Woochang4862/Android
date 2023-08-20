@@ -18,6 +18,9 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -25,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -40,6 +44,7 @@ fun PolicyScreen(){
         modifier = Modifier.fillMaxSize()
             .background(color = Color(0xFFFFFFFF))
     ){
+        Spacer(Modifier.padding(20.dp))
         TextFieldWithIcon("이용 약관")
         TermsofUse("")
     }
@@ -57,7 +62,7 @@ fun TextFieldWithIcon(
         Spacer(Modifier.padding(start = 150.dp))
         Text(
             text = inWord,
-            fontFamily = FontFamily.SansSerif,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             fontSize = 18.sp,
             lineHeight = 20.sp,
             fontWeight = FontWeight(400),
@@ -72,9 +77,11 @@ fun TextFieldWithIcon(
             IconButton(onClick = { /*TODO*/ },
                 modifier.padding(top = 7.dp)) {
                 Icon(
-                    painter = painterResource(id = R.drawable.close),
-                    contentDescription = null // decorative element
-
+                    imageVector = Icons.Filled.Close, contentDescription = "",
+                    Modifier
+                        .height(36.dp)
+                        .width(36.dp),
+                    tint = Color(0xFF767676)
                 )
             }
         }

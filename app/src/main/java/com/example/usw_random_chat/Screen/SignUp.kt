@@ -31,7 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -44,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.button
+import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 
 @Composable
@@ -86,14 +89,21 @@ fun SignUpScreen() {
             .background(color = Color(0xFFFFFFFF))
     ) {
 
-        title()
+        Spacer(Modifier.padding(20.dp))
 
+        //SignUPtitle()
+
+        tittleWithBackArrow("회원가입",modifier = Modifier
+            .height(48.dp)
+            .width(232.dp)
+            .padding(start = 25.dp,top = 15.dp))
         Column(
             Modifier.padding(15.dp)
         ) {
             IdWrite(id = rememberId)
             Spacer(Modifier.padding(15.dp))
             PwWrite(pw = rememberPw)
+            Spacer(Modifier.padding(5.dp))
             PwCheck(
                 pwCheck = rememberPwCheck,
                 pwEqualOrNot = rememberPwEqualOrNot.value)
@@ -105,33 +115,39 @@ fun SignUpScreen() {
 }
 
 
-@Composable
-fun title() {
+/*@Composable
+fun SignUPtitle() {
     Row(
         Modifier, horizontalArrangement = Arrangement.Center
     )
     {
-        Spacer(Modifier.width(16.dp))
+        Spacer(Modifier.width(35.dp))
         IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
+            Icon(
+                imageVector = Icons.Filled.ArrowBack, contentDescription = "",
+                Modifier
+                    .height(36.dp)
+                    .width(36.dp)
+            )
         }
         Text(
             text = buildAnnotatedString {
                 append("회원가입")
             },
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 30.sp,
-            lineHeight = 24.sp,
-            fontWeight = FontWeight(400),
-            color = Color(0xFF000000),
+            fontSize = 18.sp,
+            lineHeight = 20.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            fontWeight = FontWeight(600),
+            color = Color(0xFF111111),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .height(48.dp)
                 .width(232.dp)
-                .padding(start = 65.dp)
+                .padding(start = 25.dp,top = 15.dp)
         )
     }
-}
+}*/
+
 
 @Composable
 fun IdWrite(id: MutableState<String>) {
@@ -142,27 +158,27 @@ fun IdWrite(id: MutableState<String>) {
     ) {
         Text(
             text = "아이디",
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 18.sp,
-            lineHeight = 24.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            fontSize = 16.sp,
+            lineHeight = 18.sp,
             fontWeight = FontWeight(400),
             color = Color(0xFF000000),
             textAlign = TextAlign.Left,
             modifier = Modifier
-                .padding(start = 15.dp)
+                .padding(start = 35.dp,top=5.dp,bottom = 5.dp)
 
         )
         if(id.value.length < 4 || id.value.length > 16) {
             Text(
                 text = "*4자 이상 16자 이내로 작성해주세요",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.sp,
-                lineHeight = 24.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontSize = 12.sp,
+                lineHeight = 14.sp,
                 fontWeight = FontWeight(400),
                 color = Color(0xFFFF0000),
                 textAlign = TextAlign.Left,
                 modifier = Modifier
-                    .padding(start = 10.dp, top = 10.dp)
+                    .padding(start = 10.dp, top = 10.dp,bottom=2.dp)
             )
         }
     }
@@ -170,8 +186,10 @@ fun IdWrite(id: MutableState<String>) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
+            //.fillMaxWidth()
+            .height(55.dp)
+            .width(350.dp)
+            .padding(start = 30.dp,top = 3.dp)
             .border(
                 width = 1.dp, color = Color(0xFFBFBFBF),
                 shape = RoundedCornerShape(8.dp)
@@ -194,15 +212,16 @@ fun IdWrite(id: MutableState<String>) {
             // shape = RoundedCornerShape(8.dp),
             modifier = Modifier
                 .weight(1f)
-                .padding(end = 8.dp)
+                .width(280.dp)
+                //.padding(end = 8.dp)
         )
         Button(
             onClick = { /* Do something when the button is clicked */ },
             modifier = Modifier
-                .padding(10.dp)
+                .padding(end = 5.dp)
                 .align(Alignment.CenterVertically)
                 .width(100.dp)
-                .height(38.dp),
+                .height(40.dp),
 
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
@@ -228,27 +247,27 @@ fun PwWrite(pw: MutableState<String>,
     ) {
         Text(
             text = "비밀번호",
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 18.sp,
-            lineHeight = 24.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            fontSize = 16.sp,
+            lineHeight = 18.sp,
             fontWeight = FontWeight(400),
             color = Color(0xFF000000),
             textAlign = TextAlign.Left,
             modifier = Modifier
-                .padding(start = 15.dp)
+                .padding(start = 35.dp,top=5.dp,bottom = 5.dp)
 
         )
         if(pw.value.length < 6 || pw.value.length > 20) {
             Text(
                 text = "*6자 이상 20자 이내로 작성해 주세요",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.sp,
-                lineHeight = 24.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontSize = 12.sp,
+                lineHeight = 14.sp,
                 fontWeight = FontWeight(400),
                 color = Color(0xFFFF0000),
                 textAlign = TextAlign.Left,
                 modifier = Modifier
-                    .padding(start = 10.dp, top = 10.dp)
+                    .padding(start = 10.dp, top = 10.dp,bottom=2.dp)
             )
         }
     }
@@ -258,7 +277,9 @@ fun PwWrite(pw: MutableState<String>,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             //.fillMaxWidth()
-            .padding(8.dp)
+            .height(55.dp)
+            .width(350.dp)
+            .padding(start = 30.dp)
             .border(
                 width = 1.dp, color = Color(0xFFBFBFBF),
                 shape = RoundedCornerShape(8.dp)
@@ -277,8 +298,8 @@ fun PwWrite(pw: MutableState<String>,
             ),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .height(50.dp)
-                .width(300.dp)
+                .width(280.dp)
+                //.padding(start= 5.dp)
         )//baseline_visibility_24
         IconButton(onClick = {   passwordVisible.value = !passwordVisible.value     }) {
             Icon(
@@ -304,27 +325,27 @@ fun PwCheck(
     ) {
         Text(
             text = "비밀번호 확인",
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 18.sp,
-            lineHeight = 24.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            fontSize = 16.sp,
+            lineHeight = 18.sp,
             fontWeight = FontWeight(400),
             color = Color(0xFF000000),
             textAlign = TextAlign.Left,
             modifier = Modifier
-                .padding(start = 15.dp)
+                .padding(start = 35.dp,top=5.dp,bottom = 5.dp)
 
         )
         if (!pwEqualOrNot) {
             Text(
                 text = "*비밀번호가 일치하지 않습니다",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.sp,
-                lineHeight = 24.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontSize = 12.sp,
+                lineHeight = 14.sp,
                 fontWeight = FontWeight(400),
                 color = Color(0xFFFF0000),
                 textAlign = TextAlign.Left,
                 modifier = Modifier
-                    .padding(start = 10.dp, top = 10.dp)
+                    .padding(start = 10.dp, top = 10.dp,bottom=2.dp)
             )
         }
     }
@@ -334,7 +355,9 @@ fun PwCheck(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             //.fillMaxWidth()
-            .padding(8.dp)
+            .height(55.dp)
+            .width(350.dp)
+            .padding(start = 30.dp)
             .border(
                 width = 1.dp, color = Color(0xFFBFBFBF),
                 shape = RoundedCornerShape(8.dp)
@@ -353,8 +376,8 @@ fun PwCheck(
             ),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .height(50.dp)
-                .width(300.dp)
+                .width(280.dp)
+                //.padding(start= 5.dp)
         )//baseline_visibility_24
         IconButton(onClick = { passwordCheckVisible.value = !passwordCheckVisible.value }) {
             Icon(
@@ -370,21 +393,35 @@ fun PwCheck(
 fun EmailTextFieldSignUp(email: MutableState<String>) {
 
     Column(
-        Modifier.padding(30.dp)
+        Modifier.padding(start = 40.dp,top =20.dp)
 
     ) {
         TextField(
             value = email.value,
             onValueChange = { emailValue -> email.value = emailValue },
-            placeholder = { Text("포털 이메일 입력") },
-            trailingIcon = { Text("@suwon.ac.kr    ", color = Color(0xFF000000)) },
+            placeholder = { Text("포털 이메일 입력", style = TextStyle(
+                fontSize = 16.sp,
+                lineHeight = 18.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontWeight = FontWeight(400),
+                color = Color(0xFF989898)
+            )
+            ) },
+            trailingIcon = { Text("@suwon.ac.kr    ", style = TextStyle(
+                fontSize = 16.sp,
+                lineHeight = 18.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontWeight = FontWeight(400),
+                color = Color(0xFF000000),
+            ))},
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
             modifier = Modifier
                 .width(326.dp)
-                .heightIn(min = 56.dp)
+                .heightIn(min = 46.dp)
+                .padding(start = 3.dp)
 
         )
-        Text(
+        /*Text(
             text = "* 이메일 형식이 올바르지 않습니다",
             fontFamily = FontFamily.SansSerif,
             fontSize = 10.sp,
@@ -394,14 +431,14 @@ fun EmailTextFieldSignUp(email: MutableState<String>) {
             textAlign = TextAlign.Left,
             modifier = Modifier
                 .padding(top = 10.dp)
-        )
+        )*/
     }
 }
 
 @Composable
 fun signUpBotton(trigger: MutableState<Boolean>) {
     Column(
-        Modifier.padding(30.dp), horizontalAlignment = Alignment.CenterHorizontally
+        Modifier.padding(45.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         button(
             "회원가입",
@@ -417,24 +454,24 @@ fun signUpBotton(trigger: MutableState<Boolean>) {
 
         Text(
             text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = Color.Gray)) {
+                withStyle(style = SpanStyle(color = Color(0XFF989898))) {
                     append("회원가입 시  ")
                 }
-                withStyle(style = SpanStyle(color = Color.Blue)) {
+                withStyle(style = SpanStyle(color = Color(0xff2D64D8))) {
                     append("서비스 이용약관 ")
                 }
-                withStyle(style = SpanStyle(color = Color.Gray)) {
+                withStyle(style = SpanStyle(color = Color(0xFF989898))) {
                     append(" 및 ")
                 }
-                withStyle(style = SpanStyle(color = Color.Blue)) {
+                withStyle(style = SpanStyle(color = Color(0xff2D64D8))) {
                     append("개인정보 처리방침")
                 }
-                withStyle(style = SpanStyle(color = Color.Gray)) {
+                withStyle(style = SpanStyle(color = Color(0xFF989898))) {
                     append("에 동의하신 것으로 간주됩니다")
                 }
             },
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 11.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            fontSize = 12.sp,
             lineHeight = 18.sp,
             fontWeight = FontWeight(400),
             color = Color(0xFFDCDCDC),

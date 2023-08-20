@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.button
+import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 @Composable
 fun PwChangeScreen() {
@@ -52,7 +53,11 @@ fun PwChangeScreen() {
 
         Spacer(Modifier.padding(20.dp))
 
-        titleOfPwChange()
+        //titleOfPwChange()
+        tittleWithBackArrow("비밀번호 변경",modifier = Modifier
+            .height(48.dp)
+            .width(232.dp)
+            .padding(start = 25.dp,top = 15.dp))
 
         Spacer(Modifier.padding(15.dp))
 
@@ -67,7 +72,7 @@ fun PwChangeScreen() {
 }
 
 
-@Composable
+/*@Composable
 fun titleOfPwChange() {
     Row(
         Modifier, horizontalArrangement = Arrangement.Center
@@ -86,7 +91,7 @@ fun titleOfPwChange() {
             text = buildAnnotatedString {
                 append("비밀번호 변경")
             },
-            fontFamily = FontFamily.SansSerif,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             fontSize = 18.sp,
             lineHeight = 20.sp,
             fontWeight = FontWeight(400),
@@ -95,10 +100,10 @@ fun titleOfPwChange() {
             modifier = Modifier
                 .height(48.dp)
                 .width(232.dp)
-                .padding(start = 32.dp, top = 10.dp)
+                .padding(start = 30.dp, top = 10.dp)
         )
     }
-}
+}*/
 
 
 @Composable
@@ -115,7 +120,7 @@ fun TextFieldOfPwChange(
     ) {
         Text(
             text = name,
-            fontFamily = FontFamily.SansSerif,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             fontSize = 16.sp,
             lineHeight = 18.sp,
             fontWeight = FontWeight(400),
@@ -127,7 +132,7 @@ fun TextFieldOfPwChange(
         )
         Text(
             text = subname,
-            fontFamily = FontFamily.SansSerif,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             fontSize = 12.sp,
             lineHeight = 14.sp,
             fontWeight = FontWeight(400),
@@ -146,7 +151,7 @@ fun TextFieldOfPwChange(
             text.value = newText
         },
 
-        placeholder = { Text(text = inWord, color = Color.Gray, fontSize = 14.sp) },
+        placeholder = { Text(text = inWord, color = Color.Gray, fontSize = 14.sp)},
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.White,
             focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상

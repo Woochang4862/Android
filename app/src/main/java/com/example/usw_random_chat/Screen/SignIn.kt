@@ -248,7 +248,7 @@ fun MadeAccountText() {
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 610.dp),
+            .padding(top = 609.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         Divider(
@@ -286,7 +286,7 @@ fun OnSignInBtn() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 647.dp),
+            .padding(top = 643.dp),
         contentAlignment = Alignment.TopCenter
     ) {
         button(
@@ -295,10 +295,8 @@ fun OnSignInBtn() {
             Color.White,
             Color.Black,
             Modifier
-                .padding(top = 12.dp)
                 .width(326.dp)
                 .height(56.dp)
-                .background(color = Color.White)
         )
     }
 }

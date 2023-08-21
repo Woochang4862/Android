@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.button
+import com.example.usw_random_chat.ui.portalEmail
 
 @Composable
 fun PwSearchScreen() {
@@ -62,6 +64,7 @@ fun PwSearchScreen() {
     ) {
         setPwSearchTitle()
         inputId(id = id)
+        Spacer(modifier = Modifier.height(21.dp))
         inputEmail(email = email)
         explainText()
         sendNumberButton()
@@ -112,17 +115,10 @@ fun inputId(id: MutableState<String>) {
 
 @Composable
 fun inputEmail(email: MutableState<String>) {
-    TextField(
-        value = email.value,
-        onValueChange = { emailValue -> email.value = emailValue },
-        placeholder = { Text("포털 이메일 입력") },
-        trailingIcon = { Text("@suwon.ac.kr",color = Color(0xFF000000), fontSize = 16.sp, lineHeight = 18.sp) },
-        colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
-        modifier = Modifier
-            .width(326.dp)
-            .heightIn(min = 56.dp)
-            .padding(top = 21.dp)
-    )
+    portalEmail(
+        textFieldValue = email.value, onValueChange = { emailValue ->
+            email.value = emailValue
+        })
 }
 
 @Composable

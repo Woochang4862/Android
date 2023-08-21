@@ -46,6 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.button
+import com.example.usw_random_chat.ui.idSearchBtn
+import com.example.usw_random_chat.ui.portalEmail
 import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 
@@ -90,13 +92,12 @@ fun SignUpScreen() {
     ) {
 
         Spacer(Modifier.padding(20.dp))
-
         //SignUPtitle()
 
         tittleWithBackArrow("회원가입",modifier = Modifier
             .height(48.dp)
             .width(232.dp)
-            .padding(start = 25.dp,top = 15.dp))
+            .padding(start = 25.dp, top = 15.dp))
         Column(
             Modifier.padding(15.dp)
         ) {
@@ -166,7 +167,6 @@ fun IdWrite(id: MutableState<String>) {
             textAlign = TextAlign.Left,
             modifier = Modifier
                 .padding(start = 35.dp,top=5.dp,bottom = 5.dp)
-
         )
         if(id.value.length < 4 || id.value.length > 16) {
             Text(
@@ -182,57 +182,9 @@ fun IdWrite(id: MutableState<String>) {
             )
         }
     }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            //.fillMaxWidth()
-            .height(55.dp)
-            .width(350.dp)
-            .padding(start = 30.dp,top = 3.dp)
-            .border(
-                width = 1.dp, color = Color(0xFFBFBFBF),
-                shape = RoundedCornerShape(8.dp)
-            )
-    ) {
-        TextField(
-            value = id.value,
-            onValueChange = { idValue -> id.value = idValue
-            },
-
-            placeholder = { Text(text = "아이디 입력 (4~16자)", color = Color.Gray) },
-
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-                focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
-                unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
-                disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
-            ),
-            // shape 속성 주석 처리
-            // shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .weight(1f)
-                .width(280.dp)
-                //.padding(end = 8.dp)
-        )
-        Button(
-            onClick = { /* Do something when the button is clicked */ },
-            modifier = Modifier
-                .padding(end = 5.dp)
-                .align(Alignment.CenterVertically)
-                .width(100.dp)
-                .height(40.dp),
-
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                backgroundColor = Color(0xFF2D64D8)
-            ),
-
-            ) {
-            Text(text = "중복 확인")
-        }
-    }
+    idSearchBtn(textFieldIdValue = id.value, onValueChange = {idValue ->
+        id.value = idValue}
+    )
 }
 
 
@@ -396,30 +348,9 @@ fun EmailTextFieldSignUp(email: MutableState<String>) {
         Modifier.padding(start = 40.dp,top =20.dp)
 
     ) {
-        TextField(
-            value = email.value,
-            onValueChange = { emailValue -> email.value = emailValue },
-            placeholder = { Text("포털 이메일 입력", style = TextStyle(
-                fontSize = 16.sp,
-                lineHeight = 18.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontWeight = FontWeight(400),
-                color = Color(0xFF989898)
-            )
-            ) },
-            trailingIcon = { Text("@suwon.ac.kr    ", style = TextStyle(
-                fontSize = 16.sp,
-                lineHeight = 18.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontWeight = FontWeight(400),
-                color = Color(0xFF000000),
-            ))},
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
-            modifier = Modifier
-                .width(326.dp)
-                .heightIn(min = 46.dp)
-                .padding(start = 3.dp)
-
+        portalEmail(textFieldValue = email.value, onValueChange = { emailValue ->
+            email.value = emailValue
+        }
         )
         /*Text(
             text = "* 이메일 형식이 올바르지 않습니다",

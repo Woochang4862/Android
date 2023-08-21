@@ -134,7 +134,6 @@ fun MainText() {
                 .height(44.dp)
         )
     }
-
 }
 
 @Composable

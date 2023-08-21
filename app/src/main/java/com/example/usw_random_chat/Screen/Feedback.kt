@@ -64,7 +64,7 @@ fun FeedbackText(){
             color = Color(0xFF111111),
             fontWeight = FontWeight(600),
             style = TextStyle(
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 fontFamily = FontFamily(Font(R.font.pretendard_regular))
             )
         )

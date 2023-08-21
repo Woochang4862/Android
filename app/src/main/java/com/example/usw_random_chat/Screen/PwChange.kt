@@ -52,7 +52,6 @@ fun PwChangeScreen() {
     ) {
 
         Spacer(Modifier.padding(20.dp))
-
         //titleOfPwChange()
         tittleWithBackArrow("비밀번호 변경",modifier = Modifier
             .height(48.dp)

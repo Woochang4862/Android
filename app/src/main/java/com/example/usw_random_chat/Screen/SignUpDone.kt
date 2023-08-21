@@ -71,7 +71,7 @@ fun SignUpDoneScreen() {
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .height(48.dp)
-                .width(232.dp)
+                .width(202.dp)
 
         )
         Animation(visible1 = visibleCircle.value, visible2 = visibleCheck.value)
@@ -121,7 +121,6 @@ fun SignUpDoneScreen() {
                 .background(color = Color.White)
         )
     }
-
 }
 
 @Composable

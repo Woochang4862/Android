@@ -198,3 +198,15 @@ fun MatchingAnimationText(text: String){
         )
     )
 }
+
+/*fun sendImg(id : Int){
+    Image(
+        painter = painterResource(id = R.drawable.send),
+        contentDescription = "",
+        contentScale = ContentScale.Fit,
+        modifier = Modifier
+            .width(42.dp)
+            .height(42.dp)
+            .background(Color(0xFFF8F8F8))
+    )
+}*/

@@ -4,14 +4,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.usw_random_chat.R
@@ -104,27 +106,34 @@ fun tittleWithBackArrow(text: String, modifier: Modifier) {
         )
     }
 }
+
 @Composable
-fun portalEmail(textFieldValue: String, onValueChange: (String) -> Unit){
+fun portalEmail(textFieldValue: String, onValueChange: (String) -> Unit) {
     TextField(
         value = textFieldValue,
         onValueChange = { newValue -> onValueChange(newValue) },
-        placeholder = { Text("포털 이메일 입력", style = TextStyle(
-            fontSize = 16.sp,
-            lineHeight = 18.sp,
-            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-            fontWeight = FontWeight(400),
-            color = Color(0xFF989898)
-        )
-        ) },
-        trailingIcon = { Text("@ suwon.ac.kr    ", style = TextStyle(
-            fontSize = 16.sp,
-            lineHeight = 18.sp,
-            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-            fontWeight = FontWeight(400),
-            color = Color(0xFF000000),
-        )
-        )},
+        placeholder = {
+            Text(
+                "포털 이메일 입력", style = TextStyle(
+                    fontSize = 16.sp,
+                    lineHeight = 18.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                    fontWeight = FontWeight(400),
+                    color = Color(0xFF989898)
+                )
+            )
+        },
+        trailingIcon = {
+            Text(
+                "@ suwon.ac.kr    ", style = TextStyle(
+                    fontSize = 16.sp,
+                    lineHeight = 18.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                    fontWeight = FontWeight(400),
+                    color = Color(0xFF000000),
+                )
+            )
+        },
         colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
         modifier = Modifier
             .width(326.dp)
@@ -134,7 +143,7 @@ fun portalEmail(textFieldValue: String, onValueChange: (String) -> Unit){
 }
 
 @Composable
-fun idSearchBtn(textFieldIdValue: String, onValueChange: (String) -> Unit){
+fun idSearchBtn(textFieldIdValue: String, onValueChange: (String) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -185,7 +194,7 @@ fun idSearchBtn(textFieldIdValue: String, onValueChange: (String) -> Unit){
 }
 
 @Composable
-fun MatchingAnimationText(text: String){
+fun MatchingAnimationText(text: String) {
     Text(
         text = text,
         style = TextStyle(
@@ -197,8 +206,9 @@ fun MatchingAnimationText(text: String){
         )
     )
 }
+
 @Composable
-fun sendImg(id : Int){
+fun sendImg(id: Int) {
     Image(
         painter = painterResource(id = R.drawable.send),
         contentDescription = "",
@@ -208,4 +218,26 @@ fun sendImg(id : Int){
             .height(42.dp)
             .background(Color(0xFFF8F8F8))
     )
+}
+
+@Composable
+fun skdjebfe(confirmText: String, dissmissText: String) {
+    AlertDialog(
+        onDismissRequest = {},
+        confirmButton = {
+            Text(text = confirmText, textAlign = TextAlign.Start)
+        },
+        dismissButton = {
+            Text(text = dissmissText)
+        },
+        title = { Text(text = "알림")},
+        text = { Text(text = "신고하시겠습니까?")},
+        modifier = Modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun skdjebfePreview() {
+    skdjebfe("신고하기", "닫기")
 }

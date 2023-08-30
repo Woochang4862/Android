@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.usw_random_chat.Screen.LoadingScreen
 import com.example.usw_random_chat.Screen.MatchingScreen
+import com.example.usw_random_chat.Screen.Navigation
 import com.example.usw_random_chat.Screen.PolicyScreen
 import com.example.usw_random_chat.ui.theme.USW_Random_ChatTheme
 
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             USW_Random_ChatTheme {
                 // A surface container using the 'background' color from the theme
-                MatchingScreen()
+                Navigation()
             }
         }
     }

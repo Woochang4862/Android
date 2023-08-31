@@ -32,11 +32,19 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.usw_random_chat.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun LoadingScreen() {
+fun LoadingScreen(navController: NavController) {
+    LaunchedEffect(Unit){
+        delay(1000L)
+        navController.popBackStack()
+        navController.navigate(Screen.SignInScreen.route)
+
+    }
+
     val backgroundImage: Painter = painterResource(id = R.drawable.loadingscreen)
     val kccChassamFontFamily = FontFamily(
         Font(R.font.kcc_chassam)
@@ -62,10 +70,11 @@ fun LoadingScreen() {
             modifier = Modifier
                 .offset(x = 32.dp, y = 210.dp)
         )
-        ColoredRectangle(Modifier
-            .width(177.dp)
-            .height(7.dp)
-            .offset(x = 32.dp, y = 263.dp)
+        ColoredRectangle(
+            Modifier
+                .width(177.dp)
+                .height(7.dp)
+                .offset(x = 32.dp, y = 263.dp)
         )
 
         Text(
@@ -81,10 +90,11 @@ fun LoadingScreen() {
                 .offset(x = 32.dp, y = 267.dp)
         )
 
-        ColoredRectangle(Modifier
-            .width(125.dp)
-            .height(7.dp)
-            .offset(x = 32.dp, y = 317.dp)
+        ColoredRectangle(
+            Modifier
+                .width(125.dp)
+                .height(7.dp)
+                .offset(x = 32.dp, y = 317.dp)
         )
 
 
@@ -100,7 +110,9 @@ fun LoadingScreen() {
             Image(
                 painter = painterResource(id = R.drawable.suchat),
                 contentDescription = null,
-                modifier = Modifier.width(76.dp).height(20.dp),
+                modifier = Modifier
+                    .width(76.dp)
+                    .height(20.dp),
             )
 
 
@@ -138,5 +150,5 @@ fun ColoredRectangle(modifier: Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun LoadingScreenPreview() {
-    LoadingScreen()
+    //LoadingScreen()
 }

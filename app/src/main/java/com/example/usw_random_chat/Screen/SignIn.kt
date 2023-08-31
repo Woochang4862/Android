@@ -41,12 +41,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.button
 
 
 @Composable
-fun SignInScreen() {
+fun SignInScreen(navController: NavController) {
     val editidState = remember {
         mutableStateOf("")
     }
@@ -54,10 +55,10 @@ fun SignInScreen() {
         mutableStateOf("")
     }
     LoginTextField(id = editidState, password = editpasswordState)
-    OnLoginBtn()
+    OnLoginBtn(navController)
     OnLoginFindIdAndPassword()
     MadeAccountText()
-    OnSignInBtn()
+    OnSignInBtn(navController)
     OnLoginImage()
     LogInTextTitle()
 }
@@ -168,7 +169,7 @@ fun LoginTextField(
 }
 
 @Composable
-fun OnLoginBtn() {
+fun OnLoginBtn(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -183,7 +184,9 @@ fun OnLoginBtn() {
             modifier = Modifier
                 .width(326.dp)
                 .height(56.dp)
-        )
+        ){
+            navController.navigate(Screen.SignUpScreen.route)
+        }
     }
 }
 
@@ -281,7 +284,7 @@ fun MadeAccountText() {
 }
 
 @Composable
-fun OnSignInBtn() {
+fun OnSignInBtn(navController: NavController) {
 
     Box(
         modifier = Modifier
@@ -296,8 +299,10 @@ fun OnSignInBtn() {
             Color.Black,
             Modifier
                 .width(326.dp)
-                .height(56.dp)
-        )
+                .height(56.dp),
+        ){
+            navController.navigate(Screen.SignUpScreen.route)
+        }
     }
 }
 
@@ -305,14 +310,14 @@ fun OnSignInBtn() {
 @Preview(showBackground = true)
 @Composable
 fun SignInScreenPreview() {
-    SignInScreen()
+    //SignInScreen(navController = nav)
 }
 
 
 @Preview(showBackground = true)
 @Composable
 fun OnLoginBtnPreview() {
-    OnLoginBtn()
+    //OnLoginBtn()
 }
 
 
@@ -332,7 +337,7 @@ fun MadeAccountTextPreview() {
 @Preview(showBackground = true)
 @Composable
 fun OnSignInBtnPreview() {
-    OnSignInBtn()
+    //OnSignInBtn()
 }
 
 @Preview(showBackground = true)

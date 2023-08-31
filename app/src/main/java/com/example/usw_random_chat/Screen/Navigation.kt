@@ -17,7 +17,7 @@ fun Navigation() {
     )
     {
         composable(route = Screen.SignInScreen.route) {
-            SignInScreen()
+            SignInScreen(navController)
         }
         composable(route = Screen.SignUpScreen.route) {
             SignUpScreen()
@@ -47,7 +47,7 @@ fun Navigation() {
             EditProfileScreen()
         }
         composable(route = Screen.LoadingScreen.route) {
-            LoadingScreen()
+            LoadingScreen(navController)
         }
         composable(route = Screen.ChatScreen.route) {
             ChattingScreen()

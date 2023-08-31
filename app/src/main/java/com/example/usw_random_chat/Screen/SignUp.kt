@@ -381,7 +381,9 @@ fun signUpBotton(trigger: MutableState<Boolean>) {
                 .width(326.dp)
                 .height(56.dp)
                 .background(color = Color.White)
-        )
+        ){
+
+        }
 
         Text(
             text = buildAnnotatedString {

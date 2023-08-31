@@ -108,7 +108,9 @@ fun SignUpDoneScreen() {
                 )
                 .width(326.dp)
                 .height(56.dp)
-                .background(color = Color.White))
+                .background(color = Color.White)){
+
+        }
         button(
             "메일 재발송",
             enable = true,
@@ -119,7 +121,9 @@ fun SignUpDoneScreen() {
                 .width(326.dp)
                 .height(56.dp)
                 .background(color = Color.White)
-        )
+        ){
+
+        }
     }
 }
 

@@ -173,7 +173,9 @@ fun IdSearchEmailBtn(flag: Boolean){
             modifier = Modifier
                 .width(326.dp)
                 .height(56.dp)
-        )
+        ){
+
+        }
         Spacer(modifier = Modifier.height(12.dp))
 
         button(
@@ -185,7 +187,9 @@ fun IdSearchEmailBtn(flag: Boolean){
                 .width(326.dp)
                 .height(56.dp)
                 .background(color = Color.White)
-        )
+        ){
+
+        }
     }
 }
 

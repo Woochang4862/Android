@@ -1,20 +1,13 @@
 package com.example.usw_random_chat.Screen
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.Interaction
-import androidx.compose.foundation.interaction.InteractionSource
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,10 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -35,11 +24,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,27 +33,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.ui.msg
 import com.example.usw_random_chat.ui.sendImg
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ChattingScreen() {
-    val arr = arrayListOf("awfdwf", "awegawegaweg", "waegaefawe")
+fun ChattingScreen(navController: NavController) {
+    val arr = arrayListOf("awfdwf", "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz", "waegaefawe")
     val systemUiController = rememberSystemUiController()//상태바 색상변경
     systemUiController.setSystemBarsColor(
         color = Color(0xFF4D76C8)
@@ -89,11 +73,11 @@ fun ChattingScreen() {
                 modifier = Modifier.fillMaxSize(),
                 content = {
                     items(arr) {
-                        val alignment : Alignment = when{
-                            it.length>10 -> Alignment.CenterStart
-                            else -> Alignment.CenterEnd
-                         }
-                        sendMsg(text = it, contentAlignment = alignment)
+                        if (it.length > 10){
+                            receiveMsg(text = it)
+                        }else{
+                            sendMsg(text = it)
+                        }
                     }
                 },
             )
@@ -319,39 +303,53 @@ fun CustomDialog(name: String, onChange: () -> Unit) {
 }
 
 @Composable
-fun sendMsg(text: String, contentAlignment : Alignment) {
-    Box(modifier = Modifier.fillMaxWidth(),contentAlignment = contentAlignment) {
-        Box(
-            Modifier
-                .padding(start = 14.dp, top = 8.dp, end = 14.dp)
-                .border(
-                    width = 1.dp,
-                    color = Color(0xFFDBDBDB),
-                    shape = RoundedCornerShape(size = 25.dp)
-                )
-                .height(42.dp)
-                .background(color = Color(0xFFFFFFFF), shape = RoundedCornerShape(size = 25.dp)),
-
-        ) {
-            Text(
-                text = text,
-                modifier = Modifier.padding(8.dp), // 패딩 추가,
-                fontSize = 16.sp,
-                lineHeight = 18.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontWeight = FontWeight(400),
-                color = Color(0xFF191919),
-            )
-        }
+fun sendMsg(text: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Text(
+            text = "오후" + "3:12",
+            fontSize = 12.sp,
+            lineHeight = 14.sp,
+            fontFamily = FontFamily(Font(R.font.kcc_chassam)),
+            fontWeight = FontWeight(400),
+            color = Color(0xFF767676),
+            modifier = Modifier
+                .width(42.dp)
+                .height(14.dp)
+        )
+        msg(text = text, color = Color(0xFFD3DFFF))
     }
-
-
+}
+@Composable
+fun receiveMsg(text: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        msg(text = text, color = Color(0xFFFFFFFF))
+        Text(
+            text = "오후" + "3:12",
+            fontSize = 12.sp,
+            lineHeight = 14.sp,
+            fontFamily = FontFamily(Font(R.font.kcc_chassam)),
+            fontWeight = FontWeight(400),
+            color = Color(0xFF767676),
+            modifier = Modifier
+                .width(42.dp)
+                .height(14.dp)
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun sendMsgPreView() {
-    //sendMsg("tghaiuwga")
+    //msg("tghaiuwga", Alignment.Center, Color.White)
+    sendMsg(text = "나우밞낭ㄴ홀마ㅕㅈㅁㄹ함ㄹㅈ함한ㅇㅁ")
 }
 
 @Preview(showBackground = true)
@@ -365,5 +363,5 @@ fun DialogPreview() {
 @Preview(showBackground = true)
 @Composable
 fun ChattingScreenPreview() {
-    ChattingScreen()
+    ChattingScreen(navController = rememberNavController())
 }

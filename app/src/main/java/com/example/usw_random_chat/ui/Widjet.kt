@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -234,6 +235,39 @@ fun skdjebfe(confirmText: String, dissmissText: String) {
         text = { Text(text = "신고하시겠습니까?")},
         modifier = Modifier
     )
+}
+
+@Composable
+fun msg(text: String, color: Color) {
+    Box(
+        Modifier
+            .padding(start = 6.dp, top = 8.dp, end = 6.dp)
+            .border(
+                width = 1.dp,
+                color = Color(0xFFDBDBDB),
+                shape = RoundedCornerShape(size = 25.dp)
+            )
+            .background(
+                color = color,
+                shape = RoundedCornerShape(size = 25.dp)
+            ),
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier.padding(
+                top = 10.dp,
+                start = 17.dp,
+                end = 17.dp,
+                bottom = 12.dp
+            ), // 패딩 추가,
+            fontSize = 16.sp,
+            lineHeight = 18.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            fontWeight = FontWeight(400),
+            color = Color(0xFF191919),
+        )
+    }
+
 }
 
 @Preview(showBackground = true)

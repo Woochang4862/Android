@@ -29,6 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.button
 import kotlinx.coroutines.CoroutineScope
@@ -37,7 +39,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SignUpDoneScreen() {
+fun SignUpDoneScreen(navController: NavController) {
     val visibleCircle = remember {
         mutableStateOf(false)
     }
@@ -109,7 +111,11 @@ fun SignUpDoneScreen() {
                 .width(326.dp)
                 .height(56.dp)
                 .background(color = Color.White)){
-
+            navController.navigate(Screen.SignInScreen.route){
+                popUpTo(Screen.SignInScreen.route){
+                    inclusive = true
+                }
+            }
         }
         button(
             "메일 재발송",
@@ -173,5 +179,5 @@ fun Animation(visible1: Boolean,visible2: Boolean) {
 @Preview(showBackground = true)
 @Composable
 fun SignUpDoneScreenPreview() {
-    SignUpDoneScreen()
+    SignUpDoneScreen(navController = rememberNavController())
 }

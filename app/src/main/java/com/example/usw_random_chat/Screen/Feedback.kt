@@ -35,11 +35,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 
 
 @Composable
-fun FeedbackShow(){
+fun FeedbackShow(navController: NavController){
     val edittext = remember {
         mutableStateOf("")
     }
@@ -161,7 +163,7 @@ fun FeedbackSubmitBtn(){
 @Preview(showBackground = true)
 @Composable
 fun FeedbackShowPreview(){
-    FeedbackShow()
+    FeedbackShow(navController = rememberNavController())
 }
 
 @Preview(showBackground = true)

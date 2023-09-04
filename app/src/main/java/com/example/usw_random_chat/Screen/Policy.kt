@@ -36,10 +36,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 
 @Composable
-fun PolicyScreen(){
+fun PolicyScreen(navController: NavController){
     Column(
         modifier = Modifier.fillMaxSize()
             .background(color = Color(0xFFFFFFFF))
@@ -119,6 +121,6 @@ fun TermsofUse(text: String) {
 @Preview(showBackground = true)
 @Composable
 fun PolicyScreenPreview(){
-    PolicyScreen()
+    PolicyScreen(navController = rememberNavController())
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.usw_random_chat.ViewModel.ProfileViewModel
 
 @Composable
 fun Navigation() {
@@ -20,43 +21,43 @@ fun Navigation() {
             SignInScreen(navController)
         }
         composable(route = Screen.SignUpScreen.route) {
-            SignUpScreen()
+            SignUpScreen(navController)
         }
         composable(route = Screen.SignUpDoneScreen.route) {
-            SignUpDoneScreen()
+            SignUpDoneScreen(navController)
         }
         composable(route = Screen.PwChangeScreen.route) {
-            PwChangeScreen()
+            PwChangeScreen(navController)
         }
         composable(route = Screen.PwSearchScreen.route) {
-            PwSearchScreen()
+            PwSearchScreen(navController)
         }
         composable(route = Screen.IdSearchScreen.route) {
-            IdSearch()
+            IdSearch(navController)
         }
         composable(route = Screen.ProfileScreen.route) {
-            ProfileScreen()
+            ProfileScreen(ProfileViewModel(),navController)
         }
         composable(route = Screen.FeedBackScreen.route) {
-            FeedbackShow()
+            FeedbackShow(navController)
         }
         composable(route = Screen.PolicyScreen.route) {
-            PolicyScreen()
+            PolicyScreen(navController)
         }
         composable(route = Screen.EditProfileScreen.route) {
-            EditProfileScreen()
+            EditProfileScreen(navController)
         }
         composable(route = Screen.LoadingScreen.route) {
             LoadingScreen(navController)
         }
         composable(route = Screen.ChatScreen.route) {
-            ChattingScreen()
+            ChattingScreen(navController)
         }
         composable(route = Screen.MainPageScreen.route) {
-            MainScreen()
+            MainScreen(navController)
         }
         composable(route = Screen.MatchingScreen.route) {
-            MainScreen()
+            MatchingScreen(navController = navController)
         }
 
 

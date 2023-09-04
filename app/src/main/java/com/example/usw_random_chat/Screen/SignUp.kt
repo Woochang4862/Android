@@ -44,6 +44,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.idSearchBtn
@@ -52,7 +54,7 @@ import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(navController: NavController) {
     val rememberId = remember {
         mutableStateOf("")
     }
@@ -110,7 +112,7 @@ fun SignUpScreen() {
                 pwEqualOrNot = rememberPwEqualOrNot.value)
         }
         EmailTextFieldSignUp(email = rememberEmail)
-        signUpBotton(trigger = rememberTrigger)
+        signUpBotton(trigger = rememberTrigger, navController = navController)
     }
 
 }
@@ -367,13 +369,13 @@ fun EmailTextFieldSignUp(email: MutableState<String>) {
 }
 
 @Composable
-fun signUpBotton(trigger: MutableState<Boolean>) {
+fun signUpBotton(trigger: MutableState<Boolean>, navController: NavController) {
     Column(
         Modifier.padding(45.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         button(
             "회원가입",
-            enable = trigger.value,
+            enable = /*trigger.value,*/ true,
             Color.White,
             Color.Black,
             Modifier
@@ -382,7 +384,7 @@ fun signUpBotton(trigger: MutableState<Boolean>) {
                 .height(56.dp)
                 .background(color = Color.White)
         ){
-
+            navController.navigate(Screen.SignUpDoneScreen.route)
         }
 
         Text(
@@ -421,5 +423,5 @@ fun signUpBotton(trigger: MutableState<Boolean>) {
 @Preview(showBackground = true)
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen()
+    SignUpScreen(navController = rememberNavController())
 }

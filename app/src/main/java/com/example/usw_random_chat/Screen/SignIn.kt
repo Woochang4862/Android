@@ -185,7 +185,11 @@ fun OnLoginBtn(navController: NavController) {
                 .width(326.dp)
                 .height(56.dp)
         ){
-            navController.navigate(Screen.SignUpScreen.route)
+            navController.navigate(Screen.MainPageScreen.route){
+                popUpTo(Screen.MainPageScreen.route){
+                    inclusive = true
+                }
+            }
         }
     }
 }

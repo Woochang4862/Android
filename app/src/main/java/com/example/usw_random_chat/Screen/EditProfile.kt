@@ -25,10 +25,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 
 @Composable
-fun EditProfileScreen() {
+fun EditProfileScreen(navController: NavController) {
     val editNickName = remember {
         mutableStateOf("")
     }
@@ -256,7 +258,7 @@ fun SuChatImg() {
 @Preview(showBackground = true)
 @Composable
 fun EditProfileScreenPreview() {
-    EditProfileScreen()
+    EditProfileScreen(navController = rememberNavController())
 }
 
 @Preview(showBackground = true)

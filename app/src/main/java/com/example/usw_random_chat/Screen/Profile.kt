@@ -18,11 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ViewModel.ProfileViewModel
 
 @Composable
-fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel()) {
+fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel(),navController: NavController) {
    // val nickname = remember {
         //mutableStateOf(profileViewModel.nickname)
     //}
@@ -245,7 +247,7 @@ fun startButton() {
 @Preview(showBackground = true)
 @Composable
 fun ProfilePreview() {
-    ProfileScreen(profileViewModel = ProfileViewModel())
+    ProfileScreen(profileViewModel = ProfileViewModel(),navController = rememberNavController())
 }
 
 @Preview(showBackground = true)

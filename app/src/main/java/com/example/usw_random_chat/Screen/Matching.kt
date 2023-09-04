@@ -32,6 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.MatchingAnimationText
 import com.example.usw_random_chat.ui.button
@@ -41,7 +43,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun MatchingScreen() {
+fun MatchingScreen(navController: NavController) {
     val matchingBlank = remember {
         mutableStateOf(false)
     }
@@ -103,7 +105,7 @@ fun MatchingScreen() {
         )
         Spacer(modifier = Modifier.height(18.dp))
         Text(
-            text = "IT건물 5층은 에어컨을 안틀어줍니다",
+            text = "체대옆 공터는 원래 방송반이 있던 큰 건물이었습니다.",
             style = TextStyle(
                 fontSize = 16.sp,
                 lineHeight = 20.sp,
@@ -184,5 +186,5 @@ fun MatchingAnimation(screen1: Boolean, screen2: Boolean, screen3: Boolean, scre
 @Preview(showBackground = true)
 @Composable
 fun MatchingScreenPreview() {
-    MatchingScreen()
+    MatchingScreen(navController = rememberNavController())
 }

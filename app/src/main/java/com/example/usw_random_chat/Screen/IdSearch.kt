@@ -49,12 +49,14 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.portalEmail
 
 @Composable
-fun IdSearch(){
+fun IdSearch(navController: NavController){
     var editTextState = remember {
         mutableStateOf("")
     }
@@ -200,7 +202,7 @@ fun IdSearchEmailBtn(flag: Boolean){
 @Preview (showBackground = true)
 @Composable
 fun IdSerchPreview(){
-    IdSearch()
+    IdSearch(navController = rememberNavController())
 }
 
 @Preview (showBackground = true)

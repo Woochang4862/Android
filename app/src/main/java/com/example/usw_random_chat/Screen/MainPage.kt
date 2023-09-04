@@ -2,6 +2,7 @@ package com.example.usw_random_chat.Screen
 
 import android.annotation.SuppressLint
 import android.text.style.IconMarginSpan
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,40 +16,81 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.DrawerValue
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.ModalDrawer
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.rememberDrawerState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.copyRightByFlag
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavController) {
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
     Scaffold(
-        topBar = { MyTopAppBar() },
-        content = { MainContents() }
+        scaffoldState = scaffoldState,
+        drawerContent = {
+            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+                Text(text = "!2512341")
+                Text(text = "iuvablivcasd")
+                Text(text = "!24basfibsdakjfvaisv")
+            }
+        },
+        topBar = {
+            MyTopAppBar() {
+                scope.launch {
+                    scaffoldState.drawerState.open()
+
+                }
+            }
+        },
+        content = { MainContents(navController) },
+        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
     )
 }
 
 @Composable
-fun MyTopAppBar() {
+fun DrawerScreen() {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
+    Text(text = "!2512341")
+    Text(text = "iuvablivcasd")
+    Text(text = "!24basfibsdakjfvaisv")
+}
+
+@Composable
+fun MyTopAppBar(onPress: () -> Unit) {
     TopAppBar(
         title = {
             Image(
@@ -60,7 +102,7 @@ fun MyTopAppBar() {
             )
         },
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {onPress()}) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Menu",
@@ -79,7 +121,7 @@ fun MyTopAppBar() {
 }
 
 @Composable
-fun MainContents() {
+fun MainContents(navController: NavController) {
     TalkBalloon()
     AdBanner()
     MainText()
@@ -88,7 +130,7 @@ fun MainContents() {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        MatchingButton()
+        MatchingButton(navController)
         subText()
         copyRightByFlag(modifier = Modifier.padding(top = 120.dp))
     }
@@ -154,9 +196,9 @@ fun TalkBalloon() {
 }
 
 @Composable
-fun MatchingButton() {
+fun MatchingButton(navController: NavController) {
     Button(
-        onClick = { },
+        onClick ={navController.navigate(Screen.MatchingScreen.route)} ,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color(0xFF2D64D8),
             contentColor = Color.White
@@ -192,11 +234,11 @@ fun subText() {
         modifier = Modifier
             .padding(top = 24.dp)
 
-        )
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen()
+    MainScreen(navController = rememberNavController())
 }

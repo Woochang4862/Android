@@ -217,7 +217,7 @@ fun sendImg(id: Int) {
         modifier = Modifier
             .width(42.dp)
             .height(42.dp)
-            .background(Color(0xFFF8F8F8))
+            .background(Color(0xFFF8F8F8), shape = RoundedCornerShape(25.dp))
     )
 }
 
@@ -241,7 +241,7 @@ fun skdjebfe(confirmText: String, dissmissText: String) {
 fun msg(text: String, color: Color) {
     Box(
         Modifier
-            .padding(start = 6.dp, top = 8.dp, end = 6.dp)
+            .padding(start = 6.dp,  end = 6.dp)
             .border(
                 width = 1.dp,
                 color = Color(0xFFDBDBDB),
@@ -268,6 +268,20 @@ fun msg(text: String, color: Color) {
         )
     }
 
+}
+@Composable
+fun TimeText(){
+    Text(
+        text = "오후" + "3:12",
+        fontSize = 12.sp,
+        lineHeight = 14.sp,
+        fontFamily = FontFamily(Font(R.font.kcc_chassam)),
+        fontWeight = FontWeight(400),
+        color = Color(0xFF767676),
+        modifier = Modifier
+            .width(42.dp)
+            .height(14.dp)
+    )
 }
 
 @Preview(showBackground = true)

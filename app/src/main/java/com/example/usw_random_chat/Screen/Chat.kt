@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -45,6 +47,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.ui.TimeText
 import com.example.usw_random_chat.ui.msg
 import com.example.usw_random_chat.ui.sendImg
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -52,7 +55,29 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ChattingScreen(navController: NavController) {
-    val arr = arrayListOf("awfdwf", "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz", "waegaefawe")
+    val arr = arrayListOf(
+        "awfdwf",
+        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
+        "waegaefawe",
+        "awfdwf",
+        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
+        "waegaefawe",
+        "awfdwf",
+        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
+        "waegaefawe",
+        "awfdwf",
+        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
+        "waegaefawe",
+        "awfdwf",
+        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
+        "waegaefawe",
+        "awfdwf",
+        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
+        "waegaefawe",
+        "awfdwf",
+        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
+        "waegaefawe"
+    )
     val systemUiController = rememberSystemUiController()//상태바 색상변경
     systemUiController.setSystemBarsColor(
         color = Color(0xFF4D76C8)
@@ -70,18 +95,18 @@ fun ChattingScreen(navController: NavController) {
         bottomBar = { ChatBottomAppBar() },
         content = {
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.padding(bottom = 58.dp),
                 content = {
                     items(arr) {
-                        if (it.length > 10){
+                        if (it.length > 10) {
                             receiveMsg(text = it)
-                        }else{
+                        } else {
                             sendMsg(text = it)
                         }
                     }
                 },
             )
-        }
+        },
     )
 }
 
@@ -156,66 +181,72 @@ fun ChatBottomAppBar() {
     val tmpTxt = remember {
         mutableStateOf("")
     }
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .height(88.dp)
-            .background(color = Color.Transparent),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = Color(0xFFDBDBDB),
-                    shape = RoundedCornerShape(size = 25.dp)
-                )
-                .width(342.dp)
-                .background(color = Color(0xFFF8F8F8), shape = RoundedCornerShape(size = 25.dp)),
-        ) {
-            BasicTextField(
-                //커스텀 텍스트 필드를 사용해야해서 BasicTextField 이용
-                modifier = Modifier
-                    .border(1.dp, Color.White)
-                    .width(300.dp)
-                    .height(42.dp)
-                    .padding(top = 12.dp, start = 17.dp)
-                    .background(
-                        color = Color(0xFFF8F8F8),
-                        shape = RoundedCornerShape(size = 25.dp)
-                    ),
-                value = tmpTxt.value,
-                onValueChange = { txtValue -> tmpTxt.value = txtValue },
-                decorationBox = { innerTextField ->
-                    if (tmpTxt.value.isEmpty()) {
-                        Text(
-                            text = "채팅을 시작해 보세요 . . .",
-                            fontSize = 16.sp,
-                            lineHeight = 5.sp,
-                            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                            fontWeight = FontWeight(400),
-                            color = Color(0xFF737373),
-                            modifier = Modifier
-                                .width(150.dp)
-                                .height(18.dp)
-                        )
-                    }
-                    innerTextField()
-                },
-            )
-            IconButton(
-                onClick = { /*TODO*/ },
-                enabled = false
+    BottomAppBar(
+        modifier = Modifier.height(58.dp),
+        backgroundColor = Color.White,
+        content = {
+            Box(
+                Modifier
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
             ) {
-                if (true) {
-                    sendImg(id = R.drawable.send)
-                } else {
-                    sendImg(id = R.drawable.unactive_send)
-                }
+                Row(
+                    modifier = Modifier
+                        .border(
+                            width = 1.dp,
+                            color = Color(0xFFDBDBDB),
+                            shape = RoundedCornerShape(size = 25.dp)
+                        )
+                        .width(342.dp)
+                        .background(
+                            color = Color(0xFFF8F8F8),
+                            shape = RoundedCornerShape(size = 25.dp)
+                        ),
+                ) {
+                    BasicTextField(
+                        //커스텀 텍스트 필드를 사용해야해서 BasicTextField 이용
+                        modifier = Modifier
+                            .width(300.dp)
+                            .height(42.dp)
+                            .padding(top = 12.dp, start = 17.dp)
+                            .background(
+                                color = Color.Transparent,
+                                shape = RoundedCornerShape(size = 25.dp)
+                            ),
+                        value = tmpTxt.value,
+                        onValueChange = { txtValue -> tmpTxt.value = txtValue },
+                        decorationBox = { innerTextField ->
+                            if (tmpTxt.value.isEmpty()) {
+                                Text(
+                                    text = "채팅을 시작해 보세요 . . .",
+                                    fontSize = 16.sp,
+                                    lineHeight = 5.sp,
+                                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                                    fontWeight = FontWeight(400),
+                                    color = Color(0xFF737373),
+                                    modifier = Modifier
+                                        .width(150.dp)
+                                        .height(18.dp)
+                                )
+                            }
+                            innerTextField()
+                        },
+                    )
+                    IconButton(
+                        onClick = { /*TODO*/ },
+                        enabled = true,
+                    ) {
+                        if (true) {
+                            sendImg(id = R.drawable.send)
+                        } else {
+                            sendImg(id = R.drawable.unactive_send)
+                        }
 
+                    }
+                }
             }
         }
-    }
+    )
 }
 
 @Composable
@@ -305,43 +336,24 @@ fun CustomDialog(name: String, onChange: () -> Unit) {
 @Composable
 fun sendMsg(text: String) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.Bottom
     ) {
-        Text(
-            text = "오후" + "3:12",
-            fontSize = 12.sp,
-            lineHeight = 14.sp,
-            fontFamily = FontFamily(Font(R.font.kcc_chassam)),
-            fontWeight = FontWeight(400),
-            color = Color(0xFF767676),
-            modifier = Modifier
-                .width(42.dp)
-                .height(14.dp)
-        )
+        TimeText()
         msg(text = text, color = Color(0xFFD3DFFF))
     }
 }
+
 @Composable
 fun receiveMsg(text: String) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.Bottom
     ) {
         msg(text = text, color = Color(0xFFFFFFFF))
-        Text(
-            text = "오후" + "3:12",
-            fontSize = 12.sp,
-            lineHeight = 14.sp,
-            fontFamily = FontFamily(Font(R.font.kcc_chassam)),
-            fontWeight = FontWeight(400),
-            color = Color(0xFF767676),
-            modifier = Modifier
-                .width(42.dp)
-                .height(14.dp)
-        )
+        TimeText()
     }
 }
 

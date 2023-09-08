@@ -45,104 +45,13 @@ fun LoadingScreen(navController: NavController) {
 
     }
 
-    val backgroundImage: Painter = painterResource(id = R.drawable.loadingscreen)
-    val kccChassamFontFamily = FontFamily(
-        Font(R.font.kcc_chassam)
-    )
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().background(color = Color(0x6B7AFF) )
     ) {
-        Image(
-            painter = backgroundImage,
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-        Text(
-            text = "심심한 사람",
-            style = TextStyle(
-                fontSize = 40.sp,
-                lineHeight = 38.sp,
-                fontFamily = kccChassamFontFamily,
-                fontWeight = FontWeight(400),
-                color = Color(0xFFFFFFFF),
-            ),
-            modifier = Modifier
-                .offset(x = 32.dp, y = 210.dp)
-        )
-        ColoredRectangle(
-            Modifier
-                .width(177.dp)
-                .height(7.dp)
-                .offset(x = 32.dp, y = 263.dp)
-        )
 
-        Text(
-            text = "다 모여.",
-            style = TextStyle(
-                fontSize = 40.sp,
-                lineHeight = 38.sp,
-                fontFamily = kccChassamFontFamily,
-                fontWeight = FontWeight(400),
-                color = Color(0xFFFFFFFF),
-            ),
-            modifier = Modifier
-                .offset(x = 32.dp, y = 267.dp)
-        )
-
-        ColoredRectangle(
-            Modifier
-                .width(125.dp)
-                .height(7.dp)
-                .offset(x = 32.dp, y = 317.dp)
-        )
-
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp)
-                .padding(bottom = 137.dp),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Image(
-                painter = painterResource(id = R.drawable.suchat),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(76.dp)
-                    .height(20.dp),
-            )
-
-
-            Text(
-                text = "@copyright by Flag",
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    lineHeight = 20.sp,
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                    fontWeight = FontWeight(400),
-                    color = Color(0xFFFFFFFF),
-                    letterSpacing = 0.3.sp,
-                ),
-                modifier = Modifier
-                    .padding(top = 10.dp)
-            )
-        }
     }
 }
-@Composable
-fun ColoredRectangle(modifier: Modifier) {
-    Canvas(
-        modifier = modifier
-    ) {
-        drawRect(
-            color = Color(0xFF93BEFF),
-            size = size
-        )
-    }
-}
+
 
 
 

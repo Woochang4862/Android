@@ -29,6 +29,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -47,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.ui.GetScreenWidthInDp
 import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.idSearchBtn
 import com.example.usw_random_chat.ui.portalEmail
@@ -55,6 +58,7 @@ import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 @Composable
 fun SignUpScreen(navController: NavController) {
+    val screenWidthInDp = (GetScreenWidthInDp() -326-36)/2
     val rememberId = remember {
         mutableStateOf("")
     }
@@ -94,12 +98,11 @@ fun SignUpScreen(navController: NavController) {
     ) {
 
         Spacer(Modifier.padding(20.dp))
-        //SignUPtitle()
 
         tittleWithBackArrow("회원가입",modifier = Modifier
             .height(48.dp)
-            .width(232.dp)
-            .padding(start = 25.dp, top = 15.dp))
+            .width(200.dp)
+            .padding(start = screenWidthInDp.dp, top = 15.dp))
         Column(
             Modifier.padding(15.dp)
         ) {
@@ -117,44 +120,9 @@ fun SignUpScreen(navController: NavController) {
 
 }
 
-
-/*@Composable
-fun SignUPtitle() {
-    Row(
-        Modifier, horizontalArrangement = Arrangement.Center
-    )
-    {
-        Spacer(Modifier.width(35.dp))
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack, contentDescription = "",
-                Modifier
-                    .height(36.dp)
-                    .width(36.dp)
-            )
-        }
-        Text(
-            text = buildAnnotatedString {
-                append("회원가입")
-            },
-            fontSize = 18.sp,
-            lineHeight = 20.sp,
-            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-            fontWeight = FontWeight(600),
-            color = Color(0xFF111111),
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .height(48.dp)
-                .width(232.dp)
-                .padding(start = 25.dp,top = 15.dp)
-        )
-    }
-}*/
-
-
 @Composable
 fun IdWrite(id: MutableState<String>) {
-
+    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2 -10
     Row(
         Modifier, horizontalArrangement = Arrangement.Start
 
@@ -168,7 +136,7 @@ fun IdWrite(id: MutableState<String>) {
             color = Color(0xFF000000),
             textAlign = TextAlign.Left,
             modifier = Modifier
-                .padding(start = 35.dp,top=5.dp,bottom = 5.dp)
+                .padding(start = (screenWidthInDp+5).dp,top=5.dp,bottom = 5.dp)
         )
         if(id.value.length < 4 || id.value.length > 16) {
             Text(
@@ -184,18 +152,17 @@ fun IdWrite(id: MutableState<String>) {
             )
         }
     }
+
     idSearchBtn(textFieldIdValue = id.value, onValueChange = {idValue ->
         id.value = idValue}
     )
 }
 
-
-//@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PwWrite(pw: MutableState<String>,
             fontSize: TextUnit = 17.sp
 ) {
-
+    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2 - 10
     Row(
         Modifier, horizontalArrangement = Arrangement.Start
     ) {
@@ -208,7 +175,7 @@ fun PwWrite(pw: MutableState<String>,
             color = Color(0xFF000000),
             textAlign = TextAlign.Left,
             modifier = Modifier
-                .padding(start = 35.dp,top=5.dp,bottom = 5.dp)
+                .padding(start = (screenWidthInDp+5).dp,top=5.dp,bottom = 5.dp)
 
         )
         if(pw.value.length < 6 || pw.value.length > 20) {
@@ -232,8 +199,8 @@ fun PwWrite(pw: MutableState<String>,
         modifier = Modifier
             //.fillMaxWidth()
             .height(55.dp)
-            .width(350.dp)
-            .padding(start = 30.dp)
+            .width(360.dp)
+            .padding(start = screenWidthInDp.dp)
             .border(
                 width = 1.dp, color = Color(0xFFBFBFBF),
                 shape = RoundedCornerShape(8.dp)
@@ -252,7 +219,7 @@ fun PwWrite(pw: MutableState<String>,
             ),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .width(280.dp)
+                .width(290.dp)
                 //.padding(start= 5.dp)
         )//baseline_visibility_24
         IconButton(onClick = {   passwordVisible.value = !passwordVisible.value     }) {
@@ -273,7 +240,7 @@ fun PwCheck(
     fontSize: TextUnit = 17.sp
 ) {
 
-
+    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2 -10
     Row(
         Modifier, horizontalArrangement = Arrangement.Start
     ) {
@@ -286,7 +253,7 @@ fun PwCheck(
             color = Color(0xFF000000),
             textAlign = TextAlign.Left,
             modifier = Modifier
-                .padding(start = 35.dp,top=5.dp,bottom = 5.dp)
+                .padding(start = (screenWidthInDp+5).dp,top=5.dp,bottom = 5.dp)
 
         )
         if (!pwEqualOrNot) {
@@ -310,8 +277,8 @@ fun PwCheck(
         modifier = Modifier
             //.fillMaxWidth()
             .height(55.dp)
-            .width(350.dp)
-            .padding(start = 30.dp)
+            .width(360.dp)
+            .padding(start = screenWidthInDp.dp)
             .border(
                 width = 1.dp, color = Color(0xFFBFBFBF),
                 shape = RoundedCornerShape(8.dp)
@@ -330,7 +297,7 @@ fun PwCheck(
             ),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .width(280.dp)
+                .width(290.dp)
                 //.padding(start= 5.dp)
         )//baseline_visibility_24
         IconButton(onClick = { passwordCheckVisible.value = !passwordCheckVisible.value }) {
@@ -345,33 +312,23 @@ fun PwCheck(
 
 @Composable
 fun EmailTextFieldSignUp(email: MutableState<String>) {
-
+    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2
     Column(
-        Modifier.padding(start = 40.dp,top =20.dp)
+        Modifier.padding(start = screenWidthInDp.dp,top =20.dp)
 
     ) {
         portalEmail(textFieldValue = email.value, onValueChange = { emailValue ->
             email.value = emailValue
         }
         )
-        /*Text(
-            text = "* 이메일 형식이 올바르지 않습니다",
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 10.sp,
-            lineHeight = 24.sp,
-            fontWeight = FontWeight(400),
-            color = Color(0xFFFF0000),
-            textAlign = TextAlign.Left,
-            modifier = Modifier
-                .padding(top = 10.dp)
-        )*/
     }
 }
 
 @Composable
 fun signUpBotton(trigger: MutableState<Boolean>, navController: NavController) {
+    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2
     Column(
-        Modifier.padding(45.dp), horizontalAlignment = Alignment.CenterHorizontally
+        Modifier.padding(screenWidthInDp.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         button(
             "회원가입",

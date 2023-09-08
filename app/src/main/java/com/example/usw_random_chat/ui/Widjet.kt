@@ -28,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -80,11 +82,12 @@ fun copyRightByFlag(modifier: Modifier) {
 
 @Composable
 fun tittleWithBackArrow(text: String, modifier: Modifier) {
+    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2
     Row(
-        Modifier, horizontalArrangement = Arrangement.Center
+        Modifier, //horizontalArrangement = Arrangement.Center
     )
     {
-        Spacer(Modifier.width(35.dp))
+        Spacer(Modifier.width(screenWidthInDp.dp))
         IconButton(onClick = { /*TODO*/ }) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack, contentDescription = "",
@@ -145,13 +148,14 @@ fun portalEmail(textFieldValue: String, onValueChange: (String) -> Unit) {
 
 @Composable
 fun idSearchBtn(textFieldIdValue: String, onValueChange: (String) -> Unit) {
+    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2 -10
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             //.fillMaxWidth()
             .height(55.dp)
-            .width(350.dp)
-            .padding(start = 30.dp, top = 3.dp)
+            .width(360.dp)
+            .padding(start = screenWidthInDp.dp, top = 3.dp)
             .border(
                 width = 1.dp, color = Color(0xFFBFBFBF),
                 shape = RoundedCornerShape(8.dp)
@@ -173,7 +177,7 @@ fun idSearchBtn(textFieldIdValue: String, onValueChange: (String) -> Unit) {
             // shape = RoundedCornerShape(8.dp),
             modifier = Modifier
                 .weight(1f)
-                .width(280.dp)
+                .width(290.dp)
             //.padding(end = 8.dp)
         )
         Button(
@@ -289,3 +293,12 @@ fun TimeText(){
 fun skdjebfePreview() {
     skdjebfe("신고하기", "닫기")
 }
+
+@Composable
+fun GetScreenWidthInDp(): Int {
+    val context = LocalContext.current
+    val density = LocalDensity.current.density
+    val screenWidthInPx = context.resources.displayMetrics.widthPixels
+    return (screenWidthInPx / density).toInt()
+}
+

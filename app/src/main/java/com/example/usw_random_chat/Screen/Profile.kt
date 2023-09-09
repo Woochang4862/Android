@@ -25,15 +25,6 @@ import com.example.usw_random_chat.ViewModel.ProfileViewModel
 
 @Composable
 fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel(),navController: NavController) {
-   // val nickname = remember {
-        //mutableStateOf(profileViewModel.nickname)
-    //}
-    val mbti = remember {
-        mutableStateOf("")
-    }
-    val selfintroduce = remember {
-        mutableStateOf("")
-    }
     Column(
         Modifier
             .fillMaxSize()
@@ -42,8 +33,8 @@ fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel(),navController
     ) {
         setTitle()
         getNickName(profileViewModel.nickname) { profileViewModel.updateNickname(it) }
-        getMBTI(mbti = profileViewModel.mbti)
-        getSelfIntroduce(introduce = profileViewModel.selfintroduce.value)
+        getMBTI(mbti = profileViewModel.mbti) { profileViewModel.updateMBTI(it) }
+        getSelfIntroduce(introduce = profileViewModel.selfintroduce.value) { profileViewModel.updateSelfIntroduce(it)}
         startButton()
         Text(
             text = "프로필은 언제든 자유롭게\n수정할 수 있습니다",
@@ -149,7 +140,7 @@ fun getNickName(nickname: State<String>, onNicknameChanged: (String) -> Unit) {
 }
 
 @Composable
-fun getMBTI(mbti: State<String>) {
+fun getMBTI(mbti: State<String>,onMBTIChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
             Text(text = "MBTI", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)))
@@ -163,7 +154,7 @@ fun getMBTI(mbti: State<String>) {
         }
         TextField(
             value = mbti.value,
-            onValueChange = { mbti},
+            onValueChange = onMBTIChanged,
             placeholder = { Text(text = "#MBTI",fontFamily = FontFamily(Font(R.font.pretendard_regular)),) },
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
@@ -183,7 +174,7 @@ fun getMBTI(mbti: State<String>) {
 }
 
 @Composable
-fun getSelfIntroduce(introduce: String) {
+fun getSelfIntroduce(introduce: String, onSelfIntroduceChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
             Text(text = "자기소개", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),)
@@ -197,7 +188,7 @@ fun getSelfIntroduce(introduce: String) {
         }
         TextField(
             value = introduce,
-            onValueChange = { introduce},
+            onValueChange = onSelfIntroduceChanged,
             placeholder = { Text(text = "학과, 학번 등 소개를 자유롭게 입력하세요",fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 14.sp) },
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,

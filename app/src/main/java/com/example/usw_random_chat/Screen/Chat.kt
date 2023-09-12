@@ -48,6 +48,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.TimeText
+import com.example.usw_random_chat.ui.TwoButtonDialog
 import com.example.usw_random_chat.ui.msg
 import com.example.usw_random_chat.ui.sendImg
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -90,8 +91,15 @@ fun ChattingScreen(navController: NavController) {
             openDialog.value = false
         }
     }
+    val reportDialog = remember {
+        mutableStateOf(false)
+    }
+    if (reportDialog.value) {
+        TwoButtonDialog(contentText = "신고하시겠습니까?", leftText = "취소", rightText = "신고하기", leftonPress = {reportDialog.value = false},{},R.drawable.baseline_error_24)
+    }
+
     Scaffold(
-        topBar = { ChatTopAppBar("FLAG", openDialog) },
+        topBar = { ChatTopAppBar("FLAG", openDialog,reportDialog) },
         bottomBar = { ChatBottomAppBar() },
         content = {
             LazyColumn(
@@ -111,10 +119,10 @@ fun ChattingScreen(navController: NavController) {
 }
 
 @Composable
-fun ChatTopAppBar(name: String, flag: MutableState<Boolean>) {
+fun ChatTopAppBar(name: String, profileflag: MutableState<Boolean>,reportflag: MutableState<Boolean>) {
     TopAppBar(
         title = {
-            IconButton(onClick = { flag.value = !flag.value }) {
+            IconButton(onClick = { profileflag.value = !profileflag.value }) {
                 Row(
                     modifier = Modifier
                         .padding(start = 24.dp)
@@ -147,7 +155,7 @@ fun ChatTopAppBar(name: String, flag: MutableState<Boolean>) {
             }
         },
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { reportflag.value = !reportflag.value}) {
                 Icon(
                     painter = painterResource(id = R.drawable.report),
                     tint = Color(0xFFFFACAC),
@@ -336,7 +344,9 @@ fun CustomDialog(name: String, onChange: () -> Unit) {
 @Composable
 fun sendMsg(text: String) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp, bottom = 4.dp),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.Bottom
     ) {
@@ -348,7 +358,9 @@ fun sendMsg(text: String) {
 @Composable
 fun receiveMsg(text: String) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp, bottom = 4.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.Bottom
     ) {

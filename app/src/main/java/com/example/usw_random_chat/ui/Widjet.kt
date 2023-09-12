@@ -3,17 +3,16 @@ package com.example.usw_random_chat.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -40,12 +39,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.usw_random_chat.R
 
 @Composable
-fun button(text: String, enable: Boolean, content: Color, back: Color, modifier: Modifier, onPress : () -> Unit) {
+fun button(
+    text: String,
+    enable: Boolean,
+    content: Color,
+    back: Color,
+    modifier: Modifier,
+    onPress: () -> Unit
+) {
     Button(
-        onClick = onPress ,
+        onClick = onPress,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = back,
             contentColor = content
@@ -82,7 +89,7 @@ fun copyRightByFlag(modifier: Modifier) {
 
 @Composable
 fun tittleWithBackArrow(text: String, modifier: Modifier) {
-    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2
+    val screenWidthInDp = (GetScreenWidthInDp() - 326) / 2
     Row(
         Modifier, //horizontalArrangement = Arrangement.Center
     )
@@ -148,7 +155,7 @@ fun portalEmail(textFieldValue: String, onValueChange: (String) -> Unit) {
 
 @Composable
 fun idSearchBtn(textFieldIdValue: String, onValueChange: (String) -> Unit) {
-    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2 -10
+    val screenWidthInDp = (GetScreenWidthInDp() - 326) / 2 - 10
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -226,26 +233,107 @@ fun sendImg(id: Int) {
 }
 
 @Composable
-fun skdjebfe(confirmText: String, dissmissText: String) {
-    AlertDialog(
-        onDismissRequest = {},
-        confirmButton = {
-            Text(text = confirmText, textAlign = TextAlign.Start)
-        },
-        dismissButton = {
-            Text(text = dissmissText)
-        },
-        title = { Text(text = "알림")},
-        text = { Text(text = "신고하시겠습니까?")},
-        modifier = Modifier
-    )
+fun TwoButtonDialog(
+    contentText: String,
+    leftText: String,
+    rightText: String,
+    leftonPress: () -> Unit,
+    rightonPress: () -> Unit,
+    image: Int
+) {
+    Dialog(
+        onDismissRequest = leftonPress,
+    ) {
+        Column(
+            modifier = Modifier
+                .width(270.dp)
+                .height(164.dp)
+                .background(color = Color(0xFFFFFFFF), shape = RoundedCornerShape(size = 20.dp)),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = image),
+                contentDescription = "image description",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .padding(top = 24.dp)
+            )
+            Text(
+                text = contentText,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                lineHeight = 20.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontWeight = FontWeight(500),
+                color = Color(0xFF767676),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+            ) {
+
+                Spacer(modifier = Modifier.weight(0.1f))
+                Button(
+                    onClick = leftonPress,
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xFFF1F1F1),
+                        contentColor = Color(0xFF767676)
+                    ),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(44.dp)
+                ) {
+                    Text(
+                        text = leftText,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            lineHeight = 18.sp,
+                            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                            fontWeight = FontWeight(600),
+                        )
+                    )
+                }
+                Spacer(modifier = Modifier.weight(0.1f))
+                Button(
+                    onClick = rightonPress,
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xFF2D64D8),
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(44.dp)
+                ) {
+                    Text(
+                        text = rightText,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            lineHeight = 18.sp,
+                            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                            fontWeight = FontWeight(600),
+                            color = Color(0xFFFFFFFF),
+                        )
+                    )
+                }
+                Spacer(modifier = Modifier.weight(0.1f))
+            }
+        }
+    }
+
 }
 
 @Composable
 fun msg(text: String, color: Color) {
     Box(
         Modifier
-            .padding(start = 6.dp,  end = 6.dp)
+            .padding(start = 6.dp, end = 6.dp)
             .border(
                 width = 1.dp,
                 color = Color(0xFFDBDBDB),
@@ -273,8 +361,9 @@ fun msg(text: String, color: Color) {
     }
 
 }
+
 @Composable
-fun TimeText(){
+fun TimeText() {
     Text(
         text = "오후" + "3:12",
         fontSize = 12.sp,
@@ -288,10 +377,84 @@ fun TimeText(){
     )
 }
 
+@Composable
+fun OneButtonDialog(
+    contentText: String,
+    text: String,
+    onPress: () -> Unit,
+    image : Int
+)
+{
+    Dialog(
+        onDismissRequest = onPress,
+    ) {
+        Column(
+            modifier = Modifier
+                .width(270.dp)
+                .height(164.dp)
+                .background(color = Color(0xFFFFFFFF), shape = RoundedCornerShape(size = 20.dp)),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = image),
+                contentDescription = "image description",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .padding(top = 24.dp)
+            )
+            Text(
+                text = contentText,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                lineHeight = 20.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontWeight = FontWeight(500),
+                color = Color(0xFF767676),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+            ) {
+
+                Spacer(modifier = Modifier.weight(0.1f))
+                Button(
+                    onClick = onPress,
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xFF2D64D8),
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(44.dp)
+                ) {
+                    Text(
+                        text = text,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            lineHeight = 18.sp,
+                            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                            fontWeight = FontWeight(600),
+                            color = Color(0xFFFFFFFF),
+                        )
+                    )
+                }
+                Spacer(modifier = Modifier.weight(0.1f))
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-fun skdjebfePreview() {
-    skdjebfe("신고하기", "닫기")
+fun TwoButtonDialogPreview() {
+    //TwoButtonDialog("신고하시겠습니까?", "취소", "신고하기", {}, {}, R.drawable.baseline_error_24)
+    OneButtonDialog(contentText = "qlfl", text = "sdfaewf", onPress = { /*TODO*/ }, image = R.drawable.baseline_check_circle_24)
 }
 
 @Composable

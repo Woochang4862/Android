@@ -38,10 +38,12 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.button
 
@@ -311,17 +313,17 @@ fun OnSignInBtn(navController: NavController) {
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, device = Devices.PIXEL_2)
 @Composable
 fun SignInScreenPreview() {
-    //SignInScreen(navController = nav)
+    SignInScreen(navController = rememberNavController())
 }
 
 
 @Preview(showBackground = true)
 @Composable
 fun OnLoginBtnPreview() {
-    //OnLoginBtn()
+    OnLoginBtn(navController = rememberNavController())
 }
 
 

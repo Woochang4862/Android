@@ -182,8 +182,9 @@ fun MainText() {
 fun TalkBalloon() {
     Box(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 177.dp, top = 22.dp)
+            .padding(top = 19.dp)
+            .fillMaxSize(),
+        contentAlignment = Alignment.TopEnd
     ) {
         Image(
             painter = painterResource(id = R.drawable.talkballoon2),
@@ -191,6 +192,7 @@ fun TalkBalloon() {
             modifier = Modifier
                 .width(331.dp)
                 .height(308.dp),
+            alignment = Alignment.CenterEnd
         )
     }
 }

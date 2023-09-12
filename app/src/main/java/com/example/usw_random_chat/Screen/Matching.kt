@@ -79,19 +79,21 @@ fun MatchingScreen(navController: NavController) {
         matchingDot3.value = false
         matchingDot4.value = false
     }
-    MatchingAnimation(
-        screen1 = matchingBlank.value,
-        screen2 = matchingDot1.value,
-        screen3 = matchingDot2.value,
-        screen4 = matchingDot3.value,
-        screen5 = matchingDot4.value
-    )
+
     Column(
         Modifier
             .fillMaxSize()
-            .padding(top = 375.dp),
+            /*.padding(top = 375.dp)*/,
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
+        MatchingAnimation(
+            screen1 = matchingBlank.value,
+            screen2 = matchingDot1.value,
+            screen3 = matchingDot2.value,
+            screen4 = matchingDot3.value,
+            screen5 = matchingDot4.value
+        )
         Text(
             text = "알고 계셨나요?",
             style = TextStyle(
@@ -101,7 +103,8 @@ fun MatchingScreen(navController: NavController) {
                 fontWeight = FontWeight(400),
                 color = Color(0xFF2D64D8),
                 textAlign = TextAlign.Center,
-            )
+            ),
+            modifier = Modifier.padding(top = 50.dp)
         )
         Spacer(modifier = Modifier.height(18.dp))
         Text(
@@ -137,10 +140,10 @@ fun MatchingAnimation(screen1: Boolean, screen2: Boolean, screen3: Boolean, scre
     Box(
         modifier = Modifier
             .width(312.dp)
-            .height(345.dp)
+            //.height(345.dp)
             .padding(
-                start = 129.dp,
-                top = 295.dp
+                start = 80.dp,
+                //top = 295.dp
             ),
     ) {
         AnimatedVisibility(

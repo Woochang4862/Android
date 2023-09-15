@@ -44,7 +44,6 @@ fun LoadingScreen(navController: NavController) {
         navController.navigate(Screen.SignInScreen.route)
 
     }
-
     Box(
         modifier = Modifier.fillMaxSize().background(color = Color(0x6B7AFF) )
     ) {

@@ -105,9 +105,9 @@ fun FeedbackTextField(text: MutableState<String>){
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                top = 140.dp,
-                start = 32.dp
-            )
+                top = 140.dp
+            ),
+        contentAlignment = Alignment.TopCenter
     ){
         OutlinedTextField(
             value = text.value,
@@ -135,10 +135,12 @@ fun FeedbackTextField(text: MutableState<String>){
 fun FeedbackSubmitBtn(){
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .padding(
                 top = 385.dp,
-                start = 32.dp
-            )
+            ),
+        contentAlignment = Alignment.TopCenter
+
     ){
         Button(
             onClick = { /*TODO*/ },

@@ -52,9 +52,6 @@ import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 
-
-
-
 @Composable
 fun PwChangeScreen(navController: NavController) {
 

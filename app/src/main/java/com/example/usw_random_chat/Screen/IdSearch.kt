@@ -201,7 +201,7 @@ fun IdSearchEmailBtn(flag: Boolean){
 
 @Preview (showBackground = true)
 @Composable
-fun IdSerchPreview(){
+fun IdSearchPreview(){
     IdSearch(navController = rememberNavController())
 }
 

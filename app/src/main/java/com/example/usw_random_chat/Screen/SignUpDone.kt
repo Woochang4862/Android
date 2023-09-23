@@ -96,27 +96,32 @@ fun SignUpDoneScreen(navController: NavController) {
                 .fillMaxWidth()
                 .height(24.dp)
         )
-        button(
-            text = "로그인",
-            enable = true,
-            content = Color.Black,
-            back = Color.White,
-            modifier = Modifier
-                .padding(top = 126.dp)
-                .border(
-                    width = 1.dp,
-                    shape = RoundedCornerShape(10.dp),
-                    color = Color(0xFF2D64D8),
-                )
-                .width(326.dp)
-                .height(56.dp)
-                .background(color = Color.White)){
-            navController.navigate(Screen.SignInScreen.route){
-                popUpTo(Screen.SignInScreen.route){
-                    inclusive = true
+        Row {
+            Spacer(modifier = Modifier.weight(0.1f))
+            button(
+                text = "로그인",
+                enable = true,
+                content = Color.Black,
+                back = Color.White,
+                modifier = Modifier
+                    .padding(top = 126.dp)
+                    .border(
+                        width = 1.dp,
+                        shape = RoundedCornerShape(10.dp),
+                        color = Color(0xFF2D64D8),
+                    )
+                    .weight(1f)
+                    .height(56.dp)
+                    .background(color = Color.White)){
+                navController.navigate(Screen.SignInScreen.route){
+                    popUpTo(Screen.SignInScreen.route){
+                        inclusive = true
+                    }
                 }
             }
+            Spacer(modifier = Modifier.weight(0.1f))
         }
+
         button(
             "메일 재발송",
             enable = true,

@@ -231,7 +231,8 @@ fun editGetSelfIntroduce(introduce: MutableState<String>) {
 @Composable
 fun SuChatImg() {
     Column(
-        Modifier.padding(top = 252.dp)
+        Modifier.padding(top = 252.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(id = R.drawable.suchat),

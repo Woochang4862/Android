@@ -82,6 +82,9 @@ fun MatchingScreen(navController: NavController) {
         matchingDot3.value = false
         matchingDot4.value = false
     }
+    TextBlue()
+    TextBlack()
+    MatchingStopBtn()
     MatchingAnimation(
         screen1 = matchingBlank.value,
         screen2 = matchingDot1.value,
@@ -89,11 +92,18 @@ fun MatchingScreen(navController: NavController) {
         screen4 = matchingDot3.value,
         screen5 = matchingDot4.value
     )
-    ConstraintLayout(
+}
+
+@Composable
+fun TextBlue(){
+    Row(
         modifier = Modifier
             .fillMaxSize()
+            .padding(
+                top = 375.dp
+            )
     ) {
-        val (text1, text2, matchingbutton) = createRefs()
+        Spacer(modifier = Modifier.weight(1f))
         Text(
             text = "알고 계셨나요?",
             style = TextStyle(
@@ -105,11 +115,23 @@ fun MatchingScreen(navController: NavController) {
                 textAlign = TextAlign.Center
             ),
             modifier = Modifier
-                .constrainAs(text1){
-                    bottom.linkTo(text2.top, margin = 18.dp)
-                    centerHorizontallyTo(parent)
-                }
+                .weight(1f)
         )
+        Spacer(modifier = Modifier.weight(1f))
+    }
+}
+
+
+@Composable
+fun TextBlack(){
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                top = 413.dp
+            )
+    ) {
+        Spacer(modifier = Modifier.weight(0.1f))
         Text(
             text = "체대옆 공터는 원래 방송반이 있던 큰 건물이었습니다.",
             style = TextStyle(
@@ -121,29 +143,37 @@ fun MatchingScreen(navController: NavController) {
                 textAlign = TextAlign.Center
             ),
             modifier = Modifier
-                .constrainAs(text2){
-                    bottom.linkTo(matchingbutton.top, margin = 60.dp)
-                    centerHorizontallyTo(parent)
-                }
+                .weight(1f)
         )
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.weight(0.1f))
+    }
+}
+
+
+
+@Composable
+fun MatchingStopBtn(){
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                top = 493.dp
+            )
+    ){
+        Spacer(modifier = Modifier.weight(0.1f))
         button(
             "매칭 중단하기",
             enable = true,
             Color.White,
             Color.Black,
             Modifier
-                .width(326.dp)
+                .weight(1f)
                 .height(56.dp)
                 .background(color = Color.White)
-                .constrainAs(matchingbutton){
-                    top.linkTo(parent.top, margin = (screenHeightInDp+12).dp)
-                    start.linkTo(parent.start, margin = 32.dp)
-                    end.linkTo(parent.end, margin = 32.dp)
-                }
-        ){
+        ) {
 
         }
+        Spacer(modifier = Modifier.weight(0.1f))
     }
 }
 
@@ -157,7 +187,7 @@ fun MatchingAnimation(screen1: Boolean, screen2: Boolean, screen3: Boolean, scre
             .height(400.dp)
             .padding(
                 start = 129.dp,
-                top = screenHeightInDp.dp
+                top = 265.dp
             ),
     ) {
         AnimatedVisibility(

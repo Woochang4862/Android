@@ -3,8 +3,11 @@ package com.example.usw_random_chat.Screen
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Top
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -53,14 +56,14 @@ fun FeedbackShow(navController: NavController){
 
 @Composable
 fun FeedbackText(){
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 top = 88.dp
             ),
-        contentAlignment = Alignment.TopCenter
     ){
+        Spacer(modifier = Modifier.weight(1f))
         Text(
             text = "피드백",
             color = Color(0xFF111111),
@@ -68,47 +71,52 @@ fun FeedbackText(){
             style = TextStyle(
                 fontSize = 20.sp,
                 fontFamily = FontFamily(Font(R.font.pretendard_regular))
-            )
+            ),
+            modifier = Modifier
+                .weight(0.4f)
         )
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
 @Composable
 fun FeedbackExit(){
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxSize()
+            .padding(
+                top = 70.dp
+            ),
     ){
+        Spacer(modifier = Modifier.weight(1f))
         TextButton(
             onClick = { /*TODO*/ },
             modifier = Modifier
-                .padding(
-                    top = 72.dp,
-                    start = 307.dp
-                )
+                .weight(0.2f)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.cancle),
                 contentDescription = "image description",
                 modifier = Modifier
                     .background(color = Color(0x00FFFFFF))
-                    .width(36.dp)
                     .height(36.dp)
+                    .weight(0.3f)
             )
         }
+        Spacer(modifier = Modifier.weight(0.1f))
     }
 }
 
 @Composable
 fun FeedbackTextField(text: MutableState<String>){
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 top = 140.dp
             ),
-        contentAlignment = Alignment.TopCenter
     ){
+        Spacer(modifier = Modifier.weight(0.1f))
         OutlinedTextField(
             value = text.value,
             onValueChange = {textValue -> text.value = textValue},
@@ -125,29 +133,29 @@ fun FeedbackTextField(text: MutableState<String>){
                 )
             },
             modifier = Modifier
-                .width(326.dp)
                 .height(230.dp)
+                .weight(1.1f)
         )
+        Spacer(modifier = Modifier.weight(0.1f))
     }
 }
 
 @Composable
 fun FeedbackSubmitBtn(){
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 top = 385.dp,
             ),
-        contentAlignment = Alignment.TopCenter
-
     ){
+        Spacer(modifier = Modifier.weight(0.1f))
         Button(
             onClick = { /*TODO*/ },
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .height(56.dp)
-                .width(326.dp),
+                .weight(1f),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF2D64D8))
         ) {
             Text(
@@ -159,6 +167,7 @@ fun FeedbackSubmitBtn(){
                 ),
             )
         }
+        Spacer(modifier = Modifier.weight(0.1f))
     }
 }
 

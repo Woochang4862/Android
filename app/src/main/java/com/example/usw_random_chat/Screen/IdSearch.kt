@@ -71,41 +71,44 @@ fun IdSearch(navController: NavController){
     }
     IdSearchText()
     IdSearchEmail(textState = editTextState)
-    IdSearchEmailBtn(openFlag.value)
+    IdSearchEmailBtn()
+    Checkemail(openFlag.value)
+    GoLogin()
     IdSearchExitBtn()
 }
 
 
 @Composable
 fun IdSearchExitBtn(){
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                start = 32.dp,
                 top = 80.dp
             )
     ){
+        Spacer(modifier = Modifier.weight(0.1f))
         Image(
             painter = painterResource(id = R.drawable.back),
             contentDescription = "image description",
             modifier = Modifier
-                .width(36.dp)
                 .height(36.dp)
+                .weight(0.2f)
         )
+        Spacer(modifier = Modifier.weight(1.1f))
     }
 }
 
 @Composable
 fun IdSearchText(){
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                start = 155.dp,
                 top = 88.dp
             )
     ) {
+        Spacer(modifier = Modifier.weight(1f))
         Text(
             text = "아이디 찾기",
             color = Color(0xFF111111),
@@ -113,39 +116,43 @@ fun IdSearchText(){
                 fontFamily = FontFamily(Font(R.font.pretendard_regular))
             ),
             fontSize = 18.sp,
-            fontWeight = FontWeight(600)
+            fontWeight = FontWeight(600),
+            modifier = Modifier
+                .weight(0.6f)
         )
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
 @Composable
 fun IdSearchEmail(textState: MutableState<String>) {
 
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                start = 31.dp,
                 top = 143.dp
             )
     ) {
+        Spacer(modifier = Modifier.weight(0.1f))
         portalEmail(
             textFieldValue = textState.value, onValueChange = { newValue ->
                 textState.value = newValue
             })
+        Spacer(modifier = Modifier.weight(0.1f))
     }
 }
 
 @Composable
-fun IdSearchEmailBtn(flag: Boolean){
-    Column(
+fun IdSearchEmailBtn(){
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 top = 256.dp
             ),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.weight(0.3f))
         Text(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(color = Color(0xFF989898))) {
@@ -163,39 +170,64 @@ fun IdSearchEmailBtn(flag: Boolean){
             color = Color(0xFFDCDCDC),
             modifier = Modifier
                 .height(18.dp)
-                .width(242.dp)
+                .weight(1f)
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.weight(0.3f))
+    }
+}
 
+@Composable
+fun Checkemail(flag: Boolean){
+
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                top = 286.dp
+            )
+    ){
+        Spacer(modifier = Modifier.weight(0.1f))
         button(
             text = "확인메일 전송",
             enable = flag,
             content = Color.White,
             back = Color(0xFF2D64D8),
             modifier = Modifier
-                .width(326.dp)
+                .weight(1f)
                 .height(56.dp)
-        ){
+        ) {
 
         }
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.weight(0.1f))
+    }
+}
 
+
+@Composable
+fun GoLogin(){
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                top = 354.dp
+            )
+    ){
+        Spacer(modifier = Modifier.weight(0.1f))
         button(
             "로그인 하러가기",
             enable = true,
             Color.White,
             Color.Black,
             Modifier
-                .width(326.dp)
+                .weight(1f)
                 .height(56.dp)
                 .background(color = Color.White)
         ){
 
         }
+        Spacer(modifier = Modifier.weight(0.1f))
     }
 }
-
-
 
 
 

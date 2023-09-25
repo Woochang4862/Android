@@ -83,18 +83,18 @@ fun OnLoginImage() {
             .fillMaxSize(),
         contentAlignment = Alignment.TopEnd
     ){
-        Image(
-            painter = painterResource(id = R.drawable.balloon),
-            contentDescription = "image description",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(331.dp)
-                .padding(
-                    start = 32.dp,
-                    top = 40.dp
-                ),
-            alignment = Alignment.TopEnd
-        )
+        Row(){
+            Spacer(modifier = Modifier.weight(0.1f))
+            Image(
+                painter = painterResource(id = R.drawable.balloon),
+                contentDescription = "image description",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(331.dp)
+                    .weight(1f),
+                alignment = Alignment.TopEnd
+            )
+        }
     }
 }
 
@@ -103,91 +103,87 @@ fun LoginTextField(
     id: MutableState<String>,
     password: MutableState<String>
 ) {
-    val screenHeightInDp = (GetScreenHeightInDp() - 481)
-    ConstraintLayout(
+    Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(
+                top = 310.dp
+            )
     ) {
-        val (idbutton,passwordbutton) = createRefs()
-
-        OutlinedTextField(
-            value = id.value,
-            onValueChange = {idValue -> id.value = idValue},
-            shape = RoundedCornerShape(10.dp),
-            placeholder = {
-                Text(
-                    text = "ID",
-                    color = Color(0xFF989898),
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_regular))
-                    ),
-                    modifier = Modifier
-                        .height(IntrinsicSize.Min)
-                )
-            },
-            modifier = Modifier
-                .constrainAs(idbutton) {
-                    start.linkTo(parent.start, margin = 32.dp)
-                    end.linkTo(parent.end, margin = 32.dp)
-                    bottom.linkTo(parent.bottom, margin = 338.dp)
-                    width = Dimension.fillToConstraints
-                }
-                .height(48.dp)
-                .background(color = Color.White)
-        )
-        OutlinedTextField(
-            value = password.value,
-            onValueChange = {passwordValue -> password.value = passwordValue},
-            shape = RoundedCornerShape(10.dp),
-            placeholder = {
-                Text(
-                    text = "PASSWORD",
-                    color = Color(0xFF989898),
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_regular))
-                    ),
-                    modifier = Modifier
-                        .height(IntrinsicSize.Min)
-                )
-            },
-            modifier = Modifier
-                .constrainAs(passwordbutton) {
-                    start.linkTo(parent.start, margin = 32.dp)
-                    end.linkTo(parent.end, margin = 32.dp)
-                    bottom.linkTo(parent.bottom, margin = 282.dp)
-                    width = Dimension.fillToConstraints
-                }
-                .height(48.dp)
-                .background(color = Color.White),
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        )
+        Row() {
+            Spacer(modifier = Modifier.weight(0.1f))
+            OutlinedTextField(
+                value = id.value,
+                onValueChange = { idValue -> id.value = idValue },
+                shape = RoundedCornerShape(10.dp),
+                placeholder = {
+                    Text(
+                        text = "ID",
+                        color = Color(0xFF989898),
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                        ),
+                        modifier = Modifier
+                            .height(IntrinsicSize.Min)
+                    )
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp)
+                    .background(color = Color.White)
+            )
+            Spacer(modifier = Modifier.weight(0.1f))
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Row() {
+            Spacer(modifier = Modifier.weight(0.1f))
+            OutlinedTextField(
+                value = password.value,
+                onValueChange = { passwordValue -> password.value = passwordValue },
+                shape = RoundedCornerShape(10.dp),
+                placeholder = {
+                    Text(
+                        text = "PASSWORD",
+                        color = Color(0xFF989898),
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                        ),
+                        modifier = Modifier
+                            .height(IntrinsicSize.Min)
+                    )
+                },
+                modifier = Modifier
+                    .height(48.dp)
+                    .weight(1f)
+                    .background(color = Color.White),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            )
+            Spacer(modifier = Modifier.weight(0.1f))
+        }
     }
 }
 
 @Composable
 fun OnLoginBtn(navController: NavController) {
-    val screenHeightInDp = (GetScreenHeightInDp() - 357)
-    ConstraintLayout(
+    Row(
         modifier = Modifier
             .fillMaxSize()
+            .padding(
+                top = 438.dp
+            )
     ) {
-        val (loginbutton) = createRefs()
+        Spacer(modifier = Modifier.weight(0.1f))
         button(
             text = "로그인",
             enable = true,
             content = Color.White,
             back = Color(0xFF2D64D8),
             modifier = Modifier
-                .constrainAs(loginbutton) {
-                    start.linkTo(parent.start, margin = 32.dp)
-                    end.linkTo(parent.end, margin = 32.dp)
-                    bottom.linkTo(parent.bottom, margin = 202.dp)
-                    width = Dimension.fillToConstraints
-                }
                 .height(56.dp)
+                .weight(1f)
         ){
             navController.navigate(Screen.MainPageScreen.route){
                 popUpTo(Screen.MainPageScreen.route){
@@ -195,25 +191,23 @@ fun OnLoginBtn(navController: NavController) {
                 }
             }
         }
+        Spacer(modifier = Modifier.weight(0.1f))
     }
 }
 
 @Composable
 fun OnLoginFindIdAndPassword() {
-    val screenHeightInDp = (GetScreenHeightInDp() - 294)
-
-    ConstraintLayout(
-        modifier = Modifier.fillMaxSize()
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                top = 492.dp
+            ),
+        horizontalArrangement = Arrangement.Center
     ) {
-        val (idbutton, image, passwordbutton) = createRefs()
-
         TextButton(
             onClick = {},
             modifier = Modifier
-                .constrainAs(idbutton) {
-                    end.linkTo(image.start, margin = 9.dp)
-                    bottom.linkTo(parent.bottom , margin = 155.dp)
-                }
         ) {
             Text(
                 text = "아이디 찾기",
@@ -223,25 +217,20 @@ fun OnLoginFindIdAndPassword() {
                 )
             )
         }
-
+        Spacer(modifier = Modifier.width(8.dp))
         Image(
             painter = painterResource(id = R.drawable.rectangle),
             contentDescription = "image description",
             modifier = Modifier
-                .constrainAs(image) {
-                    bottom.linkTo(parent.bottom, margin = 163.dp)
-                    centerHorizontallyTo(parent)
-                }
-                .width(8.dp)
-                .height(30.dp)
+                .width(10.dp)
+                .height(32.dp)
+                .padding(top = 15.dp)
         )
+        Spacer(modifier = Modifier.width(8.dp))
         TextButton(
             onClick = {},
             modifier = Modifier
-                .constrainAs(passwordbutton) {
-                    start.linkTo(image.end, margin = 9.dp)
-                    bottom.linkTo(parent.bottom , margin = 155.dp)
-                }
+
         ) {
             Text(
                 text = "비밀번호 찾기",
@@ -257,24 +246,22 @@ fun OnLoginFindIdAndPassword() {
 
 @Composable
 fun MadeAccountText() {
-    val screenHeightInDp = (GetScreenHeightInDp() - 238)
-
-    ConstraintLayout(
+    Row(
         modifier = Modifier
             .fillMaxSize()
+            .padding(
+                top = 562.dp
+            )
     ) {
-        val (divider1,divider2,text) = createRefs()
+        Spacer(modifier = Modifier.weight(0.4f))
         Divider(
             color = Color(0xFFBFBFBF),
             modifier = Modifier
-                .constrainAs(divider1) {
-                    start.linkTo(parent.start, margin = 32.dp)
-                    end.linkTo(text.start, margin = 21.dp)
-                    bottom.linkTo(parent.bottom, margin = 132.dp)
-                    width = Dimension.fillToConstraints
-                }
-                .height(1.dp)
+                .weight(1f)
+                .padding(top = 9.dp)
         )
+        Spacer(modifier = Modifier.weight(0.3f))
+
         Text(
             text = "계정이 없으신가요?",
             style = TextStyle(
@@ -282,47 +269,43 @@ fun MadeAccountText() {
                 fontSize = 14.sp
             ),
             modifier = Modifier
-                .constrainAs(text) {
-                    centerHorizontallyTo(parent)
-                    bottom.linkTo(parent.bottom, margin = 124.dp)
-                }
+                .weight(1.3f)
         )
+        Spacer(modifier = Modifier.weight(0.3f))
+
         Divider(
             color = Color(0xFFBFBFBF),
             modifier = Modifier
-                .constrainAs(divider2) {
-                    end.linkTo(parent.end, margin = 32.dp)
-                    start.linkTo(text.end, margin = 21.dp)
-                    bottom.linkTo(parent.bottom, margin = 132.dp)
-                    width = Dimension.fillToConstraints
-                }
+                .weight(1f)
+                .padding(top = 9.dp)
         )
+        Spacer(modifier = Modifier.weight(0.4f))
+
     }
 }
 
 @Composable
 fun OnSignInBtn(navController: NavController) {
-    ConstraintLayout(
+    Row(
         modifier = Modifier
             .fillMaxSize()
+            .padding(
+                top = 599.dp
+            )
     ) {
-        val (madeidbutton) = createRefs()
+        Spacer(modifier = Modifier.weight(0.1f))
         button(
             "회원가입",
             enable = true,
             Color.White,
             Color.Black,
             Modifier
-                .constrainAs(madeidbutton) {
-                    bottom.linkTo(parent.bottom, margin = 50.dp)
-                    start.linkTo(parent.start, margin = 32.dp)
-                    end.linkTo(parent.end, margin = 32.dp)
-                    width = Dimension.fillToConstraints
-                }
-                .height(56.dp),
+                .height(56.dp)
+                .weight(1f)
         ){
             navController.navigate(Screen.SignUpScreen.route)
         }
+        Spacer(modifier = Modifier.weight(0.1f))
     }
 }
 

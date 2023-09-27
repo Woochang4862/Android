@@ -10,11 +10,11 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface Register {
-    @POST("") // 세부 주소
+    @POST("/member/save") // 세부 주소
     fun registerSignIn(@Body jsonpath: UserDTO) : Call<UserDTO>
 
     companion object{
-        private const val BASE_URL = "" // 공통 주소
+        private const val BASE_URL = "http://localhost:8081" // 공통 주소
 
         fun create(): Register {
 

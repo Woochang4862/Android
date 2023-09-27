@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.Screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -49,11 +50,16 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.usw_random_chat.Backend.Register
+import com.example.usw_random_chat.DTO.UserDTO
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.GetScreenHeightInDp
 import com.example.usw_random_chat.ui.GetScreenWidthInDp
 import com.example.usw_random_chat.ui.button
 import kotlinx.coroutines.NonDisposableHandle.parent
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 
 @Composable
@@ -64,6 +70,9 @@ fun SignInScreen(navController: NavController) {
     val editpasswordState = remember {
         mutableStateOf("")
     }
+    val qwe = remember {
+        mutableStateOf(false)
+    }
     Box(){
         OnLoginImage()
         LoginTextField(id = editidState, password = editpasswordState)
@@ -71,7 +80,34 @@ fun SignInScreen(navController: NavController) {
     OnLoginBtn(navController)
     OnLoginFindIdAndPassword()
     MadeAccountText()
-    OnSignInBtn(navController)
+    OnSignInBtn(navController,qwe)
+    Register.create()
+        .registerSignIn(UserDTO(
+            memberEmail = editidState.value,
+            memberPassword = editpasswordState.value,
+            memberName = "이경수"))
+        .enqueue(object : retrofit2.Callback<UserDTO> {
+            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                val result = response.code();
+                if(result in 200..299) {
+                    Log.d("회원가입성공", response.body().toString())
+                    navController.navigate(Screen.MainPageScreen.route){
+                        popUpTo(Screen.MainPageScreen.route){
+                            inclusive = true
+                        }
+                    }
+                }
+                else {
+                    Log.w("회원가입실패", response.body().toString())
+
+                }
+            }
+
+            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                Log.e("연결 실패","${t.localizedMessage}")
+            }
+    })
+
 }
 
 
@@ -285,7 +321,7 @@ fun MadeAccountText() {
 }
 
 @Composable
-fun OnSignInBtn(navController: NavController) {
+fun OnSignInBtn(navController: NavController, asdasd : MutableState<Boolean>) {
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -303,7 +339,9 @@ fun OnSignInBtn(navController: NavController) {
                 .height(56.dp)
                 .weight(1f)
         ){
+            asdasd.value = true
             navController.navigate(Screen.SignUpScreen.route)
+            asdasd.value = false
         }
         Spacer(modifier = Modifier.weight(0.1f))
     }
@@ -343,7 +381,7 @@ fun MadeAccountTextPreview() {
 @Composable
 fun OnSignInBtnPreview() {
     val navController = rememberNavController()
-    OnSignInBtn(navController)
+    //OnSignInBtn(navController)
 }
 
 

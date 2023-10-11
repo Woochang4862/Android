@@ -1,10 +1,12 @@
 package com.example.usw_random_chat.DTO
 
+import com.google.gson.annotations.SerializedName
+
 data class UserDTO(
-   //val id : String = "",
-    val memberPassword : String = "",
+    @SerializedName("memberEmail")
     val memberEmail : String = "",
-    val memberName : String = "",
-    //val mbti : String = "",
-   // val selfIntroduce : String = ""
+    @SerializedName("memberPassword")
+    val memberPassword : String = "",
+    @SerializedName("memberName")
+    val memberName : String = ""
 )

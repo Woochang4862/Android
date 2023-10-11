@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.Screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -41,12 +42,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.usw_random_chat.Backend.Register
+import com.example.usw_random_chat.DTO.UserDTO
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.GetScreenWidthInDp
 import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.idSearchBtn
 import com.example.usw_random_chat.ui.portalEmail
 import com.example.usw_random_chat.ui.tittleWithBackArrow
+import retrofit2.Call
+import retrofit2.Response
 
 
 @Composable
@@ -329,7 +334,6 @@ fun EmailTextFieldSignUp(email: MutableState<String>) {
 
 @Composable
 fun signUpBotton(trigger: MutableState<Boolean>, navController: NavController) {
-
     Column(
         Modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -345,7 +349,28 @@ fun signUpBotton(trigger: MutableState<Boolean>, navController: NavController) {
                     .height(56.dp)
                     .background(color = Color.White)
             ) {
-                navController.navigate(Screen.SignUpDoneScreen.route)
+                Register.create()
+                    .registerSignUp(
+                        UserDTO("qzxhukuc890sdfeom","g45613423shgtewdf58","sasqp524lwpa23wesd")
+                    )
+                    .enqueue(object : retrofit2.Callback<UserDTO> {
+                        override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                            if(response.isSuccessful) {
+                                Log.d("회원가입성공", response.body().toString())
+                                navController.navigate(Screen.MainPageScreen.route){
+                                    popUpTo(Screen.SignUpDoneScreen.route){
+                                        inclusive = true
+                                    }
+                                }
+                            }
+                            else {
+                                Log.w("회원가입실패",response.body().toString())
+                            }
+                        }
+                        override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                            Log.e("연결 실패","${t.localizedMessage}")
+                        }
+                    })
             }
             Spacer(Modifier.weight(0.1f))
         }

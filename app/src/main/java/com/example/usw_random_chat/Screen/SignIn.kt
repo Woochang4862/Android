@@ -81,32 +81,8 @@ fun SignInScreen(navController: NavController) {
     OnLoginFindIdAndPassword()
     MadeAccountText()
     OnSignInBtn(navController,qwe)
-    Register.create()
-        .registerSignIn(UserDTO(
-            memberEmail = editidState.value,
-            memberPassword = editpasswordState.value,
-            memberName = "이경수"))
-        .enqueue(object : retrofit2.Callback<UserDTO> {
-            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
-                val result = response.code();
-                if(result in 200..299) {
-                    Log.d("회원가입성공", response.body().toString())
-                    navController.navigate(Screen.MainPageScreen.route){
-                        popUpTo(Screen.MainPageScreen.route){
-                            inclusive = true
-                        }
-                    }
-                }
-                else {
-                    Log.w("회원가입실패", response.body().toString())
 
-                }
-            }
 
-            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
-                Log.e("연결 실패","${t.localizedMessage}")
-            }
-    })
 
 }
 
@@ -221,11 +197,7 @@ fun OnLoginBtn(navController: NavController) {
                 .height(56.dp)
                 .weight(1f)
         ){
-            navController.navigate(Screen.MainPageScreen.route){
-                popUpTo(Screen.MainPageScreen.route){
-                    inclusive = true
-                }
-            }
+
         }
         Spacer(modifier = Modifier.weight(0.1f))
     }

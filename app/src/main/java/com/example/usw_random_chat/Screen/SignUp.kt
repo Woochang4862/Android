@@ -357,7 +357,7 @@ fun signUpBotton(trigger: MutableState<Boolean>, navController: NavController) {
                         override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                             if(response.isSuccessful) {
                                 Log.d("회원가입성공", response.body().toString())
-                                navController.navigate(Screen.MainPageScreen.route){
+                                navController.navigate(Screen.SignUpDoneScreen.route){
                                     popUpTo(Screen.SignUpDoneScreen.route){
                                         inclusive = true
                                     }

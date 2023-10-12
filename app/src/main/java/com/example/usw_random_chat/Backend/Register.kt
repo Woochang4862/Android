@@ -19,6 +19,11 @@ interface Register {
     @Headers("content-type: application/json")
     fun registerSignUp(@Body jsonpath: UserDTO) : Call<UserDTO>
 
+    @POST("member/login") // 세부 주소
+    @Headers("content-type: application/json")
+    fun registerSignIn(@Body jsonpath: UserDTO) : Call<UserDTO>
+
+
     companion object{
         private const val BASE_URL = "http://3.35.83.91:8080/" // 공통 주소
 

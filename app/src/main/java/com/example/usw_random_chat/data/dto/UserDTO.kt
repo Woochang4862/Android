@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.DTO
+package com.example.usw_random_chat.data.dto
 
 import com.google.gson.annotations.SerializedName
 

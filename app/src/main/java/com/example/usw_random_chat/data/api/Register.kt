@@ -1,15 +1,13 @@
-package com.example.usw_random_chat.Backend
+package com.example.usw_random_chat.data.api
 
-import com.example.usw_random_chat.DTO.UserDTO
+import com.example.usw_random_chat.data.dto.UserDTO
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
-import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -31,7 +29,7 @@ interface Register {
 
             val gson : Gson = GsonBuilder().setLenient().create()
 
-            //http통신 로그 기록을 볼 수 있게 해주는 코드
+            //http통신 로그를 볼 수 있게 해주는 코드
             val client : OkHttpClient = OkHttpClient.Builder().apply {
                 addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY

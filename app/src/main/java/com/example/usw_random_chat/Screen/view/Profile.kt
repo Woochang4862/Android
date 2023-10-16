@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.Screen
+package com.example.usw_random_chat.Screen.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -21,10 +21,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
-import com.example.usw_random_chat.ViewModel.ProfileViewModel
+import com.example.usw_random_chat.Screen.ViewModel.ProfileViewModel
 
 @Composable
-fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel(),navController: NavController) {
+fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel(), navController: NavController) {
     Column(
         Modifier
             .fillMaxSize()
@@ -34,7 +34,7 @@ fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel(),navController
         setTitle()
         getNickName(profileViewModel.nickname) { profileViewModel.updateNickname(it) }
         getMBTI(mbti = profileViewModel.mbti) { profileViewModel.updateMBTI(it) }
-        getSelfIntroduce(introduce = profileViewModel.selfintroduce.value) { profileViewModel.updateSelfIntroduce(it)}
+        getSelfIntroduce(introduce = profileViewModel.selfintroduce) { profileViewModel.updateSelfIntroduce(it)}
         startButton()
         Text(
             text = "프로필은 언제든 자유롭게\n수정할 수 있습니다",
@@ -174,7 +174,7 @@ fun getMBTI(mbti: State<String>,onMBTIChanged: (String) -> Unit) {
 }
 
 @Composable
-fun getSelfIntroduce(introduce: String, onSelfIntroduceChanged: (String) -> Unit) {
+fun getSelfIntroduce(introduce: State<String>, onSelfIntroduceChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
             Text(text = "자기소개", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),)
@@ -187,7 +187,7 @@ fun getSelfIntroduce(introduce: String, onSelfIntroduceChanged: (String) -> Unit
             )
         }
         TextField(
-            value = introduce,
+            value = introduce.value,
             onValueChange = onSelfIntroduceChanged,
             placeholder = { Text(text = "학과, 학번 등 소개를 자유롭게 입력하세요",fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 14.sp) },
             colors = TextFieldDefaults.textFieldColors(

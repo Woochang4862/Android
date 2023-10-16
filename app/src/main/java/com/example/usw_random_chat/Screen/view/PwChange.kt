@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.Screen
+package com.example.usw_random_chat.Screen.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

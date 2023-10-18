@@ -36,11 +36,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.data.api.Register
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.Screen.ViewModel.AuthViewModel
+import com.example.usw_random_chat.data.repository.RegisterRepository
+import com.example.usw_random_chat.data.usecase.RegisterUseCase
 import com.example.usw_random_chat.ui.GetScreenHeightInDp
 import com.example.usw_random_chat.ui.button
 import retrofit2.Call
@@ -182,7 +186,7 @@ fun OnLoginBtn(navController: NavController) {
                 .height(56.dp)
                 .weight(1f)
         ){
-            Register.create()
+            /*Register.create()
                 .registerSignIn(
                     UserDTO("qzxhukuc890sdfeom","g45613423shgtewdf58")
                 )
@@ -203,7 +207,8 @@ fun OnLoginBtn(navController: NavController) {
                     override fun onFailure(call: Call<UserDTO>, t: Throwable) {
                         Log.e("서버와 연결 실패","${t.localizedMessage}")
                     }
-                })
+                })*/
+
         }
         Spacer(modifier = Modifier.weight(0.1f))
     }

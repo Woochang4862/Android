@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.Screen.view
+package com.example.usw_random_chat.presentation.view
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import kotlinx.coroutines.delay
 
@@ -37,8 +38,8 @@ fun LoadingScreen(navController: NavController) {
 
     LaunchedEffect(Unit) {
         delay(1000L)
-        //navController.popBackStack()
-        //navController.navigate(Screen.SignInScreen.route)
+        navController.popBackStack()
+        navController.navigate(Screen.SignInScreen.route)
     }
 }
 
@@ -90,5 +91,5 @@ fun LoadingLogo(first: String, second: String) {
 @Preview(showBackground = true)
 @Composable
 fun LoadingScreenPreview() {
-    //LoadingScreen()
+    LoadingScreen(navController = rememberNavController())
 }

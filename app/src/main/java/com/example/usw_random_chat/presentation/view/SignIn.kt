@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.Screen.view
+package com.example.usw_random_chat.presentation.view
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -42,9 +42,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.data.api.Register
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.R
-import com.example.usw_random_chat.Screen.ViewModel.AuthViewModel
+import com.example.usw_random_chat.presentation.ViewModel.AuthViewModel
 import com.example.usw_random_chat.data.repository.RegisterRepository
-import com.example.usw_random_chat.data.usecase.RegisterUseCase
+import com.example.usw_random_chat.domain.usecase.RegisterUseCase
 import com.example.usw_random_chat.ui.GetScreenHeightInDp
 import com.example.usw_random_chat.ui.button
 import retrofit2.Call
@@ -186,28 +186,6 @@ fun OnLoginBtn(navController: NavController) {
                 .height(56.dp)
                 .weight(1f)
         ){
-            /*Register.create()
-                .registerSignIn(
-                    UserDTO("qzxhukuc890sdfeom","g45613423shgtewdf58")
-                )
-                .enqueue(object : retrofit2.Callback<UserDTO> {
-                    override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
-                        if(response.isSuccessful) {
-                            Log.d("로그인성공", response.body().toString())
-                            navController.navigate(Screen.MainPageScreen.route){
-                                popUpTo(Screen.SignUpDoneScreen.route){
-                                    inclusive = true
-                                }
-                            }
-                        }
-                        else {
-                            Log.w("로그인실패",response.body().toString())
-                        }
-                    }
-                    override fun onFailure(call: Call<UserDTO>, t: Throwable) {
-                        Log.e("서버와 연결 실패","${t.localizedMessage}")
-                    }
-                })*/
 
         }
         Spacer(modifier = Modifier.weight(0.1f))

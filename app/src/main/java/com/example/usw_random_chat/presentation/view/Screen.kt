@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.Screen.view
+package com.example.usw_random_chat.presentation.view
 
 sealed class Screen(val route: String){
     object SignInScreen: Screen("SignIn")

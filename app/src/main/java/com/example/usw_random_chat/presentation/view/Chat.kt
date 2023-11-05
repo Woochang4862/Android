@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.Screen.view
+package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image

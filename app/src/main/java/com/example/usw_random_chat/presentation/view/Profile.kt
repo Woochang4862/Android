@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.Screen.view
+package com.example.usw_random_chat.presentation.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -21,7 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
-import com.example.usw_random_chat.Screen.ViewModel.ProfileViewModel
+import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 
 @Composable
 fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel(), navController: NavController) {

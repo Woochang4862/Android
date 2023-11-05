@@ -1,10 +1,10 @@
-package com.example.usw_random_chat.Screen.view
+package com.example.usw_random_chat.presentation.view
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.usw_random_chat.Screen.ViewModel.ProfileViewModel
+import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 
 @Composable
 fun Navigation() {

@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.Screen.view
+package com.example.usw_random_chat.presentation.view
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -349,7 +349,7 @@ fun signUpBotton(trigger: MutableState<Boolean>, navController: NavController) {
                     .height(56.dp)
                     .background(color = Color.White)
             ) {
-                Register.create()
+                /*Register.create()
                     .registerSignUp(
                         UserDTO("qzxhukuc890sdfeom","g45613423shgtewdf58","sasqp524lwpa23wesd")
                     )
@@ -370,7 +370,7 @@ fun signUpBotton(trigger: MutableState<Boolean>, navController: NavController) {
                         override fun onFailure(call: Call<UserDTO>, t: Throwable) {
                             Log.e("연결 실패","${t.localizedMessage}")
                         }
-                    })
+                    })*/
             }
             Spacer(Modifier.weight(0.1f))
         }

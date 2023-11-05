@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.Screen.ViewModel
+package com.example.usw_random_chat.presentation.ViewModel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State

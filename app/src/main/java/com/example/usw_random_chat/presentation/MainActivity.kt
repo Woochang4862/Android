@@ -1,4 +1,4 @@
-package com.example.usw_random_chat
+package com.example.usw_random_chat.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,9 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.usw_random_chat.Screen.view.Navigation
+import com.example.usw_random_chat.presentation.view.Navigation
 import com.example.usw_random_chat.ui.theme.USW_Random_ChatTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

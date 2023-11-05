@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -15,14 +16,14 @@ import retrofit2.http.POST
 interface Register {
     @POST("member/save") // 세부 주소
     @Headers("content-type: application/json")
-    fun registerSignUp(@Body jsonpath: UserDTO) : Call<UserDTO>
+    suspend fun registerSignUp(@Body jsonpath: UserDTO) : Response<UserDTO>
 
     @POST("member/login") // 세부 주소
     @Headers("content-type: application/json")
-    fun registerSignIn(@Body jsonpath: UserDTO) : Call<UserDTO>
+    suspend fun registerSignIn(@Body jsonpath: UserDTO) : Response<UserDTO>
 
 
-    companion object{
+    /*companion object{
         private const val BASE_URL = "http://3.35.83.91:8080/" // 공통 주소
 
         fun create(): Register {
@@ -44,5 +45,5 @@ interface Register {
                 .build()
                 .create(Register::class.java)
         }
-    }
+    }*/
 }

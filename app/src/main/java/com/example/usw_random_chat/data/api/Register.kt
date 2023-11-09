@@ -14,11 +14,11 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface Register {
-    @POST("member/save") // 세부 주소
+    @POST("member2/signUp") // 세부 주소
     @Headers("content-type: application/json")
     suspend fun registerSignUp(@Body jsonpath: UserDTO) : Response<UserDTO>
 
-    @POST("member/login") // 세부 주소
+    @POST("member2/login") // 세부 주소
     @Headers("content-type: application/json")
     suspend fun registerSignIn(@Body jsonpath: UserDTO) : Response<UserDTO>
 

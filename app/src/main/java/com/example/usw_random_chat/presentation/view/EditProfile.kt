@@ -24,12 +24,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 
 @Composable
-fun EditProfileScreen(navController: NavController) {
+fun EditProfileScreen(navController: NavController, profileViewModel: ProfileViewModel = viewModel()) {
     val editNickName = remember {
         mutableStateOf("")
     }
@@ -45,7 +47,7 @@ fun EditProfileScreen(navController: NavController) {
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle()
+        editSetTitle(profileViewModel)
         editGetNickName(nickname = editNickName)
         editGetMBTI(mbti = editMBTI)
         editGetSelfIntroduce(introduce = editSelfIntroduce)
@@ -54,7 +56,7 @@ fun EditProfileScreen(navController: NavController) {
 }
 
 @Composable
-fun editSetTitle() {
+fun editSetTitle(profileViewModel: ProfileViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -72,7 +74,7 @@ fun editSetTitle() {
 
         )
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = { profileViewModel.postProfile() },
             modifier = Modifier.padding(start = 107.dp)
         ) {
             Icon(imageVector = Icons.Filled.Check, contentDescription = "check", tint = Color.Gray)
@@ -258,7 +260,7 @@ fun SuChatImg() {
 @Preview(showBackground = true)
 @Composable
 fun EditProfileScreenPreview() {
-    EditProfileScreen(navController = rememberNavController())
+    EditProfileScreen(navController = rememberNavController(), viewModel())
 }
 
 @Preview(showBackground = true)

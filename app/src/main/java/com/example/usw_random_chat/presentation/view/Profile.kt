@@ -21,6 +21,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.data.repository.ProfileRepository
+import com.example.usw_random_chat.domain.usecase.ProfileUseCase
 import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 
 @Composable
@@ -35,7 +37,7 @@ fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel(), navControlle
         getNickName(profileViewModel.nickname) { profileViewModel.updateNickname(it) }
         getMBTI(mbti = profileViewModel.mbti) { profileViewModel.updateMBTI(it) }
         getSelfIntroduce(introduce = profileViewModel.selfintroduce) { profileViewModel.updateSelfIntroduce(it)}
-        startButton()
+        startButton(profileViewModel)
         Text(
             text = "프로필은 언제든 자유롭게\n수정할 수 있습니다",
             textAlign = TextAlign.Center,
@@ -55,7 +57,7 @@ fun setTitle() {
             .padding(top = 20.dp),
     ) {
         IconButton(
-            onClick = { /*TODO*/ }
+            onClick = {  }
         ) {
             Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
         }
@@ -208,10 +210,10 @@ fun getSelfIntroduce(introduce: State<String>, onSelfIntroduceChanged: (String) 
 }
 
 @Composable
-fun startButton() {
+fun startButton(profileViewModel: ProfileViewModel) {
     Box(modifier = Modifier.padding(top = 50.dp)) {
         Button(
-            onClick = { },
+            onClick = { profileViewModel.postProfile() },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color(0xFF2D64D8),
                 contentColor = Color.White
@@ -238,7 +240,8 @@ fun startButton() {
 @Preview(showBackground = true)
 @Composable
 fun ProfilePreview() {
-    ProfileScreen(profileViewModel = ProfileViewModel(),navController = rememberNavController())
+    ProfileScreen(profileViewModel = viewModel(),navController = rememberNavController())
+
 }
 
 @Preview(showBackground = true)
@@ -271,7 +274,7 @@ fun getSelfIntroducePreview() {
 @Preview(showBackground = true)
 @Composable
 fun startButtonPreview() {
-    startButton()
+    startButton(viewModel())
 }
 
 @Preview(showBackground = true)

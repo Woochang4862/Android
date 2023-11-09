@@ -7,11 +7,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.usw_random_chat.data.dto.ProfileDTO
+import com.example.usw_random_chat.domain.usecase.ProfileUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProfileViewModel : ViewModel() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUseCase) : ViewModel() {
     private val _nickname = mutableStateOf("")
     private val _mbti = mutableStateOf("")
     private val _selfintroduce = mutableStateOf("")
@@ -28,5 +35,11 @@ class ProfileViewModel : ViewModel() {
     }
     fun updateSelfIntroduce(newValue : String){
         _selfintroduce.value = newValue
+    }
+
+    fun postProfile(){
+        viewModelScope.launch {
+            profileUseCase.excute(ProfileDTO(nickname.value,mbti.value,selfintroduce.value))
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.di
 
+import com.example.usw_random_chat.data.api.ProfileApiService
 import com.example.usw_random_chat.data.api.Register
 import dagger.Module
 import dagger.Provides
@@ -15,4 +16,9 @@ object ApiModule {
     @Singleton
     fun provideRegister(retrofit: Retrofit): Register =
         retrofit.create(Register::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProfileApiService(retrofit: Retrofit): ProfileApiService =
+        retrofit.create(ProfileApiService::class.java)
 }

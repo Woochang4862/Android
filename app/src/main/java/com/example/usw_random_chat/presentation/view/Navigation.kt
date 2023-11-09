@@ -1,9 +1,12 @@
 package com.example.usw_random_chat.presentation.view
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.usw_random_chat.data.repository.ProfileRepository
+import com.example.usw_random_chat.domain.usecase.ProfileUseCase
 import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 
 @Composable
@@ -33,7 +36,7 @@ fun Navigation() {
             IdSearch(navController)
         }
         composable(route = Screen.ProfileScreen.route) {
-            ProfileScreen(ProfileViewModel(),navController)
+            ProfileScreen(viewModel(),navController)
         }
         composable(route = Screen.FeedBackScreen.route) {
             FeedbackShow(navController)
@@ -42,7 +45,7 @@ fun Navigation() {
             PolicyScreen(navController)
         }
         composable(route = Screen.EditProfileScreen.route) {
-            EditProfileScreen(navController)
+            EditProfileScreen(navController, viewModel())
         }
         composable(route = Screen.LoadingScreen.route) {
             LoadingScreen(navController)

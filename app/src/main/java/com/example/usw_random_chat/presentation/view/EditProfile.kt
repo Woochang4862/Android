@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.presentation.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,9 +8,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -32,36 +36,37 @@ import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 
 @Composable
 fun EditProfileScreen(navController: NavController, profileViewModel: ProfileViewModel = viewModel()) {
-    val editNickName = remember {
-        mutableStateOf("")
-    }
-    val editMBTI = remember {
-        mutableStateOf("")
-    }
-    val editSelfIntroduce = remember {
-        mutableStateOf("")
-    }
     Column(
         Modifier
             .fillMaxSize()
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle(profileViewModel)
-        editGetNickName(nickname = editNickName)
+        editSetTitle(profileViewModel.postProfile()) { navController.popBackStack() }
+        /*editGetNickName(nickname = editNickName)
         editGetMBTI(mbti = editMBTI)
-        editGetSelfIntroduce(introduce = editSelfIntroduce)
+        editGetSelfIntroduce(introduce = editSelfIntroduce)*/
+        getNickName(profileViewModel.nickname,"") { profileViewModel.updateNickname(it) }
+        getMBTI(profileViewModel.mbti,"") { profileViewModel.updateMBTI(it) }
+        getSelfIntroduce(profileViewModel.selfintroduce,"") { profileViewModel.updateSelfIntroduce(it)}
         SuChatImg()
     }
 }
 
 @Composable
-fun editSetTitle(profileViewModel: ProfileViewModel) {
+fun editSetTitle(onCheckPress : Unit, onBackPress : () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        IconButton(
+            onClick = onBackPress
+        ) {
+            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
+        }
+        Spacer(modifier = Modifier.weight(0.1f))
         Text(
             text = "프로필 설정",
             textAlign = TextAlign.Center,
@@ -69,13 +74,13 @@ fun editSetTitle(profileViewModel: ProfileViewModel) {
             fontWeight = FontWeight(600),
             fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(start = 155.dp)
-
         )
+        Spacer(modifier = Modifier.weight(0.1f))
         IconButton(
-            onClick = { profileViewModel.postProfile() },
-            modifier = Modifier.padding(start = 107.dp)
+            onClick = {
+                onCheckPress
+                onBackPress
+                      },
         ) {
             Icon(imageVector = Icons.Filled.Check, contentDescription = "check", tint = Color.Gray)
         }
@@ -156,7 +161,7 @@ fun editGetNickName(nickname: MutableState<String>) {
 @Composable
 fun editGetMBTI(mbti: MutableState<String>) {
     Column(Modifier.padding(top = 5.dp)) {
-        Row() {
+        Row {
             Text(
                 text = "MBTI",
                 fontSize = 16.sp,
@@ -194,7 +199,7 @@ fun editGetMBTI(mbti: MutableState<String>) {
 @Composable
 fun editGetSelfIntroduce(introduce: MutableState<String>) {
     Column(Modifier.padding(top = 10.dp)) {
-        Row() {
+        Row{
             Text(
                 text = "자기소개",
                 fontSize = 16.sp,
@@ -257,10 +262,28 @@ fun SuChatImg() {
 
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Preview(showBackground = true)
 @Composable
 fun EditProfileScreenPreview() {
-    EditProfileScreen(navController = rememberNavController(), viewModel())
+    val nickname : State<String> = mutableStateOf("")
+    val mbti : State<String> = mutableStateOf("")
+    val selfintroduce : State<String> = mutableStateOf("")
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        editSetTitle(Unit){}
+        /*editGetNickName(nickname = editNickName)
+        editGetMBTI(mbti = editMBTI)
+        editGetSelfIntroduce(introduce = editSelfIntroduce)*/
+        getNickName(nickname,"") {  }
+        getMBTI(mbti,"") { }
+        getSelfIntroduce(selfintroduce,"") {}
+        SuChatImg()
+    }
 }
 
 @Preview(showBackground = true)

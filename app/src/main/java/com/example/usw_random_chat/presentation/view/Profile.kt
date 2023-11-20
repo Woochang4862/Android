@@ -1,4 +1,5 @@
 package com.example.usw_random_chat.presentation.view
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -40,18 +42,18 @@ import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 
 @Composable
-fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel(), navController: NavController) {
+fun ProfileScreen(profileViewModel : ProfileViewModel = viewModel(),navController: NavController) {
     Column(
         Modifier
             .fillMaxSize()
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        setTitle()
-        getNickName(profileViewModel.nickname) { profileViewModel.updateNickname(it) }
-        getMBTI(mbti = profileViewModel.mbti) { profileViewModel.updateMBTI(it) }
-        getSelfIntroduce(introduce = profileViewModel.selfintroduce) { profileViewModel.updateSelfIntroduce(it)}
-        startButton(profileViewModel)
+        setTitle{ navController.popBackStack() }
+        getNickName(profileViewModel.nickname,"(필수)") { profileViewModel.updateNickname(it) }
+        getMBTI(profileViewModel.mbti,"(선택)") { profileViewModel.updateMBTI(it) }
+        getSelfIntroduce(profileViewModel.selfintroduce,"(선택)") { profileViewModel.updateSelfIntroduce(it)}
+        startButton{profileViewModel.postProfile()}
         Text(
             text = "프로필은 언제든 자유롭게\n수정할 수 있습니다",
             textAlign = TextAlign.Center,
@@ -63,18 +65,24 @@ fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel(), navControlle
 
 }
 
+
+
+
 @Composable
-fun setTitle() {
+fun setTitle(onPress : () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        Spacer(modifier = Modifier.weight(0.08f))
         IconButton(
-            onClick = {  }
+            onClick = onPress
         ) {
             Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
         }
+        Spacer(modifier = Modifier.weight(0.25f))
         Text(
             text = "프로필 설정",
             textAlign = TextAlign.Center,
@@ -82,19 +90,19 @@ fun setTitle() {
             fontWeight = FontWeight(600),
             fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp, end = 40.dp)
         )
+
+        Spacer(modifier = Modifier.weight(0.5f))
     }
 }
 
 @Composable
-fun getNickName(nickname: State<String>, onNicknameChanged: (String) -> Unit) {
+fun getNickName(nickname: State<String>, text : String, onNicknameChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 40.dp, start = 32.dp)) {
         Row() {
             Text(text = "닉네임", fontSize = 16.sp)
             Text(
-                text = "(필수)",
+                text = text,
                 color = Color.Red,
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -156,12 +164,12 @@ fun getNickName(nickname: State<String>, onNicknameChanged: (String) -> Unit) {
 }
 
 @Composable
-fun getMBTI(mbti: State<String>,onMBTIChanged: (String) -> Unit) {
+fun getMBTI(mbti: State<String>,text: String, onMBTIChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
             Text(text = "MBTI", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)))
             Text(
-                text = "(선택)",
+                text = text,
                 fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                 color = Color.Gray,
                 fontSize = 10.sp,
@@ -190,12 +198,12 @@ fun getMBTI(mbti: State<String>,onMBTIChanged: (String) -> Unit) {
 }
 
 @Composable
-fun getSelfIntroduce(introduce: State<String>, onSelfIntroduceChanged: (String) -> Unit) {
+fun getSelfIntroduce(introduce: State<String>, text: String, onSelfIntroduceChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
             Text(text = "자기소개", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),)
             Text(
-                text = "(선택)",
+                text = text,
                 color = Color.Gray,
                 fontSize = 10.sp,
                 fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -224,10 +232,10 @@ fun getSelfIntroduce(introduce: State<String>, onSelfIntroduceChanged: (String) 
 }
 
 @Composable
-fun startButton(profileViewModel: ProfileViewModel) {
+fun startButton(onPress: () -> Unit) {
     Box(modifier = Modifier.padding(top = 50.dp)) {
         Button(
-            onClick = { profileViewModel.postProfile() },
+            onClick = onPress,
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color(0xFF2D64D8),
                 contentColor = Color.White
@@ -251,49 +259,63 @@ fun startButton(profileViewModel: ProfileViewModel) {
 }
 
 
+@SuppressLint("UnrememberedMutableState")
 @Preview(showBackground = true)
 @Composable
 fun ProfilePreview() {
-    ProfileScreen(profileViewModel = viewModel(),navController = rememberNavController())
-
+    val nickname : State<String> = mutableStateOf("")
+    val mbti : State<String> = mutableStateOf("")
+    val selfintroduce : State<String> = mutableStateOf("")
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        setTitle{}
+        getNickName(nickname,"(필수)") {  }
+        getMBTI(mbti,"(선택)") {  }
+        getSelfIntroduce(selfintroduce,"(선택)") { }
+        startButton{}
+        Text(
+            text = "프로필은 언제든 자유롭게\n수정할 수 있습니다",
+            textAlign = TextAlign.Center,
+            fontSize = 14.sp,
+            modifier = Modifier.padding(top = 15.dp),
+            fontFamily = FontFamily(Font(R.font.kcc_chassam))
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun getNickNamePreview() {
-    val qwe = remember {
-        mutableStateOf("#NICKNAME")
-    }
+
     //getNickName(qwe)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun getMBTIPreview() {
-    val qwe = remember {
-        mutableStateOf("#MBTI")
-    }
+
     //getMBTI(qwe)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun getSelfIntroducePreview() {
-    val qwe = remember {
-        mutableStateOf("#학과 학번등 소개를 자유롭게 해주세요")
-    }
     //getSelfIntroduce(introduce = qwe)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun startButtonPreview() {
-    startButton(viewModel())
+    //startButton(viewModel())
 }
 
 @Preview(showBackground = true)
 @Composable
 fun setTitlePreview() {
-    setTitle()
+    setTitle(){}
 }
 

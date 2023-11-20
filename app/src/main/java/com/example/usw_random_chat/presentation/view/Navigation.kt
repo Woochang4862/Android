@@ -5,9 +5,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.usw_random_chat.data.repository.ProfileRepository
-import com.example.usw_random_chat.domain.usecase.ProfileUseCase
-import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 
 @Composable
 fun Navigation() {
@@ -21,7 +18,7 @@ fun Navigation() {
             SignInScreen(navController)
         }
         composable(route = Screen.SignUpScreen.route) {
-            SignUpScreen(navController)
+            SignUpScreen(viewModel(),navController)
         }
         composable(route = Screen.SignUpDoneScreen.route) {
             SignUpDoneScreen(navController)

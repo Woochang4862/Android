@@ -1,14 +1,7 @@
 package com.example.usw_random_chat.data.api
 
 import com.example.usw_random_chat.data.dto.UserDTO
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -22,7 +15,7 @@ interface Register {
     @Headers("content-type: application/json")
     suspend fun registerSignIn(@Body jsonpath: UserDTO) : Response<UserDTO>
 
-
+    suspend fun registerIdDoubleCheck(@Body jsonpath: UserDTO) : Response<UserDTO>
     /*companion object{
         private const val BASE_URL = "http://3.35.83.91:8080/" // 공통 주소
 

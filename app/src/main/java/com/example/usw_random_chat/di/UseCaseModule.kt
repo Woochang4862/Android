@@ -1,9 +1,11 @@
 package com.example.usw_random_chat.di
 
 import com.example.usw_random_chat.data.repository.ProfileRepository
-import com.example.usw_random_chat.data.repository.RegisterRepository
+import com.example.usw_random_chat.data.repository.SignInRepository
+import com.example.usw_random_chat.data.repository.SignUpRepository
 import com.example.usw_random_chat.domain.usecase.ProfileUseCase
-import com.example.usw_random_chat.domain.usecase.RegisterUseCase
+import com.example.usw_random_chat.domain.usecase.SignInUseCase
+import com.example.usw_random_chat.domain.usecase.SignUpUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,12 +17,18 @@ import javax.inject.Singleton
 class UseCaseModule {
     @Singleton
     @Provides
-    fun provideRegisterUseCase(registerRepository: RegisterRepository): RegisterUseCase {
-        return RegisterUseCase(registerRepository)
+    fun provideSignInUseCase(signInRepository: SignInRepository): SignInUseCase {
+        return SignInUseCase(signInRepository)
     }
     @Singleton
     @Provides
     fun provideProfileUseCase(profileRepository: ProfileRepository): ProfileUseCase {
         return ProfileUseCase(profileRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSignUpUseCase(signUpRepository: SignUpRepository): SignUpUseCase {
+        return SignUpUseCase(signUpRepository)
     }
 }

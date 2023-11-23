@@ -1,9 +1,11 @@
 package com.example.usw_random_chat.di
 
 import com.example.usw_random_chat.data.repository.ProfileRepository
-import com.example.usw_random_chat.data.repository.RegisterRepository
+import com.example.usw_random_chat.data.repository.SignInRepository
+import com.example.usw_random_chat.data.repository.SignUpRepository
 import com.example.usw_random_chat.data.repositoryimpl.ProfileRepositoryImpl
-import com.example.usw_random_chat.data.repositoryimpl.RegisterRepositoryImpl
+import com.example.usw_random_chat.data.repositoryimpl.SignInRepositoryImpl
+import com.example.usw_random_chat.data.repositoryimpl.SignUpRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,9 +17,13 @@ import javax.inject.Singleton
 abstract class RepositoryModule {
     @Singleton
     @Binds
-    abstract fun provideRegisterRepository(repositoryImpl: RegisterRepositoryImpl): RegisterRepository
+    abstract fun provideSignInRepository(repositoryImpl: SignInRepositoryImpl): SignInRepository
 
     @Singleton
     @Binds
     abstract fun provideProfileRepository(repositoryImpl: ProfileRepositoryImpl): ProfileRepository
+
+    @Singleton
+    @Binds
+    abstract fun provideSignUpRepository(repositoryImpl: SignUpRepositoryImpl): SignUpRepository
 }

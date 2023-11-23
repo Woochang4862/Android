@@ -3,14 +3,16 @@ package com.example.usw_random_chat.presentation.ViewModel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.usw_random_chat.domain.usecase.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
+import com.example.usw_random_chat.data.dto.UserDTO
+import com.example.usw_random_chat.domain.usecase.SignUpUseCase
+import kotlinx.coroutines.launch
 
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(private val registerUseCase: RegisterUseCase) : ViewModel()  {
+class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase) : ViewModel()  {
     private val _rememberId  = mutableStateOf("")
     private val _rememberPw  = mutableStateOf("")
     private val _rememberPwCheck  = mutableStateOf("")
@@ -49,7 +51,9 @@ class SignUpViewModel @Inject constructor(private val registerUseCase: RegisterU
                 _rememberEmail.value.isNotEmpty() && _rememberPwEqualOrNot.value
     }
 
-    fun onPress(){
-
+    fun postSignIn(){
+        viewModelScope.launch {
+            signUpUseCase.signUp(UserDTO(rememberId.value,rememberPw.value,rememberEmail.value) )
+        }
     }
 }

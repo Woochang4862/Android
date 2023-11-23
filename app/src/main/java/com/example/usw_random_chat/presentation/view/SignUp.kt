@@ -50,26 +50,8 @@ import com.example.usw_random_chat.ui.portalEmail
 import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 
-@Composable
+@Composable // 코드 내부를 column 하나만 사용하게 수정해주세요
 fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController) {
-    val screenWidthInDp = (GetScreenWidthInDp())/2 -100
-
-    var rememberPwVisible = remember {
-        mutableStateOf(false)
-    }
-    var rememberPwCheckVisible = remember {
-        mutableStateOf(false)
-    }
-
-    val rememberPwEqualOrNot = remember{
-        mutableStateOf(false)
-    }
-
-    val rememberTrigger = remember{
-        mutableStateOf(false)
-    }
-
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -86,31 +68,30 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
         Column(
             Modifier.padding(top =30.dp)
         ) {
-            IdWrite(signUpViewModel.rememberId){signUpViewModel.updateRememberId(it)}
+            writeID(signUpViewModel.rememberId){signUpViewModel.updateRememberId(it)}
             Spacer(Modifier.padding(15.dp))
-            PwWrite(signUpViewModel.rememberPw){ signUpViewModel.updateRememberPw(it)}
+            writePW(signUpViewModel.rememberPw){ signUpViewModel.updateRememberPw(it)}
             Spacer(Modifier.padding(5.dp))
-            PwCheck(signUpViewModel.rememberPwCheck,signUpViewModel.rememberPwEqualOrNot.value){
+            checkPW(signUpViewModel.rememberPwCheck,signUpViewModel.rememberPwEqualOrNot.value){
                 signUpViewModel.updateRememberPwCheck(it)
             }
             Spacer(Modifier.padding(20.dp))
         }
         EmailTextFieldSignUp(signUpViewModel.rememberEmail){signUpViewModel.updateRememberEmail(it)}
         Spacer(Modifier.padding(20.dp))
-        signUpBotton(signUpViewModel.rememberTrigger.value, navController = navController)
+        signUpBotton(signUpViewModel.rememberTrigger.value, navController = navController){
+            signUpViewModel.postSignIn()
+        }
     }
 
 }
 
-@Composable
-fun IdWrite(id: State<String>, onIdChanged : (String) -> Unit) {
+@Composable // 빨간 끌씨로 뜨는 text 부분을 widjet으로 뺀후 가져와서 재사용 해주세요
+fun writeID(id: State<String>, onIdChanged : (String) -> Unit) {
     val idLengthCheck = id.value.length < 4 || id.value.length > 16
-
-
 
     Row(
         Modifier, horizontalArrangement = Arrangement.Start
-
     ) {
         Spacer(Modifier.weight(0.2f))
         Text(
@@ -149,8 +130,8 @@ fun IdWrite(id: State<String>, onIdChanged : (String) -> Unit) {
     }
 }
 
-@Composable
-fun PwWrite(pw: State<String> ,onRememberPw : (String) -> Unit) {
+@Composable// 위의 코멘트와 동일 합니다, 변수 위치 위로 올려주세요
+fun writePW(pw: State<String>, onRememberPw : (String) -> Unit) {
     val screenWidthInDp = (GetScreenWidthInDp() - 326)/2
     Row(
         Modifier, horizontalArrangement = Arrangement.Start
@@ -228,8 +209,8 @@ fun PwWrite(pw: State<String> ,onRememberPw : (String) -> Unit) {
     }
 }
 
-@Composable
-fun PwCheck(
+@Composable // 위의 코멘트와 동일
+fun checkPW(
     pwCheck: State<String>,
     equalCheck : Boolean,
     onRememberPwCheck : (String) -> Unit,
@@ -315,7 +296,6 @@ fun PwCheck(
 
 @Composable
 fun EmailTextFieldSignUp(email: State<String>,onRememberEmail : (String) -> Unit) {
-    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2
     Row(
         Modifier
     ) {
@@ -327,7 +307,7 @@ fun EmailTextFieldSignUp(email: State<String>,onRememberEmail : (String) -> Unit
 }
 
 @Composable
-fun signUpBotton(trigger: Boolean, navController: NavController) {
+fun signUpBotton(trigger: Boolean, navController: NavController, onPress : () -> Unit) {
     Column(
         Modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -343,32 +323,12 @@ fun signUpBotton(trigger: Boolean, navController: NavController) {
                     .height(56.dp)
                     .background(color = Color.White)
             ) {
-                /*Register.create()
-                    .registerSignUp(
-                        UserDTO("qzxhukuc890sdfeom","g45613423shgtewdf58","sasqp524lwpa23wesd")
-                    )
-                    .enqueue(object : retrofit2.Callback<UserDTO> {
-                        override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
-                            if(response.isSuccessful) {
-                                Log.d("회원가입성공", response.body().toString())
-                                navController.navigate(Screen.SignUpDoneScreen.route){
-                                    popUpTo(Screen.SignUpDoneScreen.route){
-                                        inclusive = true
-                                    }
-                                }
-                            }
-                            else {
-                                Log.w("회원가입실패",response.body().toString())
-                            }
-                        }
-                        override fun onFailure(call: Call<UserDTO>, t: Throwable) {
-                            Log.e("연결 실패","${t.localizedMessage}")
-                        }
-                    })*/
+                onPress
             }
             Spacer(Modifier.weight(0.1f))
         }
         Row(Modifier){
+            // 아래 부분 코드를 더 줄일 수 있는 방법이 있는지 고민해주세요
             Spacer(Modifier.weight(0.2f))
             Text(
                 text = buildAnnotatedString {

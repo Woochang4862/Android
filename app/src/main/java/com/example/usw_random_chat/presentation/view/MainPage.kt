@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.ModalDrawer
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -50,37 +52,39 @@ import kotlinx.coroutines.launch
 fun MainScreen(navController: NavController) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    Scaffold(
-        scaffoldState = scaffoldState,
-        drawerContent = {
-            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-                Text(text = "!2512341")
-                Text(text = "iuvablivcasd")
-                Text(text = "!24basfibsdakjfvaisv")
-            }
-        },
-        topBar = {
-            MyTopAppBar() {
-                scope.launch {
-                    scaffoldState.drawerState.open()
-
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        Scaffold(
+            scaffoldState = scaffoldState,
+            drawerContent = {
+                DrawerScreen()
+            },
+            topBar = {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                    MyTopAppBar() {
+                        scope.launch {
+                            scaffoldState.drawerState.open()
+                        }
+                    }
                 }
-            }
-        },
-        content = { MainContents(navController) },
-        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-    )
+            },
+
+            content = {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                    MainContents(navController)
+                }
+            },
+            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+        )
+    }
 }
 
 @Composable
 fun DrawerScreen() {
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
-
     Text(text = "!2512341")
     Text(text = "iuvablivcasd")
     Text(text = "!24basfibsdakjfvaisv")
 }
+
 
 @Composable
 fun MyTopAppBar(onPress: () -> Unit) {
@@ -95,7 +99,7 @@ fun MyTopAppBar(onPress: () -> Unit) {
             )
         },
         actions = {
-            IconButton(onClick = {onPress()}) {
+            IconButton(onClick = { onPress() }) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Menu",
@@ -193,7 +197,7 @@ fun TalkBalloon() {
 @Composable
 fun MatchingButton(navController: NavController) {
     Button(
-        onClick ={navController.navigate(Screen.MatchingScreen.route)} ,
+        onClick = { navController.navigate(Screen.MatchingScreen.route) },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color(0xFF2D64D8),
             contentColor = Color.White

@@ -44,52 +44,48 @@ import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
 import com.example.usw_random_chat.ui.GetScreenWidthInDp
+import com.example.usw_random_chat.ui.RedWarning
 import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.idSearchBtn
 import com.example.usw_random_chat.ui.portalEmail
 import com.example.usw_random_chat.ui.tittleWithBackArrow
 
-
-@Composable // 코드 내부를 column 하나만 사용하게 수정해주세요
+@Composable
 fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFFFFFFFF))
     ) {
-
         Spacer(Modifier.padding(20.dp))
-
-        tittleWithBackArrow("회원가입",modifier = Modifier
-            .height(48.dp)
-            .width(100.dp)
-            .weight(0.6f)
-            .offset(y = 10.dp))
-        Column(
-            Modifier.padding(top =30.dp)
-        ) {
-            writeID(signUpViewModel.rememberId){signUpViewModel.updateRememberId(it)}
-            Spacer(Modifier.padding(15.dp))
-            writePW(signUpViewModel.rememberPw){ signUpViewModel.updateRememberPw(it)}
-            Spacer(Modifier.padding(5.dp))
-            checkPW(signUpViewModel.rememberPwCheck,signUpViewModel.rememberPwEqualOrNot.value){
-                signUpViewModel.updateRememberPwCheck(it)
-            }
-            Spacer(Modifier.padding(20.dp))
+        tittleWithBackArrow(
+            "회원가입",
+            Modifier
+                .height(48.dp)
+                .width(100.dp)
+                .weight(0.6f)
+                .offset(y = 10.dp)
+        )
+        Spacer(Modifier.padding(top = 20.dp))
+        writeID(signUpViewModel.rememberId) { signUpViewModel.updateRememberId(it) }
+        Spacer(Modifier.padding(15.dp))
+        writePW(signUpViewModel.rememberPw) { signUpViewModel.updateRememberPw(it) }
+        Spacer(Modifier.padding(5.dp))
+        checkPW(signUpViewModel.rememberPwCheck, signUpViewModel.rememberPwEqualOrNot.value) {
+            signUpViewModel.updateRememberPwCheck(it)
         }
-        EmailTextFieldSignUp(signUpViewModel.rememberEmail){signUpViewModel.updateRememberEmail(it)}
         Spacer(Modifier.padding(20.dp))
-        signUpBotton(signUpViewModel.rememberTrigger.value, navController = navController){
+        EmailTextFieldSignUp(signUpViewModel.rememberEmail) { signUpViewModel.updateRememberEmail(it) }
+        Spacer(Modifier.padding(20.dp))
+        signUpBotton(signUpViewModel.rememberTrigger.value, navController = navController) {
             signUpViewModel.postSignIn()
         }
     }
-
 }
 
-@Composable // 빨간 끌씨로 뜨는 text 부분을 widjet으로 뺀후 가져와서 재사용 해주세요
-fun writeID(id: State<String>, onIdChanged : (String) -> Unit) {
+@Composable
+fun writeID(id: State<String>, onIdChanged: (String) -> Unit) {
     val idLengthCheck = id.value.length < 4 || id.value.length > 16
-
     Row(
         Modifier, horizontalArrangement = Arrangement.Start
     ) {
@@ -106,16 +102,18 @@ fun writeID(id: State<String>, onIdChanged : (String) -> Unit) {
                 .height(19.dp)
                 .weight(0.24f)
         )
-        if(idLengthCheck) {
-            Text(
-                text = "*4자 이상 16자 이내로 작성해주세요",
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontSize = 12.sp,
-                lineHeight = 14.sp,
-                fontWeight = FontWeight(400),
-                color = Color(0xFFFF0000),
-                textAlign = TextAlign.Left,
-                modifier = Modifier
+        if (idLengthCheck) {
+            RedWarning(
+                "*4자 이상 16자 이내로 작성해주세요",
+                Modifier
+                    .height(18.dp)
+                    .weight(1f)
+                    .padding(top = 3.dp)
+            )
+        } else {
+            RedWarning(
+                "                     ",
+                Modifier
                     .height(18.dp)
                     .weight(1f)
                     .padding(top = 3.dp)
@@ -124,15 +122,15 @@ fun writeID(id: State<String>, onIdChanged : (String) -> Unit) {
         Spacer(Modifier.weight(0.3f))
     }
     Spacer(Modifier.padding(5.dp))
-
-    idSearchBtn(textFieldIdValue = id.value, onValueChange = onIdChanged , idLengthCheck){
+    idSearchBtn(textFieldIdValue = id.value, onValueChange = onIdChanged, idLengthCheck) {
 
     }
 }
 
-@Composable// 위의 코멘트와 동일 합니다, 변수 위치 위로 올려주세요
-fun writePW(pw: State<String>, onRememberPw : (String) -> Unit) {
-    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2
+@Composable
+fun writePW(pw: State<String>, onRememberPw: (String) -> Unit) {
+    val screenWidthInDp = (GetScreenWidthInDp() - 326) / 2
+    val passwordVisible = remember { mutableStateOf(false) }
     Row(
         Modifier, horizontalArrangement = Arrangement.Start
     ) {
@@ -148,18 +146,19 @@ fun writePW(pw: State<String>, onRememberPw : (String) -> Unit) {
             modifier = Modifier
                 .height(19.dp)
                 .weight(0.2f)
-
         )
-        if(pw.value.length < 6 || pw.value.length > 20) {
-            Text(
-                text = "*6자 이상 20자 이내로 작성해 주세요",
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontSize = 12.sp,
-                lineHeight = 14.sp,
-                fontWeight = FontWeight(400),
-                color = Color(0xFFFF0000),
-                textAlign = TextAlign.Left,
-                modifier = Modifier
+        if (pw.value.length < 6 || pw.value.length > 20) {
+            RedWarning(
+                "*6자 이상 20자 이내로 작성해 주세요",
+                Modifier
+                    .height(18.dp)
+                    .weight(0.65f)
+                    .padding(top = 3.dp)
+            )
+        } else {
+            RedWarning(
+                "                      ",
+                Modifier
                     .height(18.dp)
                     .weight(0.65f)
                     .padding(top = 3.dp)
@@ -167,15 +166,12 @@ fun writePW(pw: State<String>, onRememberPw : (String) -> Unit) {
         }
         Spacer(Modifier.weight(0.15f))
     }
-    val passwordVisible = remember { mutableStateOf(false) }
-
     Spacer(Modifier.padding(5.dp))
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .height(55.dp)
-            //.width(360.dp)
             .padding(start = screenWidthInDp.dp, end = screenWidthInDp.dp)
             .border(
                 width = 1.dp, color = Color(0xFFBFBFBF),
@@ -196,31 +192,28 @@ fun writePW(pw: State<String>, onRememberPw : (String) -> Unit) {
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
                 .weight(0.8f)
-                //.padding(start= 5.dp)
-        )//baseline_visibility_24
-        IconButton(onClick = {   passwordVisible.value = !passwordVisible.value     }) {
+        )
+        IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
             Icon(
                 painter = painterResource(id = if (passwordVisible.value) R.drawable.visibility else R.drawable.visibility_off),
                 contentDescription = null // decorative element
-
             )
         }
         Spacer(Modifier.weight(0.02f))
     }
 }
 
-@Composable // 위의 코멘트와 동일
+@Composable
 fun checkPW(
     pwCheck: State<String>,
-    equalCheck : Boolean,
-    onRememberPwCheck : (String) -> Unit,
+    equalCheck: Boolean,
+    onRememberPwCheck: (String) -> Unit,
 ) {
     val passwordCheckVisible = remember { mutableStateOf(false) }
-    val screenWidthInDp = (GetScreenWidthInDp() - 326)/2
+    val screenWidthInDp = (GetScreenWidthInDp() - 326) / 2
     Row(
         Modifier, horizontalArrangement = Arrangement.Start
     ) {
-
         Text(
             text = "비밀번호 확인",
             fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -234,25 +227,16 @@ fun checkPW(
                 .padding(start = (screenWidthInDp + 5).dp)
             //여긴 가중치로 줄 경우 붉은 글씨가 뜰때 얘네가 움직여서 고정값으로 줌
         )
-        if (equalCheck) {
-            Text(
-                text = "*비밀번호가 일치하지 않습니다",
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontSize = 12.sp,
-                lineHeight = 14.sp,
-                fontWeight = FontWeight(400),
-                color = Color(0xFFFF0000),
-                textAlign = TextAlign.Left,
-                modifier = Modifier
+        if (!equalCheck) {
+            RedWarning(
+                "*비밀번호가 일치하지 않습니다",
+                Modifier
                     .height(18.dp)
                     .padding(start = 15.dp, top = 3.dp)
             )
         }
         Spacer(Modifier.weight(0.1f))
     }
-
-
-
     Spacer(Modifier.padding(5.dp))
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -265,8 +249,7 @@ fun checkPW(
                 width = 1.dp, color = Color(0xFFBFBFBF),
                 shape = RoundedCornerShape(8.dp)
             )
-    ){
-
+    ) {
         TextField(
             value = pwCheck.value,
             onValueChange = onRememberPwCheck,
@@ -281,13 +264,11 @@ fun checkPW(
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
                 .weight(0.8f)
-                //.padding(start= 5.dp)
-        )//baseline_visibility_24
+        )
         IconButton(onClick = { passwordCheckVisible.value = !passwordCheckVisible.value }) {
             Icon(
                 painter = painterResource(id = if (passwordCheckVisible.value) R.drawable.visibility else R.drawable.visibility_off),
                 contentDescription = null // decorative element
-
             )
         }
         Spacer(Modifier.weight(0.02f))
@@ -295,19 +276,20 @@ fun checkPW(
 }
 
 @Composable
-fun EmailTextFieldSignUp(email: State<String>,onRememberEmail : (String) -> Unit) {
+fun EmailTextFieldSignUp(email: State<String>, onRememberEmail: (String) -> Unit) {
     Row(
         Modifier
     ) {
         Spacer(Modifier.weight(0.1f))
-        portalEmail(textFieldValue = email.value, onValueChange = onRememberEmail
+        portalEmail(
+            textFieldValue = email.value, onValueChange = onRememberEmail
         )
         Spacer(Modifier.weight(0.1f))
     }
 }
 
 @Composable
-fun signUpBotton(trigger: Boolean, navController: NavController, onPress : () -> Unit) {
+fun signUpBotton(trigger: Boolean, navController: NavController, onPress: () -> Unit) {
     Column(
         Modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -327,7 +309,7 @@ fun signUpBotton(trigger: Boolean, navController: NavController, onPress : () ->
             }
             Spacer(Modifier.weight(0.1f))
         }
-        Row(Modifier){
+        Row(Modifier) {
             // 아래 부분 코드를 더 줄일 수 있는 방법이 있는지 고민해주세요
             Spacer(Modifier.weight(0.2f))
             Text(

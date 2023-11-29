@@ -188,7 +188,7 @@ fun idSearchBtn(textFieldIdValue: String, onValueChange: (String) -> Unit,idLeng
                 .weight(0.8f)
         )
         Button(
-            enabled = idLengthCheck,
+            enabled = !idLengthCheck,
             onClick = onPress,
             modifier = Modifier
                 //.padding(start = 30.dp)
@@ -473,4 +473,18 @@ fun GetScreenHeightInDp(): Int {
     val density = LocalDensity.current.density
     val screenHeightInPx = context.resources.displayMetrics.heightPixels
     return (screenHeightInPx / density).toInt()
+}
+
+@Composable
+fun RedWarning(warningText: String,modifier: Modifier){
+    Text(
+        text = warningText,
+        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+        fontSize = 12.sp,
+        lineHeight = 14.sp,
+        fontWeight = FontWeight(400),
+        color = Color(0xFFFF0000),
+        textAlign = TextAlign.Left,
+        modifier = modifier
+    )
 }

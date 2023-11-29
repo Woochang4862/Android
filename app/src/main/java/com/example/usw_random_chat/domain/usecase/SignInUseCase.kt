@@ -7,6 +7,4 @@ class SignInUseCase(private val signInRepository: SignInRepository) {
     suspend fun excute(param : UserDTO) : UserDTO {
         return signInRepository.signin(param)
     }
-
-
 }

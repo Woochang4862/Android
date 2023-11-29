@@ -33,7 +33,7 @@ import com.example.usw_random_chat.R
 
 
 @Composable
-fun FeedbackShow(navController: NavController){
+fun FeedbackShow(navController: NavController) {
     val edittext = remember {
         mutableStateOf("")
     }
@@ -44,14 +44,14 @@ fun FeedbackShow(navController: NavController){
 }
 
 @Composable
-fun FeedbackText(){
+fun FeedbackText() {
     Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 top = 88.dp
             ),
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = "피드백",
@@ -69,14 +69,14 @@ fun FeedbackText(){
 }
 
 @Composable
-fun FeedbackExit(){
+fun FeedbackExit() {
     Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 top = 70.dp
             ),
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(1f))
         TextButton(
             onClick = { /*TODO*/ },
@@ -97,18 +97,18 @@ fun FeedbackExit(){
 }
 
 @Composable
-fun FeedbackTextField(text: MutableState<String>){
+fun FeedbackTextField(text: MutableState<String>) {
     Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 top = 140.dp
             ),
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(0.1f))
         OutlinedTextField(
             value = text.value,
-            onValueChange = {textValue -> text.value = textValue},
+            onValueChange = { textValue -> text.value = textValue },
             shape = RoundedCornerShape(10.dp),
             placeholder = {
                 Text(
@@ -130,14 +130,14 @@ fun FeedbackTextField(text: MutableState<String>){
 }
 
 @Composable
-fun FeedbackSubmitBtn(){
+fun FeedbackSubmitBtn() {
     Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 top = 385.dp,
             ),
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(0.1f))
         Button(
             onClick = { /*TODO*/ },
@@ -162,20 +162,23 @@ fun FeedbackSubmitBtn(){
 
 @Preview(showBackground = true)
 @Composable
-fun FeedbackShowPreview(){
+fun FeedbackShowPreview() {
     FeedbackShow(navController = rememberNavController())
 }
 
 @Preview(showBackground = true)
 @Composable
-fun FeedbackTextPreview(){
+fun FeedbackTextPreview() {
     FeedbackText()
 }
+
 @Preview(showBackground = true)
 @Composable
-fun FeedbackExitPreview(){
+fun FeedbackExitPreview() {
     FeedbackExit()
-}@Preview(showBackground = true)
+}
+
+@Preview(showBackground = true)
 @Composable
 fun FeedbackSubmitBtnPreview() {
     FeedbackSubmitBtn()

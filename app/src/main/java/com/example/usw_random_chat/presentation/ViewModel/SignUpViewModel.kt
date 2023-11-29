@@ -43,7 +43,6 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     }
     fun updateRememberPwEqualOrNot(){
         _rememberPwEqualOrNot.value = _rememberPw.value == _rememberPwCheck.value
-
     }
     fun updateRememberTrigger(){
         _rememberTrigger.value =  _rememberPw.value == _rememberPwCheck.value &&
@@ -51,7 +50,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                 _rememberEmail.value.isNotEmpty() && _rememberPwEqualOrNot.value
     }
 
-    fun postSignIn(){
+    fun postSignUp(){
         viewModelScope.launch {
             signUpUseCase.signUp(UserDTO(rememberId.value,rememberPw.value,rememberEmail.value) )
         }

@@ -63,7 +63,6 @@ fun ProfileScreen(profileViewModel : ProfileViewModel = viewModel(),navControlle
             fontFamily = FontFamily(Font(R.font.kcc_chassam))
         )
     }
-
 }
 
 
@@ -92,7 +91,6 @@ fun setTitle(onPress : () -> Unit) {
             fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             modifier = Modifier
         )
-
         Spacer(modifier = Modifier.weight(0.5f))
     }
 }

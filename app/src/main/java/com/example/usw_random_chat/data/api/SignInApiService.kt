@@ -10,6 +10,4 @@ interface SignInApiService {
     @POST("member2/login") // 세부 주소
     @Headers("content-type: application/json")
     suspend fun registerSignIn(@Body jsonpath: UserDTO) : Response<UserDTO>
-
-
 }

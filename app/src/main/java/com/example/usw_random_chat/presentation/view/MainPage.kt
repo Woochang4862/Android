@@ -3,8 +3,10 @@ package com.example.usw_random_chat.presentation.view
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -83,52 +85,117 @@ fun MainScreen(navController: NavController) {
 
 @Composable
 fun DrawerScreen() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        IconButton(
-            onClick = { /*TODO*/ },
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.cancel),
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            IconButton(
+                onClick = { /*TODO*/ },
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.cancel),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .width(16.dp)
+                        .height(16.dp)
+                )
+            }
+            Image(
+                painter = painterResource(id = R.drawable.profile_img),
                 contentDescription = "",
                 modifier = Modifier
-                    .width(16.dp)
-                    .height(16.dp)
+                    .width(49.dp)
+                    .height(49.dp)
             )
-        }
-        Image(
-            painter = painterResource(id = R.drawable.profile_img),
-            contentDescription = "",
-            modifier = Modifier
-                .width(49.dp)
-                .height(49.dp)
-        )
-        Text(
-            text = "AnSungMin",
-            fontSize = 22.sp,
-            lineHeight = 24.sp,
-            fontFamily = FontFamily(Font(R.font.kcc_chassam)),
-            fontWeight = FontWeight(400),
-            color = Color(0xFF111111),
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            text = "# ISTP",
-            fontSize = 14.sp,
-            lineHeight = 24.sp,
-            fontFamily = FontFamily(Font(R.font.kcc_chassam)),
-            fontWeight = FontWeight(400),
-            color = Color(0xFF989898),
-            textAlign = TextAlign.Center,
-        )
-        Image(
-            painter = painterResource(id = R.drawable.baseline),
-            contentDescription = "",
-            modifier = Modifier.fillMaxWidth()
-        )
-        drawerMenu(image = R.drawable.profile_img, menuName = "프로필 설정") {
-            
+            Text(
+                text = "AnSungMin",
+                fontSize = 22.sp,
+                lineHeight = 24.sp,
+                fontFamily = FontFamily(Font(R.font.kcc_chassam)),
+                fontWeight = FontWeight(400),
+                color = Color(0xFF111111),
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = "# ISTP",
+                fontSize = 14.sp,
+                lineHeight = 24.sp,
+                fontFamily = FontFamily(Font(R.font.kcc_chassam)),
+                fontWeight = FontWeight(400),
+                color = Color(0xFF989898),
+                textAlign = TextAlign.Center,
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .border(100.dp, Color(0xFFEDEDED))
+            )
+            Image(
+                painter = painterResource(id = R.drawable.baseline),
+                contentDescription = "",
+                modifier = Modifier.fillMaxWidth()
+            )
+            drawerMenu(image = R.drawable.profile_img, menuName = "프로필 설정") {
+
+            }
+            drawerMenu(image = R.drawable.privacy_policy, menuName = "이용 약관") {
+
+            }
+            drawerMenu(image = R.drawable.codicon_feedback, menuName = "피드백") {
+
+            }
+            drawerMenu(image = R.drawable.logout, menuName = "로그아웃") {
+
+            }
+            Box(
+                Modifier
+                    .background(Color(0xFFEDEDED))
+                    .fillMaxWidth()
+                    .height(150.dp)
+            ) {
+                Column {
+                    Image(
+                        painter = painterResource(id = R.drawable.suchat),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(58.dp)
+                            .height(15.dp)
+                    )
+                    Text(
+                        text = "Copyright 2023. \nFlag inc. all rights reserved.",
+                        fontSize = 10.sp,
+                        lineHeight = 12.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                        fontWeight = FontWeight(400),
+                        color = Color(0xFF767676),
+                        letterSpacing = 0.25.sp,
+                    )
+                    Button(
+                        onClick = {},
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+                        elevation = ButtonDefaults.elevation(0.dp),
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text(
+                            text = "회원 탈퇴하기",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF767676),
+                            textAlign = TextAlign.Center,
+                            letterSpacing = 0.3.sp,
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_chevron_right_24),
+                            contentDescription = "",
+                            //modifier = Modifier.
+                        )
+
+                    }
+                }
+            }
         }
     }
+
 }
 
 

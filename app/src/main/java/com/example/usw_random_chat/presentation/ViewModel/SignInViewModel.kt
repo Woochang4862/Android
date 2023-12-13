@@ -19,6 +19,14 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     val id : State<String> = _id
     val password : State<String>  = _password
 
+    fun updateID(newValue : String){
+        _id.value = newValue
+    }
+
+    fun updatePassWord(newValue : String){
+        _password.value = newValue
+    }
+
     fun postSignIn(){
         viewModelScope.launch {//viewModelScope 공부하기
             signInUseCase.excute(UserDTO(id.value,password.value))

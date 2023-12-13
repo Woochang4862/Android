@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +32,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -57,7 +59,7 @@ import com.example.usw_random_chat.R
 
 
 @Composable
-fun madeAccount(){
+fun madeAccount() {
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -96,8 +98,7 @@ fun madeAccount(){
 }
 
 @Composable
-fun loginFindIdAndPassword(){
-
+fun loginFindIdAndPassword() {
     TextButton(
         onClick = {},
         modifier = Modifier
@@ -138,18 +139,19 @@ fun loginFindIdAndPassword(){
 
 @Composable
 fun loginTextField(
-    text: MutableState<String>,
-    isPassword: Boolean
+    text: State<String>,
+    text2: String,
+    onValueChange: (String) -> Unit
 ) {
     Row() {
         Spacer(modifier = Modifier.weight(0.1f))
         OutlinedTextField(
             value = text.value,
-            onValueChange = { textValue -> text.value = textValue },
+            onValueChange = onValueChange,
             shape = RoundedCornerShape(10.dp),
             placeholder = {
                 Text(
-                    text = if (isPassword) "PASSWORD" else "ID",
+                    text = text2,
                     color = Color(0xFF989898),
                     style = TextStyle(
                         fontSize = 14.sp,
@@ -163,8 +165,8 @@ fun loginTextField(
                 .weight(1f)
                 .height(48.dp)
                 .background(color = Color.White),
-            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-            keyboardOptions = if (isPassword) KeyboardOptions(keyboardType = KeyboardType.Password) else KeyboardOptions.Default,
+            visualTransformation = if (text2 == "PASSWORD") PasswordVisualTransformation() else VisualTransformation.None,
+            keyboardOptions = if (text2 == "PASSWORD") KeyboardOptions(keyboardType = KeyboardType.Password) else KeyboardOptions.Default,
         )
         Spacer(modifier = Modifier.weight(0.1f))
     }
@@ -591,12 +593,16 @@ fun drawerMenu(image: Int, menuName: String, onPress: () -> Unit) {
     Button(
         onClick = onPress,
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-        elevation = ButtonDefaults.elevation(0.dp)
+        elevation = ButtonDefaults.elevation(0.dp),
     ) {
         Icon(
-            painter = painterResource(id = image), contentDescription = "", modifier = Modifier
+            painter = painterResource(id = image),
+            tint = Color.Gray,
+            contentDescription = "",
+            modifier = Modifier
+                .padding(end = 6.dp)
                 .width(25.dp)
-                .height(25.dp), tint = Color.Gray
+                .height(25.dp),
         )
         Text(
             text = menuName,
@@ -629,7 +635,7 @@ fun TwoButtonDialogPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun draweMenuPreview() {
+fun drawerMenuPreview() {
     drawerMenu(image = R.drawable.profile_img, menuName = "이용약관") {
 
     }
@@ -652,7 +658,7 @@ fun GetScreenHeightInDp(): Int {
 }
 
 @Composable
-fun RedWarning(warningText: String,modifier: Modifier){
+fun RedWarning(warningText: String, modifier: Modifier) {
     Text(
         text = warningText,
         fontFamily = FontFamily(Font(R.font.pretendard_regular)),

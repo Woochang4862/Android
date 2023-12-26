@@ -16,43 +16,60 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     private val _rememberId  = mutableStateOf("")
     private val _rememberPw  = mutableStateOf("")
     private val _rememberPwCheck  = mutableStateOf("")
-    private val _rememberEmail   = mutableStateOf("")
+    //private val _rememberEmail   = mutableStateOf("")
     private val _rememberPwEqualOrNot = mutableStateOf(false)
     private val _rememberTrigger = mutableStateOf(false)
+    private val _rememberIdLength  = mutableStateOf(false)
 
     val rememberId : State<String> = _rememberId
     val rememberPw : State<String>  = _rememberPw
     val rememberPwCheck : State<String>  = _rememberPwCheck
-    val rememberEmail : State<String>  = _rememberEmail
+    //val rememberEmail : State<String>  = _rememberEmail
     val rememberPwEqualOrNot : State<Boolean> = _rememberPwEqualOrNot
     val rememberTrigger : State<Boolean> = _rememberTrigger
+    val rememberIdLength : State<Boolean> = _rememberIdLength
+
 
     fun updateRememberId(newValue : String){
         _rememberId.value = newValue
+        updateRememberTrigger()
     }
     fun updateRememberPw(newValue : String){
         _rememberPw.value = newValue
+        updateRememberTrigger()
     }
     fun updateRememberPwCheck(newValue : String){
         _rememberPwCheck.value = newValue
         updateRememberPwEqualOrNot()
-    }
-    fun updateRememberEmail(newValue : String){
-        _rememberEmail.value = newValue
         updateRememberTrigger()
     }
+
     fun updateRememberPwEqualOrNot(){
         _rememberPwEqualOrNot.value = _rememberPw.value == _rememberPwCheck.value
+        updateRememberTrigger()
     }
     fun updateRememberTrigger(){
+        IdlengthCheck()
         _rememberTrigger.value =  _rememberPw.value == _rememberPwCheck.value &&
-                _rememberId.value.isNotEmpty() &&
-                _rememberEmail.value.isNotEmpty() && _rememberPwEqualOrNot.value
+                _rememberIdLength.value && _rememberPwEqualOrNot.value
+    }
+
+    fun IdlengthCheck(){
+        if(_rememberId.value.length < 4 || _rememberId.value.length> 16){
+            _rememberIdLength.value = false
+        }
+        else{
+            _rememberIdLength.value = true
+        }
     }
 
     fun postSignUp(){
         viewModelScope.launch {
-            signUpUseCase.signUp(UserDTO(rememberId.value,rememberPw.value,rememberEmail.value) )
+            signUpUseCase.signUp(UserDTO(rememberId.value,rememberPw.value) )
         }
     }
+    /*fun updateRememberEmail(newValue : String){
+        _rememberEmail.value = newValue
+        updateRememberTrigger()
+    }*/
 }

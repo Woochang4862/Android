@@ -3,9 +3,11 @@ package com.example.usw_random_chat.di
 import com.example.usw_random_chat.data.repository.ProfileRepository
 import com.example.usw_random_chat.data.repository.SignInRepository
 import com.example.usw_random_chat.data.repository.SignUpRepository
+import com.example.usw_random_chat.data.repository.UserModifyRepository
 import com.example.usw_random_chat.data.repositoryimpl.ProfileRepositoryImpl
 import com.example.usw_random_chat.data.repositoryimpl.SignInRepositoryImpl
 import com.example.usw_random_chat.data.repositoryimpl.SignUpRepositoryImpl
+import com.example.usw_random_chat.data.repositoryimpl.UserModifyRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -26,4 +28,8 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun provideSignUpRepository(repositoryImpl: SignUpRepositoryImpl): SignUpRepository
+
+    @Singleton
+    @Binds
+    abstract fun providePUserModifyRepository(repositoryImpl: UserModifyRepositoryImpl): UserModifyRepository
 }

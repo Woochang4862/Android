@@ -47,7 +47,6 @@ import com.example.usw_random_chat.ui.GetScreenWidthInDp
 import com.example.usw_random_chat.ui.RedWarning
 import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.idSearchBtn
-import com.example.usw_random_chat.ui.portalEmail
 import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 @Composable
@@ -273,7 +272,7 @@ fun checkPW(
     }
 }
 
-@Composable
+/*@Composable
 fun EmailTextFieldSignUp(email: State<String>, onRememberEmail: (String) -> Unit) {
     Row(
         Modifier
@@ -284,7 +283,7 @@ fun EmailTextFieldSignUp(email: State<String>, onRememberEmail: (String) -> Unit
         )
         Spacer(Modifier.weight(0.1f))
     }
-}
+}*/
 
 @Composable
 fun signUpButton(trigger: Boolean, navController: NavController, onPress: () -> Unit) {
@@ -304,6 +303,7 @@ fun signUpButton(trigger: Boolean, navController: NavController, onPress: () -> 
                     .background(color = Color.White)
             ) {
                 onPress
+                navController.navigate(Screen.SignInScreen.route)
             }
             Spacer(Modifier.weight(0.1f))
         }

@@ -3,6 +3,7 @@ package com.example.usw_random_chat.di
 import com.example.usw_random_chat.data.api.ProfileApiService
 import com.example.usw_random_chat.data.api.SignInApiService
 import com.example.usw_random_chat.data.api.SignUpApiService
+import com.example.usw_random_chat.data.api.UserModifyApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,5 +28,11 @@ object ApiModule {
     @Singleton
     fun provideSignUpApiService(retrofit: Retrofit): SignUpApiService =
         retrofit.create(SignUpApiService::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideUserModifyApiService(retrofit: Retrofit): UserModifyApiService =
+        retrofit.create(UserModifyApiService::class.java)
 
 }

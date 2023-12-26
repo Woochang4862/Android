@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -35,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -89,6 +92,9 @@ fun DrawerScreen() {
         Column(modifier = Modifier.fillMaxSize()) {
             IconButton(
                 onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(top = 10.dp, end = 10.dp)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.cancel),
@@ -102,6 +108,7 @@ fun DrawerScreen() {
                 painter = painterResource(id = R.drawable.profile_img),
                 contentDescription = "",
                 modifier = Modifier
+                    .padding(start = 35.dp)
                     .width(49.dp)
                     .height(49.dp)
             )
@@ -113,6 +120,8 @@ fun DrawerScreen() {
                 fontWeight = FontWeight(400),
                 color = Color(0xFF111111),
                 textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(start = 35.dp, top = 10.dp)
             )
             Text(
                 text = "# ISTP",
@@ -122,37 +131,38 @@ fun DrawerScreen() {
                 fontWeight = FontWeight(400),
                 color = Color(0xFF989898),
                 textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(start = 35.dp)
             )
             Box(
                 modifier = Modifier
+                    .padding(top = 35.dp)
                     .fillMaxWidth()
                     .height(1.dp)
                     .border(100.dp, Color(0xFFEDEDED))
             )
-            Image(
-                painter = painterResource(id = R.drawable.baseline),
-                contentDescription = "",
-                modifier = Modifier.fillMaxWidth()
-            )
-            drawerMenu(image = R.drawable.profile_img, menuName = "프로필 설정") {
+            Column(modifier = Modifier.weight(1f)){
+                drawerMenu(image = R.drawable.profile_img, menuName = "프로필 설정") {
 
-            }
-            drawerMenu(image = R.drawable.privacy_policy, menuName = "이용 약관") {
+                }
+                drawerMenu(image = R.drawable.privacy_policy, menuName = "이용 약관") {
 
-            }
-            drawerMenu(image = R.drawable.codicon_feedback, menuName = "피드백") {
+                }
+                drawerMenu(image = R.drawable.codicon_feedback, menuName = "피드백") {
 
-            }
-            drawerMenu(image = R.drawable.logout, menuName = "로그아웃") {
+                }
+                drawerMenu(image = R.drawable.logout, menuName = "로그아웃") {
 
+                }
             }
+
             Box(
                 Modifier
                     .background(Color(0xFFEDEDED))
                     .fillMaxWidth()
                     .height(150.dp)
             ) {
-                Column {
+                Column(verticalArrangement = Arrangement.Bottom) {
                     Image(
                         painter = painterResource(id = R.drawable.suchat),
                         contentDescription = null,
@@ -186,8 +196,7 @@ fun DrawerScreen() {
                         )
                         Image(
                             painter = painterResource(id = R.drawable.baseline_chevron_right_24),
-                            contentDescription = "",
-                            //modifier = Modifier.
+                            contentDescription = ""
                         )
 
                     }

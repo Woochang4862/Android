@@ -1,13 +1,17 @@
 package com.example.usw_random_chat.di
 
+import com.example.usw_random_chat.MainApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 import javax.inject.Singleton
 
 @Module
@@ -15,20 +19,14 @@ import javax.inject.Singleton
 object RetrofitModule {
 
     private const val BASE_URL = "http://3.35.83.91:8080/"
-
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-    }
-
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(interceptor: AppInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .addNetworkInterceptor(httpLoggingInterceptor)
+            .addInterceptor(interceptor)
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
             .build()
     }
 
@@ -41,12 +39,23 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideRetrofit(
-        okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .client(okHttpClient)
+        .client(provideOkHttpClient(AppInterceptor()))
         .addConverterFactory(gsonConverterFactory)
         .build()
+
+    class AppInterceptor : Interceptor {
+        @Throws(IOException::class)
+        override fun intercept(chain: Interceptor.Chain) : Response = with(chain) {
+            val accessToken = MainApplication.prefs.getToken("accessToken", "") // ViewModel에서 지정한 key로 JWT 토큰을 가져온다.
+            val newRequest = request()
+                .newBuilder()
+                .addHeader("authorization", accessToken) // 헤더에 authorization라는 key로 JWT 를 넣어준다.
+                .build()
+            proceed(newRequest)
+        }
+    }
 
 }

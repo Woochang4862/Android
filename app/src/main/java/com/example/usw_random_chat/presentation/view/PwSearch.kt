@@ -43,11 +43,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
+import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
 import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.portalEmail
 
 @Composable
-fun PwSearchScreen(navController: NavController,signUpViewModel: SignUpViewModel) {
+fun PwSearchScreen(navController: NavController,userModifyViewModel: UserModifyViewModel) {
     Column(
         Modifier
             .fillMaxSize()
@@ -55,12 +56,12 @@ fun PwSearchScreen(navController: NavController,signUpViewModel: SignUpViewModel
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         setPwSearchTitle()
-        inputId(id = signUpViewModel.rememberId){}
+        inputId(id = userModifyViewModel.rememberID){}
         Spacer(modifier = Modifier.height(21.dp))
-        inputEmail(email = signUpViewModel.rememberEmail){}
+        inputEmail(email = userModifyViewModel.rememberEmail){}
         explainText()
-        sendNumberButton()
-        inputCode(code = signUpViewModel.rememberCode){}
+        sendNumberButton(){userModifyViewModel.postAuthCode()}
+        inputCode(code = userModifyViewModel.rememberCode,{}){userModifyViewModel.checkAuthCode()}
     }
 }
 
@@ -135,7 +136,7 @@ fun explainText() {
 }
 
 @Composable
-fun sendNumberButton() {
+fun sendNumberButton(onPress : () -> Unit) {
     button(
         text = "인증코드 전송",
         enable = true,
@@ -146,12 +147,12 @@ fun sendNumberButton() {
             .width(326.dp)
             .height(56.dp)
     ){
-
+        onPress
     }
 }
 
 @Composable
-fun inputCode(code: State<String>, onChange : () -> Unit) {
+fun inputCode(code: State<String>, onChange : () -> Unit, onPress: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -179,7 +180,7 @@ fun inputCode(code: State<String>, onChange : () -> Unit) {
                 .weight(1f)
         )
         Button(
-            onClick = { /* Do something when the button is clicked */ },
+            onClick = { onPress },
             modifier = Modifier
                 .padding(end = 6.dp)
                 .align(Alignment.CenterVertically)
@@ -229,7 +230,7 @@ fun PwSearchScreenPreview() {
         Spacer(modifier = Modifier.height(21.dp))
         inputEmail(email = email){}
         explainText()
-        sendNumberButton()
-        inputCode(code = code){}
+        sendNumberButton(){}
+        inputCode(code = code,{}){}
     }
 }

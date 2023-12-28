@@ -29,12 +29,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
     fun postSignIn(){
         viewModelScope.launch {//viewModelScope 공부하기
-            signInUseCase.excute(UserDTO(id.value,password.value))
-        }
-    }
-    fun signUpViewModel(param : UserDTO){
-        viewModelScope.launch {//viewModelScope 공부하기
-            signInUseCase.excute(param)
+            signInUseCase.excute(UserDTO(memberID = id.value, memberPassword = password.value))
         }
     }
 }

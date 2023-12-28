@@ -44,7 +44,7 @@ import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 
 @Composable
-fun PwChangeScreen(UserModifyViewModel: UserModifyViewModel = viewModel(), navController: NavController) {
+fun PwChangeScreen(userModifyViewModel: UserModifyViewModel = viewModel(), navController: NavController) {
 
     val screenWidthInDp = (GetScreenWidthInDp()-100)/2
 
@@ -80,18 +80,17 @@ fun PwChangeScreen(UserModifyViewModel: UserModifyViewModel = viewModel(), navCo
         Spacer(Modifier.padding(15.dp))
 
         TextFieldOfPwChange("새 비밀번호 입력 (문자,숫자 포함 6~20자)",
-            "비밀번호",UserModifyViewModel.rememberPW ){
-            UserModifyViewModel.updaterememberPW(it)}
+            "비밀번호",userModifyViewModel.rememberPW ){
+            userModifyViewModel.updateRememberPW(it)}
         Spacer(Modifier.padding(10.dp))
-
         TextFieldOfPwCheck("", "비밀번호 확인"
-            ,UserModifyViewModel.rememberPWCheck, UserModifyViewModel.rememberPwEqualOrNot.value){
-            UserModifyViewModel.updaterememberPWCheck(it)
+            ,userModifyViewModel.rememberPWCheck, userModifyViewModel.rememberPwEqualOrNot.value){
+            userModifyViewModel.updateRememberPWCheck(it)
         }
 
         Spacer(Modifier.padding(20.dp))
-        PwChangeBotton(UserModifyViewModel.rememberTrigger.value,navController = navController){
-            UserModifyViewModel.postPwChange()
+        PwChangeBotton(userModifyViewModel.rememberTrigger.value,navController = navController){
+            userModifyViewModel.postPwChange()
         }
     }
 }

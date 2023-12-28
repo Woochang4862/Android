@@ -11,56 +11,65 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserModifyViewModel@Inject constructor(private val UserModifyUseCase: UserModifyUseCase) : ViewModel() {
+class UserModifyViewModel@Inject constructor(private val userModifyUseCase: UserModifyUseCase) : ViewModel() {
     private val _rememberPW  = mutableStateOf("")
     private val _rememberPWCheck  = mutableStateOf("")
     private val _rememberPwEqualOrNot  = mutableStateOf(false)
     private val _rememberTrigger = mutableStateOf(false)
     private val _rememberPwLength  = mutableStateOf(false)
+    private val _rememberCode  = mutableStateOf("")
+    private val _rememberId  = mutableStateOf("")
+    private val _rememberEmail   = mutableStateOf("")
 
     val rememberPW : State<String> = _rememberPW
     val rememberPWCheck : State<String> = _rememberPWCheck
     val rememberPwEqualOrNot : State<Boolean> = _rememberPwEqualOrNot
     val rememberTrigger : State<Boolean> = _rememberTrigger
     val rememberPwLength : State<Boolean> = _rememberPwLength
+    val rememberCode : State<String> = _rememberCode
+    val rememberID : State<String> = _rememberId
+    val rememberEmail : State<String> = _rememberEmail
 
-    fun updaterememberPW(newValue : String){
+    fun updateRememberPW(newValue : String){
         _rememberPW.value = newValue
-        updaterememberPwEqualOrNot()
+        updateRememberPwEqualOrNot()
         updateRememberTrigger()
     }
-    fun updaterememberPWCheck(newValue : String){
+    fun updateRememberPWCheck(newValue : String){
         _rememberPWCheck.value = newValue
-        updaterememberPwEqualOrNot()
+        updateRememberPwEqualOrNot()
         updateRememberTrigger()
     }
-    fun updaterememberPwEqualOrNot(){
+    private fun updateRememberPwEqualOrNot(){
         _rememberPwEqualOrNot.value = _rememberPW.value == _rememberPWCheck.value
     }
 
-    fun updateRememberTrigger(){
-        PwlengthCheck()
+    private fun updateRememberTrigger(){
+        checkPwLength()
         _rememberTrigger.value =  _rememberPW.value == _rememberPWCheck.value &&
                 _rememberPwLength.value && _rememberPwEqualOrNot.value
     }
 
-    fun PwlengthCheck(){
-        if(_rememberPW.value.length < 6 || _rememberPW.value.length> 20){
-            _rememberPwLength.value = false
-        }
-        else{
-            _rememberPwLength.value = true
-        }
+    private fun checkPwLength(){
+        _rememberPwLength.value = !(_rememberPW.value.length < 6 || _rememberPW.value.length> 20)
     }
 
     fun postPwChange(){
         viewModelScope.launch {
-            UserModifyUseCase.pwChange(UserDTO(rememberPW.value,rememberPWCheck.value) )
+            userModifyUseCase.pwChange(UserDTO(rememberPW.value,rememberPWCheck.value) )
         }
     }
-    /*fun signUpViewModel(param : UserDTO){
-        viewModelScope.launch {//viewModelScope 공부하기
-            signInUseCase.excute(param)
+
+    fun postAuthCode(){
+        viewModelScope.launch {
+            userModifyUseCase.postAuthCode(UserDTO(memberID = rememberID.value, memberEmail = rememberEmail.value))
         }
-    }*/
+    }
+
+    fun checkAuthCode(){
+        viewModelScope.launch {
+            userModifyUseCase.checkAuthCode(UserDTO(code = rememberCode.value))
+        }
+    }
+
 }

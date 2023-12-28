@@ -3,9 +3,17 @@ package com.example.usw_random_chat.domain.usecase
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.data.repository.UserModifyRepository
 
-class UserModifyUseCase(private val UserModifyRepository: UserModifyRepository) {
+class UserModifyUseCase(private val userModifyRepository: UserModifyRepository) {
 
     suspend fun pwChange(param : UserDTO) : UserDTO {
-        return UserModifyRepository.PwChange(param)
+        return userModifyRepository.changePW(param)
+    }
+
+    suspend fun postAuthCode(param : UserDTO) : UserDTO {
+        return userModifyRepository.postAuthCode(param)
+    }
+
+    suspend fun checkAuthCode(param : UserDTO) : UserDTO {
+        return userModifyRepository.checkAuthCode(param)
     }
 }

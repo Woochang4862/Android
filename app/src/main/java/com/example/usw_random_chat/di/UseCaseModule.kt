@@ -36,7 +36,7 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideUserModifyUseCase(UserModifyRepository: UserModifyRepository): UserModifyUseCase {
-        return UserModifyUseCase(UserModifyRepository)
+    fun provideUserModifyUseCase(userModifyRepository: UserModifyRepository): UserModifyUseCase {
+        return UserModifyUseCase(userModifyRepository)
     }
 }

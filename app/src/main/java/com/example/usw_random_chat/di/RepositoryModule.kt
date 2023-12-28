@@ -31,5 +31,5 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun providePUserModifyRepository(repositoryImpl: UserModifyRepositoryImpl): UserModifyRepository
+    abstract fun provideUserModifyRepository(repositoryImpl: UserModifyRepositoryImpl): UserModifyRepository
 }

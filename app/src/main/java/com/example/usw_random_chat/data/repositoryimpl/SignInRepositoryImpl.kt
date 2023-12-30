@@ -14,7 +14,7 @@ class SignInRepositoryImpl @Inject constructor(
     private val navController: NavController
 ) : SignInRepository {
 
-    override suspend fun signin(param: UserDTO): UserDTO {
+    override suspend fun signIn(param: UserDTO): UserDTO {
         val response = signInApiService.registerSignIn(param)
 
         if (response.isSuccessful) {

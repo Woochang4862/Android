@@ -42,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -51,11 +52,40 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.presentation.view.Screen
+
+
+@Composable
+fun text(text1: String,
+         text2: String,
+         text3: String,
+         modifier: Modifier
+){
+    Text(
+        text = buildAnnotatedString {
+            withStyle(style = SpanStyle(color = Color(0xFF989898))) {
+                append(text1)
+            }
+            withStyle(style = SpanStyle(color = Color(0xFF2D64D8))) {
+                append(text2)
+            }
+            withStyle(style = SpanStyle(color = Color(0xFF989898))){
+                append(text3)
+            }
+        },
+        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+        fontSize = 12.sp,
+        color = Color(0xFFDCDCDC),
+        modifier = modifier
+    )
+}
 
 
 @Composable
@@ -98,9 +128,9 @@ fun madeAccount() {
 }
 
 @Composable
-fun loginFindIdAndPassword() {
+fun loginFindIdAndPassword(navController: NavController) {
     TextButton(
-        onClick = {},
+        onClick = { navController.navigate(Screen.IdSearchScreen.route) },
         modifier = Modifier
     ) {
         Text(
@@ -122,7 +152,7 @@ fun loginFindIdAndPassword() {
     )
     Spacer(modifier = Modifier.width(8.dp))
     TextButton(
-        onClick = {},
+        onClick = { navController.navigate(Screen.PwSearchScreen.route) },
         modifier = Modifier
 
     ) {
@@ -219,22 +249,20 @@ fun copyRightByFlag(modifier: Modifier) {
 }
 
 @Composable
-fun tittleWithBackArrow(text: String, modifier: Modifier) {
-
+fun tittleWithBackArrow(text: String, modifier: Modifier, onBackClick: () -> Unit) {
 
     Row(
         Modifier, //horizontalArrangement = Arrangement.Center
     )
     {
         Spacer(Modifier.weight(0.1f))
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { onBackClick() }) {
             Icon(
-                imageVector = Icons.Filled.ArrowBack, contentDescription = "",
+                imageVector = Icons.Filled.ArrowBack, contentDescription = "back",
                 Modifier
                     .height(36.dp)
                     .width(36.dp)
                     .weight(0.1f)
-
             )
         }
         Spacer(Modifier.weight(0.25f))
@@ -255,13 +283,17 @@ fun tittleWithBackArrow(text: String, modifier: Modifier) {
 }
 
 @Composable
-fun portalEmail(textFieldValue: String, onValueChange: (String) -> Unit) {
+fun portalEmail(
+    textFieldValue: State<String>,
+    onValueChange: (String) -> Unit
+) {
     TextField(
-        value = textFieldValue,
-        onValueChange = { newValue -> onValueChange(newValue) },
+        value = textFieldValue.value,
+        onValueChange = onValueChange,
         placeholder = {
             Text(
-                "포털 이메일 입력", style = TextStyle(
+                "포털 이메일 입력",
+                style = TextStyle(
                     fontSize = 16.sp,
                     lineHeight = 18.sp,
                     fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -361,7 +393,7 @@ fun MatchingAnimationText(text: String) {
 @Composable
 fun sendImg(id: Int) {
     Image(
-        painter = painterResource(id = R.drawable.send),
+        painter = painterResource(id = id),
         contentDescription = "",
         contentScale = ContentScale.Fit,
         modifier = Modifier

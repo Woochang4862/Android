@@ -16,4 +16,8 @@ class UserModifyUseCase(private val userModifyRepository: UserModifyRepository) 
     suspend fun checkAuthCode(param : UserDTO) : UserDTO {
         return userModifyRepository.checkAuthCode(param)
     }
+
+    suspend fun postEmail(param : UserDTO) : UserDTO {
+        return userModifyRepository.postEmail(param)
+    }
 }

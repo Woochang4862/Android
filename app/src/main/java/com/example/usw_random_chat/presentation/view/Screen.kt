@@ -3,6 +3,7 @@ package com.example.usw_random_chat.presentation.view
 sealed class Screen(val route: String){
     object SignInScreen: Screen("SignIn")
     object SignUpScreen: Screen("SignUp")
+    object EmailAuthScreen: Screen("EmailAuth")
     object SignUpDoneScreen: Screen("SignUp_Done")
     object LoadingScreen: Screen("Loading")
     object IdSearchScreen: Screen("IdSearch")

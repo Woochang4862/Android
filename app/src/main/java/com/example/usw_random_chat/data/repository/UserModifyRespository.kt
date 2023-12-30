@@ -9,4 +9,7 @@ interface UserModifyRepository {
     suspend fun postAuthCode(param : UserDTO) : UserDTO
 
     suspend fun checkAuthCode(param : UserDTO) : UserDTO
+
+    suspend fun postEmail(param : UserDTO) : UserDTO
+
 }

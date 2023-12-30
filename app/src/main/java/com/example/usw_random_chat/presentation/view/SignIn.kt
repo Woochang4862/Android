@@ -1,3 +1,4 @@
+
 package com.example.usw_random_chat.presentation.view
 
 import androidx.compose.foundation.Image
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -37,10 +39,20 @@ fun SignInScreen(signInViewModel: SignInViewModel = viewModel(),navController: N
 
     Box{
         LoginImage()
-        LoginTextField(id = signInViewModel.id, password = signInViewModel.password, signInViewModel)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = 310.dp
+                )
+        ) {
+            LoginTextFieldId(id = signInViewModel.id) { signInViewModel.updateID(it) }
+            Spacer(modifier = Modifier.height(8.dp))
+            LoginTextFieldPW(password = signInViewModel.password) { signInViewModel.updatePassWord(it) }
+        }
     }
-    LoginBtn(){signInViewModel.postSignIn()}
-    OnLoginFindIdAndPassword()
+    LoginBtn(signInValue = signInViewModel.signInValue.value,navController){signInViewModel.postSignIn()}
+    OnLoginFindIdAndPassword(navController)
     MadeAccountText()
     SignUpBtn(navController)
 }
@@ -70,26 +82,23 @@ fun LoginImage() {
 }
 
 @Composable
-fun LoginTextField(  // textfield를 하나만 만들고 이름만 바꿔서 함수를 재사용 할 수 있게 변경해주세요
+fun LoginTextFieldId(  // textfield를 하나만 만들고 이름만 바꿔서 함수를 재사용 할 수 있게 변경해주세요
     id: State<String>,
-    password: State<String>,
-    signInViewModel: SignInViewModel
+    onValueId: (String) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                top = 310.dp
-            )
-    ) {
-        loginTextField(text = id, text2 = "ID",){signInViewModel.updateID(id.value)}
-        Spacer(modifier = Modifier.height(8.dp))
-        loginTextField(text = password, text2 = "PASSWORD",){signInViewModel.updatePassWord(password.value)}
-    }
+    loginTextField(text = id, text2 = "ID", onValueChange = onValueId)
 }
 
 @Composable
-fun LoginBtn(onPress: () -> Unit) { //onPress란 람다 함수를 추가시키세요
+fun LoginTextFieldPW(  // textfield를 하나만 만들고 이름만 바꿔서 함수를 재사용 할 수 있게 변경해주세요
+    password: State<String>,
+    onValuePw: (String) -> Unit
+) {
+    loginTextField(text = password, text2 = "PASSWORD",onValueChange = onValuePw)
+}
+
+@Composable
+fun LoginBtn(signInValue : Boolean,navController: NavController,onPress: () -> Unit) { //onPress란 람다 함수를 추가시키세요
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -108,13 +117,19 @@ fun LoginBtn(onPress: () -> Unit) { //onPress란 람다 함수를 추가시키�
                 .weight(1f),
         ){
             onPress()
+            if(signInValue){
+                navController.navigate(Screen.SignUpScreen.route)
+            }
+            else{
+
+            }
         }
         Spacer(modifier = Modifier.weight(0.1f))
     }
 }
 
 @Composable
-fun OnLoginFindIdAndPassword() { //textbutton 이름만 바꿔서 재사용 할 수 있게 수정해주세요 widget폴더에다 만들고 불러오세요
+fun OnLoginFindIdAndPassword(navController: NavController) { //textbutton 이름만 바꿔서 재사용 할 수 있게 수정해주세요 widget폴더에다 만들고 불러오세요
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -123,7 +138,7 @@ fun OnLoginFindIdAndPassword() { //textbutton 이름만 바꿔서 재사용 할 
             ),
         horizontalArrangement = Arrangement.Center
     ) {
-        loginFindIdAndPassword()
+        loginFindIdAndPassword(navController)
     }
 }
 
@@ -152,7 +167,7 @@ fun SignUpBtn(navController: NavController) { // asdasd변수 이름 적절하�
                 .height(56.dp)
                 .weight(1f)
         ){
-            navController.navigate(Screen.SignUpScreen.route)
+            navController.navigate(Screen.EmailAuthScreen.route)
         }
         Spacer(modifier = Modifier.weight(0.1f))
     }
@@ -161,24 +176,24 @@ fun SignUpBtn(navController: NavController) { // asdasd변수 이름 적절하�
 
 /*@Preview(showBackground = true)
 @Composable
-fun SignInScreenPreview() {
+fun SignInScreenPreview(signInViewModel: SignInViewModel = viewModel()) {
+    val viewModel = hiltViewModel<SignInViewModel>()
     val navController = rememberNavController() // NavController 초기화
-    SignInScreen(navController)
+    SignInScreen(viewModel,navController)
 }
 
 
 @Preview(showBackground = true)
 @Composable
-fun OnLoginBtnPreview() {
-    val navController = rememberNavController() // NavController 초기화
-    LoginBtn(navController)
-}*/
+fun OnLoginBtnPreview(signInViewModel: SignInViewModel = viewModel()) {
+    LoginBtn(){signInViewModel.postSignIn()}
+}
 
 
 @Preview(showBackground = true)
 @Composable
-fun OnLoginFindIdAndPasswordPreview() {
-    OnLoginFindIdAndPassword()
+fun OnLoginFindIdAndPasswordPreview(navController: NavController) {
+    OnLoginFindIdAndPassword(navController)
 }
 
 @Preview(showBackground = true)
@@ -213,4 +228,4 @@ fun LoginTextFieldPreview() {
 @Composable
 fun OnLoginImagePreview() {
     LoginImage()
-}
+}*/

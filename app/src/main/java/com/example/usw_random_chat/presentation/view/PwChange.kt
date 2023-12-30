@@ -69,12 +69,14 @@ fun PwChangeScreen(userModifyViewModel: UserModifyViewModel = viewModel(), navCo
 
         Spacer(Modifier.padding(20.dp))
 
-        tittleWithBackArrow("비밀번호 변경",modifier = Modifier
-            .height(48.dp)
-            .width(100.dp)
-            .offset(y = 10.dp)
-            .weight(0.6f)
-
+        tittleWithBackArrow(
+            "비밀번호 변경",
+            modifier = Modifier
+                .height(48.dp)
+                .width(100.dp)
+                .offset(y = 10.dp)
+                .weight(0.6f),
+            onBackClick = { navController.popBackStack() }
         )
 
         Spacer(Modifier.padding(15.dp))

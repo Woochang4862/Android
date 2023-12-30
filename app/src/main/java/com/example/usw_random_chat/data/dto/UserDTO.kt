@@ -8,7 +8,7 @@ data class UserDTO(
     val code : String? = "",
     @SerializedName("memberEmail")
     val memberEmail : String = "",
-    @SerializedName("memberPW")
+    @SerializedName("memberPw")
     val memberPassword : String = "",
     @SerializedName("memberID")
     val memberID : String = ""

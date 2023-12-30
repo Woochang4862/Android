@@ -109,7 +109,7 @@ fun inputId(id: State<String>, onChange: () -> Unit) {
 @Composable
 fun inputEmail(email: State<String>, onChange: () -> Unit) {
     portalEmail(
-        textFieldValue = email.value, onValueChange = {
+        textFieldValue = email, onValueChange = {
             onChange
         })
 }

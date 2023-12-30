@@ -14,6 +14,7 @@ import javax.inject.Inject
 class UserModifyViewModel@Inject constructor(private val userModifyUseCase: UserModifyUseCase) : ViewModel() {
     private val _rememberPW  = mutableStateOf("")
     private val _rememberPWCheck  = mutableStateOf("")
+    private val _email = mutableStateOf("")
     private val _rememberPwEqualOrNot  = mutableStateOf(false)
     private val _rememberTrigger = mutableStateOf(false)
     private val _rememberPwLength  = mutableStateOf(false)
@@ -26,6 +27,12 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
     val rememberPwEqualOrNot : State<Boolean> = _rememberPwEqualOrNot
     val rememberTrigger : State<Boolean> = _rememberTrigger
     val rememberPwLength : State<Boolean> = _rememberPwLength
+    val email : State<String>  = _email
+
+
+    fun updateEmail(newValue: String){
+        _email.value = newValue
+    }
     val rememberCode : State<String> = _rememberCode
     val rememberID : State<String> = _rememberId
     val rememberEmail : State<String> = _rememberEmail
@@ -52,6 +59,12 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
 
     private fun checkPwLength(){
         _rememberPwLength.value = !(_rememberPW.value.length < 6 || _rememberPW.value.length> 20)
+    }
+
+    fun postAuthEmail(){
+        viewModelScope.launch {
+            userModifyUseCase.postEmail(UserDTO(email.value) )
+        }
     }
 
     fun postPwChange(){

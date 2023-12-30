@@ -16,4 +16,4 @@ class TokenSharedPreference (context: Context)  {
     fun setToken(key: String, str: String) {
         prefs.edit().putString(key, str).apply()
     }
-}   
+}

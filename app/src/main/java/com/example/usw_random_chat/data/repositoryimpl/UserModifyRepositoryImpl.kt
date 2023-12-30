@@ -36,4 +36,14 @@ class UserModifyRepositoryImpl @Inject constructor(private val userModifyApiServ
             throw Exception("Fail!!")
         }
     }
+
+    override suspend fun postEmail(param: UserDTO): UserDTO {
+        val response = userModifyApiService.postEmail(param)
+
+        if (response.isSuccessful){
+            return response.body()!!
+        }else{
+            throw Exception("Fail!!")
+        }
+    }
 }

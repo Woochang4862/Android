@@ -7,7 +7,7 @@ import java.util.prefs.Preferences
 
 class TokenSharedPreference (context: Context)  {
     private val prefs : SharedPreferences =
-        context.getSharedPreferences("pref_name", Context.MODE_PRIVATE)
+        context.getSharedPreferences("tokenRepo", Context.MODE_PRIVATE)
 
     fun getToken(key: String, defValue: String): String {
         return prefs.getString(key, defValue).toString()

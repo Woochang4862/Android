@@ -16,72 +16,73 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase) : ViewModel()  {
-    private val _rememberId  = mutableStateOf("")
-    private val _rememberPw  = mutableStateOf("")
-    private val _rememberPwCheck  = mutableStateOf("")
+class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase) : ViewModel() {
+    private val _rememberId = mutableStateOf("")
+    private val _rememberPw = mutableStateOf("")
+    private val _rememberPwCheck = mutableStateOf("")
+
     //private val _rememberEmail   = mutableStateOf("")
     private val _email = mutableStateOf("")
     private val _verifyFlag = mutableStateOf(false)
     private val _rememberPwEqualOrNot = mutableStateOf(false)
     private val _rememberTrigger = mutableStateOf(false)
-    private val _rememberIdLength  = mutableStateOf(false)
+    private val _rememberIdLength = mutableStateOf(false)
 
-    val rememberId : State<String> = _rememberId
-    val rememberPw : State<String>  = _rememberPw
-    val rememberPwCheck : State<String>  = _rememberPwCheck
-    val email : State<String>  = _email
+    val rememberId: State<String> = _rememberId
+    val rememberPw: State<String> = _rememberPw
+    val rememberPwCheck: State<String> = _rememberPwCheck
+    val email: State<String> = _email
+
     //val rememberEmail : State<String>  = _rememberEmail
-    val verifyFlag : State<Boolean> = _verifyFlag
-    val rememberPwEqualOrNot : State<Boolean> = _rememberPwEqualOrNot
-    val rememberTrigger : State<Boolean> = _rememberTrigger
-    val rememberIdLength : State<Boolean> = _rememberIdLength
+    val verifyFlag: State<Boolean> = _verifyFlag
+    val rememberPwEqualOrNot: State<Boolean> = _rememberPwEqualOrNot
+    val rememberTrigger: State<Boolean> = _rememberTrigger
+    val rememberIdLength: State<Boolean> = _rememberIdLength
 
     fun verifyEmail() {
         viewModelScope.launch {
-            try {
-                val result = signUpUseCase.authEmail(UserDTO(email.value))
-                _verifyFlag.value = true
-            } catch (e: Exception) {
-                _verifyFlag.value = false
-            }
+            signUpUseCase.authEmail(UserDTO(memberEmail = _email.value))
         }
     }
 
-    fun updateEmail(newValue: String){
+    fun updateEmail(newValue: String) {
         _email.value = newValue
     }
 
-    fun updateRememberId(newValue : String){
+    fun updateRememberId(newValue: String) {
         _rememberId.value = newValue
         updateRememberTrigger()
     }
-    fun updateRememberPw(newValue : String){
+
+    fun updateRememberPw(newValue: String) {
         _rememberPw.value = newValue
         updateRememberTrigger()
     }
-    fun updateRememberPwCheck(newValue : String){
+
+    fun updateRememberPwCheck(newValue: String) {
         _rememberPwCheck.value = newValue
         updateRememberPwEqualOrNot()
         updateRememberTrigger()
     }
 
-    private fun updateRememberPwEqualOrNot(){
+    private fun updateRememberPwEqualOrNot() {
         _rememberPwEqualOrNot.value = _rememberPw.value == _rememberPwCheck.value
         updateRememberTrigger()
     }
-    private fun updateRememberTrigger(){
+
+    private fun updateRememberTrigger() {
         checkIdLength()
-        _rememberTrigger.value =  _rememberPw.value == _rememberPwCheck.value &&
+        _rememberTrigger.value = _rememberPw.value == _rememberPwCheck.value &&
                 _rememberIdLength.value && _rememberPwEqualOrNot.value
     }
-    private fun checkIdLength(){
-        _rememberIdLength.value = !(_rememberId.value.length < 4 || _rememberId.value.length> 16)
+
+    private fun checkIdLength() {
+        _rememberIdLength.value = !(_rememberId.value.length < 4 || _rememberId.value.length > 16)
     }
 
-    fun postSignUp(){
+    fun postSignUp() {
         viewModelScope.launch {
-            signUpUseCase.signUp(UserDTO(rememberId.value,rememberPw.value) )
+            signUpUseCase.signUp(UserDTO(_rememberId.value, _rememberPw.value))
         }
     }
     /*fun updateRememberEmail(newValue : String){

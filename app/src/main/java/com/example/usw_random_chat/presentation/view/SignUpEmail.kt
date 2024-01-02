@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.presentation.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -48,19 +49,19 @@ import com.example.usw_random_chat.ui.tittleWithBackArrow
 fun EmailAuthScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController){
     SignUpEmail(email = signUpViewModel.email){ signUpViewModel.updateEmail(it) }
     SignUpEmailBtn()
-    RequestEmail(){signUpViewModel.verifyEmail()}
-    NextBtn(verifyFlag = signUpViewModel.verifyFlag.value,navController)
-    SignUpExitBtn(navController)
+    RequestEmail{signUpViewModel.verifyEmail()}
+    NextBtn(verifyFlag = signUpViewModel.verifyFlag.value){navController.navigate(Screen.SignUpScreen.route)}
+    SignUpExitBtn{navController.popBackStack()}
 }
 
 
 @Composable
-fun SignUpExitBtn(navController: NavController){
+fun SignUpExitBtn(onPress: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                top = 80.dp
+                top = 60.dp
             )
     ){
         Spacer(modifier = Modifier.weight(0.1f))
@@ -71,7 +72,7 @@ fun SignUpExitBtn(navController: NavController){
                 .width(100.dp)
                 .weight(0.6f)
                 .offset(y = 10.dp),
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { onPress }
         )
         Spacer(modifier = Modifier.weight(1.1f))
     }
@@ -146,7 +147,7 @@ fun RequestEmail(onPress: () -> Unit){
 
 
 @Composable
-fun NextBtn(verifyFlag: Boolean,navController: NavController){
+fun NextBtn(verifyFlag: Boolean, onPress: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -165,7 +166,7 @@ fun NextBtn(verifyFlag: Boolean,navController: NavController){
                 .height(56.dp)
                 .background(color = Color.White)
         ){
-            navController.navigate(Screen.SignUpScreen.route)
+            onPress
         }
         Spacer(modifier = Modifier.weight(0.1f))
     }
@@ -173,10 +174,16 @@ fun NextBtn(verifyFlag: Boolean,navController: NavController){
 
 
 
+@SuppressLint("UnrememberedMutableState")
 @Preview (showBackground = true)
 @Composable
 fun EmailAuthScreenPreview(){
-    EmailAuthScreen(navController = rememberNavController())
+    val asd : State<String> = mutableStateOf("")
+    SignUpEmail(email = asd){}
+    SignUpEmailBtn()
+    RequestEmail{}
+    NextBtn(verifyFlag = true){}
+    SignUpExitBtn{}
 }
 
 

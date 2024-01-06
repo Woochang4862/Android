@@ -4,7 +4,7 @@ import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.data.repository.SignInRepository
 
 class SignInUseCase(private val signInRepository: SignInRepository) {
-    suspend fun execute(param : UserDTO) : UserDTO {
+    suspend fun execute(param : UserDTO) : Int {
         return signInRepository.signIn(param)
     }
 }

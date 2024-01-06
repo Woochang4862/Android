@@ -570,7 +570,7 @@ fun OneButtonDialog(
                 contentDescription = "image description",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .padding(top = 24.dp)
+                    .padding(top = 20.dp)
             )
             Text(
                 text = contentText,
@@ -588,9 +588,8 @@ fun OneButtonDialog(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 24.dp),
+                    .padding(top = 14.dp),
             ) {
-
                 Spacer(modifier = Modifier.weight(0.1f))
                 Button(
                     onClick = onPress,
@@ -658,10 +657,10 @@ fun drawerMenu(image: Int, menuName: String, onPress: () -> Unit) {
 fun TwoButtonDialogPreview() {
     //TwoButtonDialog("신고하시겠습니까?", "취소", "신고하기", {}, {}, R.drawable.baseline_error_24)
     OneButtonDialog(
-        contentText = "qlfl",
-        text = "sdfaewf",
+        contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
+        text = "확인",
         onPress = { /*TODO*/ },
-        image = R.drawable.baseline_check_circle_24
+        image = R.drawable.baseline_error_24
     )
 }
 

@@ -87,9 +87,4 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
             signUpUseCase.signUp(UserDTO(_rememberId.value, _rememberPw.value))
         }
     }
-    /*fun updateRememberEmail(newValue : String){
-        _rememberEmail.value = newValue
-        updateRememberTrigger()
-    }*/
-
 }

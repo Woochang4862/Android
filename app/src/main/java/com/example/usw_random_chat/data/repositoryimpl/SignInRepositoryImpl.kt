@@ -12,7 +12,7 @@ import javax.inject.Inject
 class SignInRepositoryImpl @Inject constructor(
     private val signInApiService: SignInApiService,
     private val tokenSharedPreference: TokenSharedPreference,
-    //private val navController: NavController
+    private val navController: NavController
 ) : SignInRepository {
 
     override suspend fun signIn(param: UserDTO) : Int {
@@ -23,9 +23,9 @@ class SignInRepositoryImpl @Inject constructor(
             val refreshToken = response.body()?.refreshToken
             tokenSharedPreference.setToken("accessToken","token : $accessToken")
             tokenSharedPreference.setToken("refreshToken","token : $refreshToken")
-            //navController.navigate(Screen.MainPageScreen.route){
-               // navController.popBackStack()
-            //}
+            navController.navigate(Screen.MainPageScreen.route){
+                navController.popBackStack()
+            }
             return response.code()
         } else {
             throw Exception("Fail!!")

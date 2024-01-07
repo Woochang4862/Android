@@ -21,13 +21,11 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
     private val _id = mutableStateOf("")
     private val _password = mutableStateOf("")
-    private val _signInValue = mutableStateOf(false)
     private val _loginState = mutableStateOf(false)
 
     val loginState : State<Boolean> = _loginState
     val id : State<String> = _id
     val password : State<String>  = _password
-    val signInValue : State<Boolean> = _signInValue
 
     fun updateID(newValue : String){
         _id.value = newValue

@@ -9,4 +9,6 @@ interface SignUpRepository {
     suspend fun idDoubleCheck(param : UserDTO) : UserDTO
 
     suspend fun authEmail(param : UserDTO) : UserDTO
+
+    suspend fun checkAuthEmail(param : UserDTO) : UserDTO
 }

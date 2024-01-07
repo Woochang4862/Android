@@ -38,7 +38,7 @@ fun PolicyScreen(navController: NavController){
             .background(color = Color(0xFFFFFFFF))
     ){
         Spacer(Modifier.padding(20.dp))
-        TextFieldWithIcon("이용 약관")
+        TextFieldWithIcon("이용 약관"){navController.popBackStack()}
         TermsofUse("")
     }
 }
@@ -46,7 +46,8 @@ fun PolicyScreen(navController: NavController){
 @Composable
 fun TextFieldWithIcon(
     inWord: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onPress : () -> Unit
 ) {
     Row(
         Modifier.width(390.dp).height(60.dp)
@@ -67,7 +68,7 @@ fun TextFieldWithIcon(
         )
         Spacer(Modifier.padding(45.dp))
 
-            IconButton(onClick = { /*TODO*/ },
+            IconButton(onClick = { onPress() },
                 modifier.padding(top = 7.dp)) {
                 Icon(
                     imageVector = Icons.Filled.Close, contentDescription = "",

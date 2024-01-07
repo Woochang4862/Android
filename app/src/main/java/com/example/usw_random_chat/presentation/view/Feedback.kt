@@ -38,7 +38,7 @@ fun FeedbackShow(navController: NavController) {
         mutableStateOf("")
     }
     FeedbackText()
-    FeedbackExit()
+    FeedbackExit{navController.popBackStack()}
     FeedbackTextField(text = edittext)
     FeedbackSubmitBtn()
 }
@@ -69,7 +69,7 @@ fun FeedbackText() {
 }
 
 @Composable
-fun FeedbackExit() {
+fun FeedbackExit(onPress: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -79,7 +79,7 @@ fun FeedbackExit() {
     ) {
         Spacer(modifier = Modifier.weight(1f))
         TextButton(
-            onClick = { /*TODO*/ },
+            onClick = { onPress() },
             modifier = Modifier
                 .weight(0.2f)
         ) {
@@ -172,11 +172,11 @@ fun FeedbackTextPreview() {
     FeedbackText()
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun FeedbackExitPreview() {
     FeedbackExit()
-}
+}*/
 
 @Preview(showBackground = true)
 @Composable

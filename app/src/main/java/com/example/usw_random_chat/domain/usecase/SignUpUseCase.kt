@@ -17,4 +17,8 @@ class SignUpUseCase(private val signUpRepository: SignUpRepository) {
     suspend fun authEmail(param : UserDTO) : UserDTO {
         return signUpRepository.authEmail(param)
     }
+
+    suspend fun checkAuthEmail(param : UserDTO) : UserDTO {
+        return signUpRepository.authEmail(param)
+    }
 }

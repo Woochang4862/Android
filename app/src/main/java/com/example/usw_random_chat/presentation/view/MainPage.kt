@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -52,7 +54,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.ui.copyRightByFlag
+import com.example.usw_random_chat.ui.drawerBottom
 import com.example.usw_random_chat.ui.drawerMenu
+import com.example.usw_random_chat.ui.drawerProfile
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -63,14 +67,20 @@ fun MainScreen(navController: NavController) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Scaffold(
             scaffoldState = scaffoldState,
-            drawerContent = {
-                DrawerScreen()
-            },
             topBar = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     MyTopAppBar() {
                         scope.launch {
                             scaffoldState.drawerState.open()
+                        }
+                    }
+                }
+            },
+            drawerContent = {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+                    DrawerScreen(navController) {
+                        scope.launch {
+                            scaffoldState.drawerState.close()
                         }
                     }
                 }
@@ -87,11 +97,11 @@ fun MainScreen(navController: NavController) {
 }
 
 @Composable
-fun DrawerScreen() {
+fun DrawerScreen(navController: NavController, onPress: () -> Unit) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         Column(modifier = Modifier.fillMaxSize()) {
             IconButton(
-                onClick = { /*TODO*/ },
+                    onClick = {onPress()},
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(top = 10.dp, end = 10.dp)
@@ -104,36 +114,11 @@ fun DrawerScreen() {
                         .height(16.dp)
                 )
             }
-            Image(
-                painter = painterResource(id = R.drawable.profile_img),
-                contentDescription = "",
-                modifier = Modifier
-                    .padding(start = 35.dp)
-                    .width(49.dp)
-                    .height(49.dp)
-            )
-            Text(
-                text = "AnSungMin",
-                fontSize = 22.sp,
-                lineHeight = 24.sp,
-                fontFamily = FontFamily(Font(R.font.kcc_chassam)),
-                fontWeight = FontWeight(400),
-                color = Color(0xFF111111),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(start = 35.dp, top = 10.dp)
-            )
-            Text(
-                text = "# ISTP",
-                fontSize = 14.sp,
-                lineHeight = 24.sp,
-                fontFamily = FontFamily(Font(R.font.kcc_chassam)),
-                fontWeight = FontWeight(400),
-                color = Color(0xFF989898),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(start = 35.dp)
-            )
+            Row(){
+                Spacer(modifier = Modifier.weight(0.1f))
+                drawerProfile()
+                Spacer(modifier = Modifier.weight(0.5f))
+            }
             Box(
                 modifier = Modifier
                     .padding(top = 35.dp)
@@ -142,64 +127,33 @@ fun DrawerScreen() {
                     .border(100.dp, Color(0xFFEDEDED))
             )
             Column(modifier = Modifier.weight(1f)){
+                Spacer(modifier = Modifier.height(30.dp))
                 drawerMenu(image = R.drawable.profile_img, menuName = "프로필 설정") {
-
+                    navController.navigate(Screen.ProfileScreen.route)
                 }
+                Spacer(modifier = Modifier.height(25.dp))
                 drawerMenu(image = R.drawable.privacy_policy, menuName = "이용 약관") {
-
+                    navController.navigate(Screen.PolicyScreen.route)
                 }
+                Spacer(modifier = Modifier.height(25.dp))
                 drawerMenu(image = R.drawable.codicon_feedback, menuName = "피드백") {
-
+                    navController.navigate(Screen.FeedBackScreen.route)
                 }
+                Spacer(modifier = Modifier.height(25.dp))
                 drawerMenu(image = R.drawable.logout, menuName = "로그아웃") {
 
                 }
             }
-
             Box(
                 Modifier
                     .background(Color(0xFFEDEDED))
                     .fillMaxWidth()
                     .height(150.dp)
             ) {
-                Column(verticalArrangement = Arrangement.Bottom) {
-                    Image(
-                        painter = painterResource(id = R.drawable.suchat),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .width(58.dp)
-                            .height(15.dp)
-                    )
-                    Text(
-                        text = "Copyright 2023. \nFlag inc. all rights reserved.",
-                        fontSize = 10.sp,
-                        lineHeight = 12.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF767676),
-                        letterSpacing = 0.25.sp,
-                    )
-                    Button(
-                        onClick = {},
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-                        elevation = ButtonDefaults.elevation(0.dp),
-                        contentPadding = PaddingValues(0.dp)
-                    ) {
-                        Text(
-                            text = "회원 탈퇴하기",
-                            fontSize = 12.sp,
-                            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                            fontWeight = FontWeight(400),
-                            color = Color(0xFF767676),
-                            textAlign = TextAlign.Center,
-                            letterSpacing = 0.3.sp,
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.baseline_chevron_right_24),
-                            contentDescription = ""
-                        )
-
-                    }
+                Row(){
+                    Spacer(modifier = Modifier.weight(0.1f))
+                    drawerBottom()
+                    Spacer(modifier = Modifier.weight(0.7f))
                 }
             }
         }
@@ -251,9 +205,8 @@ fun MainContents(navController: NavController) {
     ) {
         MatchingButton(navController)
         subText()
-        copyRightByFlag(modifier = Modifier.padding(top = 120.dp))
     }
-
+    copyRightByFlag(modifier = Modifier.padding(bottom = 30.dp))
 }
 
 @Composable
@@ -279,7 +232,7 @@ fun MainText() {
             fontWeight = FontWeight(600),
             color = Color(0xFF111111),
             modifier = Modifier
-                .padding(top = 123.dp, start = 32.dp)
+                .padding(top = 115.dp, start = 32.dp)
                 .height(72.dp)
         )
         Text(
@@ -309,8 +262,8 @@ fun TalkBalloon() {
             painter = painterResource(id = R.drawable.talkballoon2),
             contentDescription = "image description",
             modifier = Modifier
-                .width(331.dp)
-                .height(308.dp),
+                .width(320.dp)
+                .height(290.dp),
             alignment = Alignment.CenterEnd
         )
     }
@@ -326,7 +279,7 @@ fun MatchingButton(navController: NavController) {
         ),
         shape = RoundedCornerShape(25.dp),
         modifier = Modifier
-            .padding(top = 400.dp)
+            .padding(top = 350.dp)
             .width(334.dp)
             .height(64.dp)
     ) {
@@ -364,8 +317,8 @@ fun MainScreenPreview() {
     MainScreen(navController = rememberNavController())
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
-fun DrawerScreenPreview() {
-    DrawerScreen()
-}
+fun DrawerScreenPreview(navController: NavController) {
+    DrawerScreen(navController) {}
+}*/

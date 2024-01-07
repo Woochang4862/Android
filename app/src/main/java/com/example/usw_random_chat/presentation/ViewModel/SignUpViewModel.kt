@@ -20,10 +20,8 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     private val _rememberId = mutableStateOf("")
     private val _rememberPw = mutableStateOf("")
     private val _rememberPwCheck = mutableStateOf("")
-
     //private val _rememberEmail   = mutableStateOf("")
     private val _email = mutableStateOf("")
-    private val _verifyFlag = mutableStateOf(false)
     private val _rememberPwEqualOrNot = mutableStateOf(false)
     private val _rememberTrigger = mutableStateOf(false)
     private val _rememberIdLength = mutableStateOf(false)
@@ -32,12 +30,10 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     val rememberPw: State<String> = _rememberPw
     val rememberPwCheck: State<String> = _rememberPwCheck
     val email: State<String> = _email
-
     //val rememberEmail : State<String>  = _rememberEmail
-    val verifyFlag: State<Boolean> = _verifyFlag
-    val rememberPwEqualOrNot: State<Boolean> = _rememberPwEqualOrNot
-    val rememberTrigger: State<Boolean> = _rememberTrigger
-    val rememberIdLength: State<Boolean> = _rememberIdLength
+    val rememberPwEqualOrNot : State<Boolean> = _rememberPwEqualOrNot
+    val rememberTrigger : State<Boolean> = _rememberTrigger
+    val rememberIdLength : State<Boolean> = _rememberIdLength
 
     fun verifyEmail() {
         viewModelScope.launch {
@@ -45,7 +41,13 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         }
     }
 
-    fun updateEmail(newValue: String) {
+    fun checkVerifyEmail() {
+        viewModelScope.launch {
+            signUpUseCase.checkAuthEmail(UserDTO(memberEmail = _email.value))
+        }
+    }
+
+    fun updateEmail(newValue: String){
         _email.value = newValue
     }
 

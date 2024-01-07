@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -235,17 +236,23 @@ fun button(
 
 @Composable
 fun copyRightByFlag(modifier: Modifier) {
-    Text(
-        text = "@copyright by Flag",
-        fontSize = 12.sp,
-        lineHeight = 20.sp,
-        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-        fontWeight = FontWeight(400),
-        color = Color(0xFF767676),
-        textAlign = TextAlign.Center,
-        letterSpacing = 0.3.sp,
-        modifier = modifier
-    )
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ){
+        Text(
+            text = "@copyright by Flag",
+            fontSize = 12.sp,
+            lineHeight = 20.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            fontWeight = FontWeight(400),
+            color = Color(0xFF767676),
+            textAlign = TextAlign.Center,
+            letterSpacing = 0.3.sp,
+            modifier = modifier,
+        )
+    }
 }
 
 @Composable
@@ -620,36 +627,124 @@ fun OneButtonDialog(
 }
 
 @Composable
-fun drawerMenu(image: Int, menuName: String, onPress: () -> Unit) {
-    Button(
-        onClick = onPress,
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-        elevation = ButtonDefaults.elevation(0.dp),
-    ) {
-        Icon(
-            painter = painterResource(id = image),
-            tint = Color.Gray,
+fun drawerBottom() {
+    Column(verticalArrangement = Arrangement.Bottom) {
+        Spacer(modifier = Modifier.height(26.dp))
+        Image(
+            painter = painterResource(id = R.drawable.suchat),
+            contentDescription = null,
+            modifier = Modifier
+                .width(58.dp)
+                .height(15.dp)
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = "Copyright 2023. \nFlag inc. all rights reserved.",
+            fontSize = 10.sp,
+            lineHeight = 12.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            fontWeight = FontWeight(400),
+            color = Color(0xFF767676),
+            letterSpacing = 0.25.sp,
+        )
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+            elevation = ButtonDefaults.elevation(0.dp),
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            Text(
+                text = "회원 탈퇴하기",
+                fontSize = 12.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontWeight = FontWeight(400),
+                color = Color(0xFF767676),
+                textAlign = TextAlign.Center,
+                letterSpacing = 0.3.sp,
+            )
+            Image(
+                painter = painterResource(id = R.drawable.baseline_chevron_right_24),
+                contentDescription = ""
+            )
+
+        }
+    }
+}
+
+
+@Composable
+fun drawerProfile() {
+    Column() {
+        Image(
+            painter = painterResource(id = R.drawable.profile_img),
             contentDescription = "",
             modifier = Modifier
-                .padding(end = 6.dp)
-                .width(25.dp)
-                .height(25.dp),
+                .width(49.dp)
+                .height(49.dp)
         )
         Text(
-            text = menuName,
-            fontSize = 16.sp,
-            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            text = "AnSungMin",
+            fontSize = 22.sp,
+            lineHeight = 24.sp,
+            fontFamily = FontFamily(Font(R.font.kcc_chassam)),
             fontWeight = FontWeight(400),
             color = Color(0xFF111111),
             textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(top = 10.dp)
         )
-        Image(
-            painter = painterResource(id = R.drawable.baseline_chevron_right_24),
-            contentDescription = "",
+        Text(
+            text = "# ISTP",
+            fontSize = 14.sp,
+            lineHeight = 24.sp,
+            fontFamily = FontFamily(Font(R.font.kcc_chassam)),
+            fontWeight = FontWeight(400),
+            color = Color(0xFF989898),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
         )
-
     }
+}
 
+
+@Composable
+fun drawerMenu(image: Int, menuName: String, onPress: () -> Unit) {
+    Button(
+        onClick = {onPress()},
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+        elevation = ButtonDefaults.elevation(0.dp),
+    ) {
+        Spacer(modifier = Modifier.weight(0.1f))
+        Row(
+            modifier = Modifier
+                .weight(1f)
+        ) {
+            Icon(
+                painter = painterResource(id = image),
+                tint = Color.Gray,
+                contentDescription = "",
+                modifier = Modifier
+                    .padding(
+                        end = 6.dp
+                    )
+                    .width(25.dp)
+                    .height(25.dp)
+            )
+            Text(
+                text = menuName,
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontWeight = FontWeight(400),
+                color = Color(0xFF111111),
+                textAlign = TextAlign.Center,
+            )
+            Image(
+                painter = painterResource(id = R.drawable.baseline_chevron_right_24),
+                contentDescription = "",
+            )
+            Spacer(modifier = Modifier.weight(0.5f))
+        }
+    }
 }
 
 @Preview(showBackground = true)

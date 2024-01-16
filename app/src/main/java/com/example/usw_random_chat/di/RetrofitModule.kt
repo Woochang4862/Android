@@ -47,14 +47,14 @@ object RetrofitModule {
         .build()
 
     class AppInterceptor : Interceptor {
-        @Throws(IOException::class)
-        override fun intercept(chain: Interceptor.Chain) : Response = with(chain) {
+       @Throws(IOException::class)
+        override fun intercept(chain: Interceptor.Chain) : Response {
             val accessToken = MainApplication.prefs.getToken("accessToken", "") // ViewModel에서 지정한 key로 JWT 토큰을 가져온다.
-            val newRequest = request()
+            val newRequest = chain.request()
                 .newBuilder()
                 .addHeader("authorization", accessToken) // 헤더에 authorization라는 key로 JWT 를 넣어준다.
                 .build()
-            proceed(newRequest)
+            return chain.proceed(newRequest)
         }
     }
 

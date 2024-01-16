@@ -29,7 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalAnimationApi::class)
+
 @Composable
 fun LoadingScreen(navController: NavController) {
 

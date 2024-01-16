@@ -12,20 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignInViewModel
 import com.example.usw_random_chat.ui.OneButtonDialog
@@ -58,10 +52,16 @@ fun SignInScreen(signInViewModel: SignInViewModel = viewModel(),navController: N
     SignUpBtn(navController)
 
     if (signInViewModel.loginState.value){
+        navController.navigate(Screen.MainPageScreen.route){
+            navController.popBackStack()
+        }
+        signInViewModel.changeLoginState()
+    }
+    if(signInViewModel.dialogState.value){
         OneButtonDialog(
             contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
             text = "확인",
-            onPress = { signInViewModel.changeLoginState() },
+            onPress = { signInViewModel.changeDrawerState() },
             image = R.drawable.baseline_error_24
         )
     }
@@ -171,7 +171,7 @@ fun SignUpBtn(navController: NavController) { // asdasd변수 이름 적절하�
                 .height(56.dp)
                 .weight(1f)
         ){
-            navController.navigate(Screen.MainPageScreen.route)
+            navController.navigate(Screen.SignUpScreen.route)
         }
         Spacer(modifier = Modifier.weight(0.1f))
     }

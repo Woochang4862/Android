@@ -37,13 +37,13 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
     fun verifyEmail() {
         viewModelScope.launch {
-            signUpUseCase.authEmail(UserDTO(memberEmail = _email.value))
+          //  signUpUseCase.authEmail(UserDTO(memberEmail = _email.value))
         }
     }
 
     fun checkVerifyEmail() {
         viewModelScope.launch {
-            signUpUseCase.checkAuthEmail(UserDTO(memberEmail = _email.value))
+            //signUpUseCase.checkAuthEmail(UserDTO(memberEmail = _email.value))
         }
     }
 
@@ -84,7 +84,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
     fun postSignUp() {
         viewModelScope.launch {
-            signUpUseCase.signUp(UserDTO(_rememberId.value, _rememberPw.value))
+            signUpUseCase.signUp(UserDTO(memberID = _rememberId.value, memberPassword = _rememberPw.value))
         }
     }
 }

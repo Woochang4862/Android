@@ -63,25 +63,25 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
 
     fun postAuthEmail(){
         viewModelScope.launch {
-            userModifyUseCase.postEmail(UserDTO(email.value) )
+          //  userModifyUseCase.postEmail(UserDTO(memberEmail = email.value) )
         }
     }
 
     fun postPwChange(){
         viewModelScope.launch {
-            userModifyUseCase.pwChange(UserDTO(rememberPW.value,rememberPWCheck.value) )
+            userModifyUseCase.pwChange(UserDTO(memberPassword = rememberPW.value) )
         }
     }
 
     fun postAuthCode(){
         viewModelScope.launch {
-            userModifyUseCase.postAuthCode(UserDTO(memberID = rememberID.value, memberEmail = rememberEmail.value))
+           // userModifyUseCase.postAuthCode(UserDTO(memberID = rememberID.value, memberEmail = rememberEmail.value))
         }
     }
 
     fun checkAuthCode(){
         viewModelScope.launch {
-            userModifyUseCase.checkAuthCode(UserDTO(code = rememberCode.value))
+           // userModifyUseCase.checkAuthCode(UserDTO(code = rememberCode.value))
         }
     }
 

@@ -304,7 +304,6 @@ fun signUpButton(trigger: Boolean, navController: NavController, onPress: () -> 
                     .background(color = Color.White)
             ) {
                 onPress
-                navController.navigate(Screen.SignInScreen.route)
             }
             Spacer(Modifier.weight(0.1f))
         }

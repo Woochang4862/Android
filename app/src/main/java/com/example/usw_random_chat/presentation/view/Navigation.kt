@@ -9,7 +9,6 @@ import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 import com.example.usw_random_chat.presentation.ViewModel.SignInViewModel
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun Navigation() {
@@ -61,6 +60,7 @@ fun Navigation() {
             EditProfileScreen(navController, viewModel)
         }
         composable(route = Screen.LoadingScreen.route) {
+            val viewModel = hiltViewModel<SignInViewModel>()
             LoadingScreen(navController)
         }
         composable(route = Screen.ChatScreen.route) {

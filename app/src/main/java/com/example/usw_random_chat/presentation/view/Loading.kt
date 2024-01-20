@@ -24,22 +24,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.presentation.ViewModel.SignInViewModel
 import kotlinx.coroutines.delay
 
 
 @Composable
-fun LoadingScreen(navController: NavController) {
+fun LoadingScreen(navController: NavController, signInViewModel: SignInViewModel = viewModel())  {
 
     LoadingLogo("심심할 땐,", "SUCHAT")
 
 
     LaunchedEffect(Unit) {
         delay(1000L)
-        navController.popBackStack()
-        navController.navigate(Screen.SignInScreen.route)
+        signInViewModel.autoSignIn()
+        if (signInViewModel.loginState.value){
+            navController.navigate(Screen.MainPageScreen.route){
+                navController.popBackStack()
+            }
+        }
+        else{
+            navController.navigate(Screen.SignInScreen.route){
+                navController.popBackStack()
+            }
+        }
     }
 }
 

@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCase, private val navController: NavController, private val pref : TokenSharedPreference) : ViewModel() {
+class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCase, private val pref : TokenSharedPreference) : ViewModel() {
 
     private val _id = mutableStateOf("")
     private val _password = mutableStateOf("")
@@ -54,7 +54,9 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
             val accessToken = pref.getToken("accessToken","")
             val refreshToken = pref.getToken("refreshToken","")
 
-            signInUseCase.autoSignIn(Token(accessToken,refreshToken))
+            when(signInUseCase.autoSignIn(Token(accessToken,refreshToken))){
+                in 200..300 -> _loginState.value = true
+            }
         }
     }
 

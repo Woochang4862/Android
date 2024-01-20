@@ -382,7 +382,6 @@ fun idSearchBtn(
         Spacer(Modifier.weight(0.02f))
     }
 }
-
 @Composable
 fun MatchingAnimationText(text: String) {
     Text(

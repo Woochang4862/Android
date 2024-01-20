@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -44,13 +46,18 @@ import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
 import com.example.usw_random_chat.ui.GetScreenWidthInDp
+import com.example.usw_random_chat.ui.OneButtonDialog
 import com.example.usw_random_chat.ui.RedWarning
 import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.idSearchBtn
+import com.example.usw_random_chat.ui.loginTextField
+import com.example.usw_random_chat.ui.text
 import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 @Composable
 fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController) {
+    val screenWidthInDp = (GetScreenWidthInDp() - 326) / 2
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -75,8 +82,35 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
             signUpViewModel.updateRememberPwCheck(it)
         }
         Spacer(Modifier.padding(20.dp))
-        signUpButton(signUpViewModel.rememberTrigger.value, navController = navController){
+        signUpButton(signUpViewModel.rememberTrigger.value){
             signUpViewModel.postSignUp()
+        }
+        if (signUpViewModel.checkSignupIdState.value){
+            //중복확인 성공했을때 이벤트
+            signUpViewModel.changeCheckSignUpIdState()
+        }
+        if(signUpViewModel.dialogCheckSignUpIdState.value){
+            OneButtonDialog(
+                contentText = "아이디가 \n중복입니다.",
+                text = "확인",
+                onPress = { signUpViewModel.changeDialogCheckSignUpIdState() },
+                image = R.drawable.baseline_error_24
+            )
+        }
+
+        if (signUpViewModel.signupState.value){
+            navController.navigate(Screen.SignInScreen.route){
+                navController.popBackStack()
+            }
+            signUpViewModel.changeSignupState()
+        }
+        if(signUpViewModel.dialogSignupState.value){
+            OneButtonDialog(
+                contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
+                text = "확인",
+                onPress = { signUpViewModel.changeDialogSignupState() },
+                image = R.drawable.baseline_error_24
+            )
         }
     }
 }
@@ -287,14 +321,14 @@ fun EmailTextFieldSignUp(email: State<String>, onRememberEmail: (String) -> Unit
 }*/
 
 @Composable
-fun signUpButton(trigger: Boolean, navController: NavController, onPress: () -> Unit) {
+fun signUpButton(trigger: Boolean, onPress: () -> Unit) {
     Column(
         Modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(Modifier) {
             Spacer(Modifier.weight(0.1f))
             button(
-                "회원가입",
+                "회원가입 완료",
                 enable = trigger,
                 Color.White,
                 Color.Black,
@@ -303,7 +337,7 @@ fun signUpButton(trigger: Boolean, navController: NavController, onPress: () -> 
                     .height(56.dp)
                     .background(color = Color.White)
             ) {
-                onPress
+                onPress()
             }
             Spacer(Modifier.weight(0.1f))
         }

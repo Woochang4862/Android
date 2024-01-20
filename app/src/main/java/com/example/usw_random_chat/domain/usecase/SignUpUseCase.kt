@@ -6,7 +6,7 @@ import com.example.usw_random_chat.data.repository.SignUpRepository
 class SignUpUseCase(private val signUpRepository: SignUpRepository) {
 
 
-    suspend fun signUp(param : UserDTO) : UserDTO {
+    suspend fun signUp(param : UserDTO) : Int {
         return signUpRepository.signup(param)
     }
 
@@ -14,11 +14,15 @@ class SignUpUseCase(private val signUpRepository: SignUpRepository) {
         return signUpRepository.idDoubleCheck(param)
     }
 
-    suspend fun authEmail(param : UserDTO) : UserDTO {
+    suspend fun authEmail(param : UserDTO) : Int {
         return signUpRepository.authEmail(param)
     }
 
-    suspend fun checkAuthEmail(param : UserDTO) : UserDTO {
-        return signUpRepository.authEmail(param)
+    suspend fun checkAuthEmail(param : UserDTO) : Int {
+        return signUpRepository.checkAuthEmail(param)
+    }
+
+    suspend fun checkSignUpId(param : UserDTO) : Int {
+        return signUpRepository.checkSignUpId(param)
     }
 }

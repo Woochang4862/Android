@@ -22,9 +22,17 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     private val _rememberPwCheck = mutableStateOf("")
     //private val _rememberEmail   = mutableStateOf("")
     private val _email = mutableStateOf("")
+    private val _signupState = mutableStateOf(false)
+    private val _authEmailState = mutableStateOf(false)
+    private val _checkAuthEmailState = mutableStateOf(false)
+    private val _dialogSignupState = mutableStateOf(false)
+    private val _dialogAuthEmailState = mutableStateOf(false)
+    private val _dialogCheckAuthEmailState = mutableStateOf(false)
     private val _rememberPwEqualOrNot = mutableStateOf(false)
     private val _rememberTrigger = mutableStateOf(false)
     private val _rememberIdLength = mutableStateOf(false)
+    private val _checkSignupIdState = mutableStateOf(false)
+    private val _dialogCheckSignUpIdState = mutableStateOf(false)
 
     val rememberId: State<String> = _rememberId
     val rememberPw: State<String> = _rememberPw
@@ -34,16 +42,39 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     val rememberPwEqualOrNot : State<Boolean> = _rememberPwEqualOrNot
     val rememberTrigger : State<Boolean> = _rememberTrigger
     val rememberIdLength : State<Boolean> = _rememberIdLength
+    val signupState : State<Boolean> = _signupState
+    val authEmailState : State<Boolean> = _authEmailState
+    val checkAuthEmailState : State<Boolean> = _checkAuthEmailState
+    val dialogSignupState : State<Boolean> = _dialogSignupState
+    val dialogAuthEmailState : State<Boolean> = _dialogAuthEmailState
+    val dialogCheckAuthEmailState : State<Boolean> = _dialogCheckAuthEmailState
+    val checkSignupIdState : State<Boolean> = _checkSignupIdState
+    val dialogCheckSignUpIdState : State<Boolean> = _dialogCheckSignUpIdState
 
     fun verifyEmail() {
         viewModelScope.launch {
-          //  signUpUseCase.authEmail(UserDTO(memberEmail = _email.value))
+            when(signUpUseCase.authEmail(UserDTO(memberEmail = email.value))){
+                in (200..300) -> _authEmailState.value = true
+                !in (200..300) -> _dialogAuthEmailState.value = true
+            }
         }
     }
 
     fun checkVerifyEmail() {
         viewModelScope.launch {
-            //signUpUseCase.checkAuthEmail(UserDTO(memberEmail = _email.value))
+            when(signUpUseCase.checkAuthEmail(UserDTO(memberEmail = email.value))){
+                in (200..300) -> _checkAuthEmailState.value = true
+                !in (200..300) -> _dialogCheckAuthEmailState.value = true
+            }
+        }
+    }
+
+    fun checkSignUpId() {   //중복확인버튼에 사용할 함수
+        viewModelScope.launch {
+            when(signUpUseCase.checkSignUpId(UserDTO(memberID = rememberId.value))){
+                in (200..300) -> _checkSignupIdState.value = true
+                !in (200..300) -> _dialogCheckSignUpIdState.value = true
+            }
         }
     }
 
@@ -71,6 +102,30 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         _rememberPwEqualOrNot.value = _rememberPw.value == _rememberPwCheck.value
         updateRememberTrigger()
     }
+    fun changeCheckSignUpIdState(){
+        _checkSignupIdState.value = !_checkSignupIdState.value
+    }
+    fun changeDialogCheckSignUpIdState(){
+        _dialogCheckSignUpIdState.value = !_dialogCheckSignUpIdState.value
+    }
+    fun changeAuthEmailState(){
+        _authEmailState.value = !_authEmailState.value
+    }
+    fun changeDialogSignupState(){
+        _dialogSignupState.value = !_dialogSignupState.value
+    }
+    fun changeDialogAuthEmailState(){
+        _dialogAuthEmailState.value = !_dialogAuthEmailState.value
+    }
+    fun changeDialogCheckAuthEmailState(){
+        _dialogCheckAuthEmailState.value = !_dialogCheckAuthEmailState.value
+    }
+    fun changeCheckAuthEmailState(){
+        _checkAuthEmailState.value = !_checkAuthEmailState.value
+    }
+    fun changeSignupState(){
+        _signupState.value = !_signupState.value
+    }
 
     private fun updateRememberTrigger() {
         checkIdLength()
@@ -81,10 +136,12 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     private fun checkIdLength() {
         _rememberIdLength.value = !(_rememberId.value.length < 4 || _rememberId.value.length > 16)
     }
-
     fun postSignUp() {
         viewModelScope.launch {
-            signUpUseCase.signUp(UserDTO(memberID = _rememberId.value, memberPassword = _rememberPw.value))
+            when(signUpUseCase.signUp(UserDTO(memberID = rememberId.value, memberPassword = rememberPw.value))){
+                in (200..300) -> _signupState.value = true
+                !in (200..300) -> _dialogSignupState.value = true
+            }
         }
     }
 }

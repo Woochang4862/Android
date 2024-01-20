@@ -39,6 +39,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignInViewModel
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
+import com.example.usw_random_chat.ui.OneButtonDialog
 import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.portalEmail
 import com.example.usw_random_chat.ui.sendImg
@@ -52,6 +53,21 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = viewModel(), navControlle
     RequestEmail{signUpViewModel.verifyEmail()}
     NextBtn(){signUpViewModel.checkVerifyEmail()}
     SignUpExitBtn{navController.popBackStack()}
+
+    if (signUpViewModel.authEmailState.value){
+        navController.navigate(Screen.SignUpScreen.route){
+            navController.popBackStack()
+        }
+        signUpViewModel.changeAuthEmailState()
+    }
+    if(signUpViewModel.dialogAuthEmailState.value){
+        OneButtonDialog(
+            contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
+            text = "확인",
+            onPress = { signUpViewModel.changeDialogAuthEmailState() },
+            image = R.drawable.baseline_error_24
+        )
+    }
 }
 
 
@@ -182,7 +198,6 @@ fun EmailAuthScreenPreview(){
     SignUpEmail(email = asd){}
     SignUpEmailBtn()
     RequestEmail{}
-    NextBtn(){}
     SignUpExitBtn{}
 }
 

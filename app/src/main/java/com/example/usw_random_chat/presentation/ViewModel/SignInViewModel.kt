@@ -34,12 +34,11 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     fun updatePassWord(newValue : String){
         _password.value = newValue
     }
-
-    fun changeDrawerState(){
-        _dialogState.value = !_dialogState.value
-    }
     fun changeLoginState(){
         _loginState.value = !_loginState.value
+    }
+    fun changeDrawerState(){
+        _dialogState.value = !_dialogState.value
     }
     fun postSignIn(){
         viewModelScope.launch {//viewModelScope 공부하기

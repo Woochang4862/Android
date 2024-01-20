@@ -15,13 +15,14 @@ class SignUpRepositoryImpl @Inject constructor(
 )  : SignUpRepository {
 
 
-    override suspend fun signup(param: UserDTO): UserDTO {
+    override suspend fun signup(param: UserDTO): Int {
         val response = signUpApiService.registerSignUp(param)
 
-        if (response.isSuccessful){
-            return response.body()!!
-        }else{
-            throw Exception("Fail!!")
+        return if (response.isSuccessful) {
+            response.code()
+        } else {
+            Log.d("회원 가입 실패",response.body().toString())
+            response.code()
         }
     }
 
@@ -35,26 +36,36 @@ class SignUpRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun authEmail(param: UserDTO): UserDTO {
+    override suspend fun authEmail(param: UserDTO): Int {
         val response = signUpApiService.registerAuthEmail(param)
 
-        if (response.isSuccessful) {
-            return response.body()!!
+        return if (response.isSuccessful) {
+            response.code()
         } else {
-            throw Exception("Fail!!")
+            Log.d("이메일 전송 실패",response.body().toString())
+            response.code()
         }
     }
 
-    override suspend fun checkAuthEmail(param: UserDTO): UserDTO {
+    override suspend fun checkAuthEmail(param: UserDTO): Int {
         val response = signUpApiService.registerCheckAuthEmail(param)
 
-        if (response.isSuccessful) {
-            navController.navigate(Screen.SignUpScreen.route){
-                navController.popBackStack()
-            }
-            return response.body()!!
+        return if (response.isSuccessful) {
+            response.code()
         } else {
-            throw Exception("Fail!!")
+            Log.d("이메일 인증 실패",response.body().toString())
+            response.code()
+        }
+    }
+
+    override suspend fun checkSignUpId(param: UserDTO): Int {
+        val response = signUpApiService.registerCheckSignUpId(param)
+
+        return if (response.isSuccessful) {
+            response.code()
+        } else {
+            Log.d("아이디 중복 확인 실패.",response.body().toString())
+            response.code()
         }
     }
 }

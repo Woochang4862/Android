@@ -9,17 +9,21 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface SignUpApiService {
-    @POST("member/sign-up")
+    @POST("member2/signUp")
     @Headers("content-type: application/json")
     suspend fun registerSignUp(@Body jsonpath: UserDTO) : Response<UserDTO>
     @POST("member/check-duplicate-id")
     suspend fun registerIdDoubleCheck(@Body jsonpath: UserDTO) : Response<UserDTO>
 
-    @GET("member2/signUp")
+    @POST("member2/signUp")
     @Headers("content-type: application/json")
     suspend fun registerAuthEmail(@Body jsonpath: UserDTO): Response<UserDTO>
 
-    @GET("member2/signUp")
+    @POST("member2/signUp")
     @Headers("content-type: application/json")
     suspend fun registerCheckAuthEmail(@Body jsonpath: UserDTO): Response<UserDTO>
+
+    @POST("member2/signUp")
+    @Headers("content-type: application/json")
+    suspend fun registerCheckSignUpId(@Body jsonpath: UserDTO): Response<UserDTO>
 }

@@ -15,37 +15,34 @@ import javax.inject.Inject
 class SignInRepositoryImpl @Inject constructor(
     private val signInApiService: SignInApiService,
     private val tokenSharedPreference: TokenSharedPreference,
-    private val navController: NavController
 ) : SignInRepository {
 
     override suspend fun signIn(param: UserDTO) : Int {
         val response = signInApiService.registerSignIn(param)
 
         return if (response.isSuccessful) {
-            //val accessToken = response.body()?.token?.accessToken
-            //val refreshToken = response.body()?.token?.refreshToken
-            //tokenSharedPreference.setToken("accessToken","$accessToken")
-            //tokenSharedPreference.setToken("refreshToken","$refreshToken")
-            //navController.navigate(Screen.MainPageScreen.route)
+            val accessToken = response.body()?.token?.accessToken
+            val refreshToken = response.body()?.token?.refreshToken
+            tokenSharedPreference.setToken("accessToken","$accessToken")
+            tokenSharedPreference.setToken("refreshToken","$refreshToken")
+            Log.d("Token","access: $accessToken, refresh: $refreshToken")
             response.code()
         } else {
-            Log.d("로그인 실패",response.body().toString())
+            Log.d("로그인 실패","${response.body()}\n  ${response.code()}")
             response.code()
         }
     }
 
-    override suspend fun autoSignIn(token: Token){
-        val response = signInApiService.autoSignIn()
+    override suspend fun autoSignIn(token: Token) : Int {
+        val response = signInApiService.autoSignIn(token)
 
-        if (response.isSuccessful){
-            navController.navigate(Screen.MainPageScreen.route){
-                navController.popBackStack()
-            }
+        return if (response.isSuccessful){
+            Log.d("AutoLogin",response.body().toString())
+            response.code()
         }
         else{
-            navController.navigate(Screen.SignInScreen.route){
-                navController.popBackStack()
-            }
+            Log.d("AutoLogin Fail",response.body().toString())
+            response.code()
         }
     }
 }

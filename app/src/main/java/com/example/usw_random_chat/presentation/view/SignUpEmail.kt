@@ -55,16 +55,29 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = viewModel(), navControlle
     SignUpExitBtn{navController.popBackStack()}
 
     if (signUpViewModel.authEmailState.value){
-        navController.navigate(Screen.SignUpScreen.route){
-            navController.popBackStack()
-        }
+        //이메일 전송했을 때 이벤트
         signUpViewModel.changeAuthEmailState()
     }
     if(signUpViewModel.dialogAuthEmailState.value){
         OneButtonDialog(
-            contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
+            contentText = "이메일 전송을\n실패했습니다.",
             text = "확인",
             onPress = { signUpViewModel.changeDialogAuthEmailState() },
+            image = R.drawable.baseline_error_24
+        )
+    }
+
+    if (signUpViewModel.checkAuthEmailState.value){
+        navController.navigate(Screen.SignUpScreen.route){
+            navController.popBackStack()
+        }
+        signUpViewModel.changeCheckAuthEmailState()
+    }
+    if(signUpViewModel.dialogCheckAuthEmailState.value){
+        OneButtonDialog(
+            contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
+            text = "확인",
+            onPress = { signUpViewModel.changeDialogCheckAuthEmailState() },
             image = R.drawable.baseline_error_24
         )
     }

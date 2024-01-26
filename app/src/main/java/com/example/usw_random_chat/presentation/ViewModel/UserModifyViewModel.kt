@@ -63,7 +63,7 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
 
     fun postAuthEmail(){
         viewModelScope.launch {
-          //  userModifyUseCase.postEmail(UserDTO(memberEmail = email.value) )
+            userModifyUseCase.postEmail(UserDTO(email = email.value) )
         }
     }
 
@@ -75,7 +75,7 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
 
     fun postAuthCode(){
         viewModelScope.launch {
-           // userModifyUseCase.postAuthCode(UserDTO(memberID = rememberID.value, memberEmail = rememberEmail.value))
+            userModifyUseCase.postAuthCode(UserDTO(memberID = rememberID.value, email = rememberEmail.value))
         }
     }
 

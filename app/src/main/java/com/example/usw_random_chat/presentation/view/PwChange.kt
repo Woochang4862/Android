@@ -46,21 +46,6 @@ import com.example.usw_random_chat.ui.tittleWithBackArrow
 @Composable
 fun PwChangeScreen(userModifyViewModel: UserModifyViewModel = viewModel(), navController: NavController) {
 
-    val screenWidthInDp = (GetScreenWidthInDp()-100)/2
-
-    /*val rememberPW = remember {
-        mutableStateOf("")
-    }
-
-    val rememberPWCheck = remember {
-        mutableStateOf("")
-    }
-
-    val rememberPwEqualOrNot = remember{
-        mutableStateOf(false)
-    }
-    rememberPwEqualOrNot.value = rememberPW.value == rememberPWCheck.value*/
-
     Column(
         modifier = Modifier
             .fillMaxSize()

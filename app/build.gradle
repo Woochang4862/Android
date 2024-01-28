@@ -78,4 +78,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+
+    implementation 'com.github.bishoybasily:stomp:2.0.5'
+    implementation 'com.github.nkzawa:stomp.js:2.3.3'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
 }

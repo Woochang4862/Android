@@ -61,6 +61,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.view.Screen
+import java.text.SimpleDateFormat
 
 
 @Composable
@@ -542,14 +543,14 @@ fun msg(text: String, color: Color) {
 @Composable
 fun TimeText() {
     Text(
-        text = "오후" + "3:12",
+        text = SimpleDateFormat("HH:mm").format(System.currentTimeMillis()),
         fontSize = 12.sp,
         lineHeight = 14.sp,
         fontFamily = FontFamily(Font(R.font.kcc_chassam)),
         fontWeight = FontWeight(400),
         color = Color(0xFF767676),
         modifier = Modifier
-            .width(42.dp)
+            .width(32.dp)
             .height(14.dp)
     )
 }

@@ -1,9 +1,11 @@
 package com.example.usw_random_chat.di
 
+import com.example.usw_random_chat.data.repository.ChatRepository
 import com.example.usw_random_chat.data.repository.ProfileRepository
 import com.example.usw_random_chat.data.repository.SignInRepository
 import com.example.usw_random_chat.data.repository.SignUpRepository
 import com.example.usw_random_chat.data.repository.UserModifyRepository
+import com.example.usw_random_chat.data.repositoryimpl.ChatRepositoryImpl
 import com.example.usw_random_chat.data.repositoryimpl.ProfileRepositoryImpl
 import com.example.usw_random_chat.data.repositoryimpl.SignInRepositoryImpl
 import com.example.usw_random_chat.data.repositoryimpl.SignUpRepositoryImpl
@@ -32,4 +34,8 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun provideUserModifyRepository(repositoryImpl: UserModifyRepositoryImpl): UserModifyRepository
+
+    @Singleton
+    @Binds
+    abstract fun provideChatRepository(repositoryImpl: ChatRepositoryImpl): ChatRepository
 }

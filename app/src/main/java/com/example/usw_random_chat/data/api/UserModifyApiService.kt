@@ -23,4 +23,8 @@ interface UserModifyApiService {
     @Headers("content-type: application/json")
     suspend fun postEmail(@Body jsonpath: UserDTO) : Response<UserDTO>
 
+    @POST("member/check-duplicate-id")
+    @Headers("content-type: application/json")
+    suspend fun RegisterPostCheckEmail(@Body jsonpath: UserDTO): Response<UserDTO>
+
 }

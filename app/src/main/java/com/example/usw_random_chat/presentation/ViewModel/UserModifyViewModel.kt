@@ -21,6 +21,8 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
     private val _rememberCode  = mutableStateOf("")
     private val _rememberId  = mutableStateOf("")
     private val _rememberEmail   = mutableStateOf("")
+    private val _checkIdSearchAuthEmail = mutableStateOf(false)
+    private val _dialogCheckIdSearchAuthEmail = mutableStateOf(false)
 
     val rememberPW : State<String> = _rememberPW
     val rememberPWCheck : State<String> = _rememberPWCheck
@@ -28,6 +30,8 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
     val rememberTrigger : State<Boolean> = _rememberTrigger
     val rememberPwLength : State<Boolean> = _rememberPwLength
     val email : State<String>  = _email
+    val checkIdSearchAuthEmail : State<Boolean> = _checkIdSearchAuthEmail
+    val dialogCheckIdSearchAuthEmail : State<Boolean> = _dialogCheckIdSearchAuthEmail
 
 
     fun updateEmail(newValue: String){
@@ -36,6 +40,13 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
     val rememberCode : State<String> = _rememberCode
     val rememberID : State<String> = _rememberId
     val rememberEmail : State<String> = _rememberEmail
+
+    fun changeCheckIdSearchAuthEmail(){
+        _checkIdSearchAuthEmail.value = !_checkIdSearchAuthEmail.value
+    }
+    fun changeDialogCheckIdSearchAuthEmail(){
+        _dialogCheckIdSearchAuthEmail.value = !_dialogCheckIdSearchAuthEmail.value
+    }
 
     fun updateRememberPW(newValue : String){
         _rememberPW.value = newValue
@@ -61,12 +72,6 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
         _rememberPwLength.value = !(_rememberPW.value.length < 6 || _rememberPW.value.length> 20)
     }
 
-    fun postAuthEmail(){
-        viewModelScope.launch {
-            userModifyUseCase.postEmail(UserDTO(email = email.value) )
-        }
-    }
-
     fun postPwChange(){
         viewModelScope.launch {
             userModifyUseCase.pwChange(UserDTO(memberPassword = rememberPW.value) )
@@ -82,6 +87,15 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
     fun checkAuthCode(){
         viewModelScope.launch {
            // userModifyUseCase.checkAuthCode(UserDTO(code = rememberCode.value))
+        }
+    }
+
+    fun postAuthEmail() {   //아이디 찾기에 있는 확인 메일 전송 버튼 함수
+        viewModelScope.launch {
+            when(userModifyUseCase.postCheckEmail(UserDTO(memberID = email.value))){
+                in (200..300) -> _checkIdSearchAuthEmail.value = true
+                !in (200..300) -> _dialogCheckIdSearchAuthEmail.value = true
+            }
         }
     }
 

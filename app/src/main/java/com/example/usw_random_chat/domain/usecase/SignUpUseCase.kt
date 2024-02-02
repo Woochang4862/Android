@@ -10,7 +10,7 @@ class SignUpUseCase(private val signUpRepository: SignUpRepository) {
         return signUpRepository.signup(param)
     }
 
-    suspend fun idDoubleCheck(param : UserDTO) : UserDTO {
+    suspend fun idDoubleCheck(param : UserDTO) : Int {
         return signUpRepository.idDoubleCheck(param)
     }
 
@@ -22,7 +22,7 @@ class SignUpUseCase(private val signUpRepository: SignUpRepository) {
         return signUpRepository.checkAuthEmail(param)
     }
 
-    suspend fun checkSignUpId(param : UserDTO) : Int {
-        return signUpRepository.checkSignUpId(param)
+    suspend fun checkSignUpNickName(param : UserDTO) : Int {
+        return signUpRepository.checkSignUpNickName(param)
     }
 }

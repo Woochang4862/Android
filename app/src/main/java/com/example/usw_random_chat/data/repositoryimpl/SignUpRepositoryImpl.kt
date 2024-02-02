@@ -10,8 +10,7 @@ import com.example.usw_random_chat.presentation.view.Screen
 import javax.inject.Inject
 
 class SignUpRepositoryImpl @Inject constructor(
-    private val signUpApiService: SignUpApiService,
-    private val navController: NavController
+    private val signUpApiService: SignUpApiService
 )  : SignUpRepository {
 
 
@@ -26,13 +25,14 @@ class SignUpRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun idDoubleCheck(param: UserDTO) : UserDTO{
+    override suspend fun idDoubleCheck(param: UserDTO) : Int{
         val response = signUpApiService.registerIdDoubleCheck(param)
 
-        if (response.isSuccessful){
-            return response.body()!!
-        }else{
-            throw Exception("Fail!!")
+        return if (response.isSuccessful) {
+            response.code()
+        } else {
+            Log.d("아이디 중복 확인 실패",response.body().toString())
+            response.code()
         }
     }
 
@@ -58,13 +58,13 @@ class SignUpRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun checkSignUpId(param: UserDTO): Int {
-        val response = signUpApiService.registerCheckSignUpId(param)
+    override suspend fun checkSignUpNickName(param: UserDTO): Int {
+        val response = signUpApiService.registerCheckSignUpNickName(param)
 
         return if (response.isSuccessful) {
             response.code()
         } else {
-            Log.d("아이디 중복 확인 실패.",response.body().toString())
+            Log.d("닉네임 중복 확인 실패.",response.body().toString())
             response.code()
         }
     }

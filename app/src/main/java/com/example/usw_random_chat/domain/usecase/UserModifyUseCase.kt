@@ -20,4 +20,8 @@ class UserModifyUseCase(private val userModifyRepository: UserModifyRepository) 
     suspend fun postEmail(param : UserDTO) : UserDTO {
         return userModifyRepository.postEmail(param)
     }
+
+    suspend fun postCheckEmail(param : UserDTO) : Int {
+        return userModifyRepository.postCheckEmail(param)
+    }
 }

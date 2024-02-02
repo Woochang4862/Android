@@ -12,4 +12,6 @@ interface UserModifyRepository {
 
     suspend fun postEmail(param : UserDTO) : UserDTO
 
+    suspend fun postCheckEmail(param : UserDTO) : Int
+
 }

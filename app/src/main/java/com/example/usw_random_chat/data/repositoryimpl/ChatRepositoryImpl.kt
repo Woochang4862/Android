@@ -12,17 +12,16 @@ class ChatRepositoryImpl() : ChatRepository {
 
     private lateinit var stompConnection : Disposable
 
-    private val server= "sd"
     private val client = OkHttpClient()
     private val TAG = "STOMP"
 
-    private val stomp = StompClient(client,1000L).apply { this@apply.url = server }
+    private val stomp = StompClient(client,1000L).apply { this@apply.url = server_url }
 
     @SuppressLint("CheckResult")
     override suspend fun sendMsg(msg: String, wss: String) {
         stomp.send(wss,msg).subscribe{
             if (it){
-                Log.d(TAG,"send Succeess : $msg")
+                Log.d(TAG,"send Success : $msg")
             }
             else{
                 Log.d(TAG,"send Fail : $msg")
@@ -58,5 +57,9 @@ class ChatRepositoryImpl() : ChatRepository {
 
     override suspend fun disconnectStomp() {
         stompConnection.isDisposed
+    }
+
+    companion object Server{
+        const val server_url : String = ""
     }
 }

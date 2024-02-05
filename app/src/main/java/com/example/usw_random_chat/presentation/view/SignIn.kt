@@ -171,7 +171,7 @@ fun SignUpBtn(navController: NavController) { // asdasd변수 이름 적절하�
                 .height(56.dp)
                 .weight(1f)
         ){
-            navController.navigate(Screen.EmailAuthScreen.route)
+            navController.navigate(Screen.SignUpScreen.route)
         }
         Spacer(modifier = Modifier.weight(0.1f))
     }

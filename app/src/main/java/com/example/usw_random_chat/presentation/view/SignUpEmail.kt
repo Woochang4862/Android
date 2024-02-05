@@ -50,7 +50,7 @@ import com.example.usw_random_chat.ui.tittleWithBackArrow
 fun EmailAuthScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController){
     SignUpEmail(email = signUpViewModel.email){ signUpViewModel.updateEmail(it) }
     SignUpEmailBtn()
-    RequestEmail{signUpViewModel.verifyEmail()}
+    RequestEmail{signUpViewModel.postSignUp()}
     NextBtn(navController){signUpViewModel.checkVerifyEmail()}
     SignUpExitBtn{navController.popBackStack()}
 

@@ -26,6 +26,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -42,9 +43,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.presentation.ViewModel.ChatViewModel
 import com.example.usw_random_chat.ui.TimeText
 import com.example.usw_random_chat.ui.TwoButtonDialog
 import com.example.usw_random_chat.ui.msg
@@ -53,7 +56,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ChattingScreen(navController: NavController) {
+fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = viewModel()) {
     val arr = arrayListOf(
         "awfdwf",
         "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
@@ -81,24 +84,46 @@ fun ChattingScreen(navController: NavController) {
     systemUiController.setSystemBarsColor(
         color = Color(0xFF4D76C8)
     )
-    val openDialog = remember {
-        mutableStateOf(false)
-    }
-    if (openDialog.value) {
-        CustomDialog(name = "asdw") {
-            openDialog.value = false
+
+    if (chatViewModel.profileDialog.value) {
+        CustomDialog(name = chatViewModel.userProfile.nickName) {
+            chatViewModel.closeProfileDialog()
         }
     }
-    val reportDialog = remember {
-        mutableStateOf(false)
+    if (chatViewModel.reportDialog.value) {
+        TwoButtonDialog(
+            contentText = "신고하시겠습니까?",
+            leftText = "취소",
+            rightText = "신고하기",
+            leftonPress = { chatViewModel.closeReportDialog() },
+            {},
+            R.drawable.baseline_error_24
+        )
     }
-    if (reportDialog.value) {
-        TwoButtonDialog(contentText = "신고하시겠습니까?", leftText = "취소", rightText = "신고하기", leftonPress = {reportDialog.value = false},{},R.drawable.baseline_error_24)
+    if (chatViewModel.exitDialog.value) {
+        TwoButtonDialog(
+            contentText = "대화방을 나가시겠습니까?",
+            leftText = "취소",
+            rightText = "나가기",
+            leftonPress = { chatViewModel.closeExitDialog() },
+            {},
+            R.drawable.baseline_error_24
+        )
     }
 
+
     Scaffold(
-        topBar = { ChatTopAppBar("FLAG", openDialog,reportDialog) },
-        bottomBar = { ChatBottomAppBar() },
+        topBar = {
+            ChatTopAppBar(chatViewModel.userProfile.nickName,
+                { chatViewModel.closeProfileDialog() },
+                { chatViewModel.closeReportDialog() },
+                { chatViewModel.closeExitDialog() })
+        },
+        bottomBar = {
+            ChatBottomAppBar(chatViewModel.msg.value,
+                { chatViewModel.updateMSG(chatViewModel.msg.value) },
+                { chatViewModel.sendMSG(chatViewModel.msg.value) })
+        },
         content = {
             LazyColumn(
                 modifier = Modifier.padding(bottom = 58.dp),
@@ -117,10 +142,15 @@ fun ChattingScreen(navController: NavController) {
 }
 
 @Composable
-fun ChatTopAppBar(name: String, profileflag: MutableState<Boolean>,reportflag: MutableState<Boolean>) {
+fun ChatTopAppBar(
+    name: String,
+    onPressUser: () -> Unit,
+    onPressReport: () -> Unit,
+    onPressExit: () -> Unit
+) {
     TopAppBar(
         title = {
-            IconButton(onClick = { profileflag.value = !profileflag.value }) {
+            IconButton(onClick = { onPressUser }) {
                 Row(
                     modifier = Modifier
                         .padding(start = 24.dp)
@@ -153,7 +183,7 @@ fun ChatTopAppBar(name: String, profileflag: MutableState<Boolean>,reportflag: M
             }
         },
         actions = {
-            IconButton(onClick = { reportflag.value = !reportflag.value}) {
+            IconButton(onClick = { onPressReport }) {
                 Icon(
                     painter = painterResource(id = R.drawable.report),
                     tint = Color(0xFFFFACAC),
@@ -164,7 +194,7 @@ fun ChatTopAppBar(name: String, profileflag: MutableState<Boolean>,reportflag: M
 
                 )
             }
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onPressExit }) {
                 Icon(
                     painter = painterResource(id = R.drawable.exit),
                     contentDescription = "",
@@ -183,10 +213,7 @@ fun ChatTopAppBar(name: String, profileflag: MutableState<Boolean>,reportflag: M
 }
 
 @Composable
-fun ChatBottomAppBar() {
-    val tmpTxt = remember {
-        mutableStateOf("")
-    }
+fun ChatBottomAppBar(text: String, onChange: () -> Unit, onPress: () -> Unit) {
     BottomAppBar(
         modifier = Modifier.height(58.dp),
         backgroundColor = Color.White,
@@ -219,10 +246,10 @@ fun ChatBottomAppBar() {
                                 color = Color.Transparent,
                                 shape = RoundedCornerShape(size = 25.dp)
                             ),
-                        value = tmpTxt.value,
-                        onValueChange = { txtValue -> tmpTxt.value = txtValue },
+                        value = text,
+                        onValueChange = { onChange },
                         decorationBox = { innerTextField ->
-                            if (tmpTxt.value.isEmpty()) {
+                            if (text.isEmpty()) {
                                 Text(
                                     text = "채팅을 시작해 보세요 . . .",
                                     fontSize = 16.sp,
@@ -239,10 +266,10 @@ fun ChatBottomAppBar() {
                         },
                     )
                     IconButton(
-                        onClick = { /*TODO*/ },
-                        enabled = true,
+                        onClick = onPress,
+                        enabled = text.isNotBlank(),
                     ) {
-                        if (true) {
+                        if (text.isNotBlank()) {
                             sendImg(id = R.drawable.send)
                         } else {
                             sendImg(id = R.drawable.unactive_send)

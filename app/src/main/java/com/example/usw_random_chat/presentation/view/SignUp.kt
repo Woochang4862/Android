@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.presentation.view
 
+import android.transition.Scene
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -56,7 +57,6 @@ import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 @Composable
 fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController) {
-    val screenWidthInDp = (GetScreenWidthInDp() - 326) / 2
 
     Column(
         modifier = Modifier
@@ -87,7 +87,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
         }
         Spacer(Modifier.padding(20.dp))
         signUpButton(signUpViewModel.rememberTrigger.value) {
-            signUpViewModel.postSignUp()
+            navController.navigate(Screen.EmailAuthScreen.route)
         }
         if (signUpViewModel.checkSignupIdState.value) {
             //중복확인 성공했을때 이벤트
@@ -345,7 +345,7 @@ fun signUpButton(trigger: Boolean, onPress: () -> Unit) {
         Row(Modifier) {
             Spacer(Modifier.weight(0.1f))
             button(
-                "회원가입 완료",
+                "다음",
                 enable = trigger,
                 Color.White,
                 Color.Black,

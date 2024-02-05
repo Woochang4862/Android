@@ -5,6 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.usw_random_chat.presentation.ViewModel.ChatViewModel
 import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 import com.example.usw_random_chat.presentation.ViewModel.SignInViewModel
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
@@ -64,7 +65,8 @@ fun Navigation() {
             LoadingScreen(navController)
         }
         composable(route = Screen.ChatScreen.route) {
-            ChattingScreen(navController)
+            val viewModel = hiltViewModel<ChatViewModel>()
+            ChattingScreen(navController,viewModel)
         }
         composable(route = Screen.MainPageScreen.route) {
             MainScreen(navController)

@@ -12,5 +12,7 @@ data class UserDTO(
     @SerializedName("nickname")
     val nickname : String = "",
     @SerializedName("token")
-    val token: Token = Token("","")
+    val token: Token = Token("",""),
+    @SerializedName("uuid")
+    val uuid : String = ""
 )

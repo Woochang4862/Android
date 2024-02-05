@@ -17,12 +17,34 @@ class ChatViewModel @Inject constructor( private val chatRepositoryImpl: ChatRep
     private val _msg = mutableStateOf("")
     private val _profileDialog = mutableStateOf(false)
     private val _reportDialog = mutableStateOf(false)
+    private val _exitDialog = mutableStateOf(false)
     private val _userProfile : ProfileDTO = ProfileDTO()
 
     val msg : State<String> = _msg
     val profileDialog : State<Boolean> = _profileDialog
+    val exitDialog : State<Boolean> = _exitDialog
     val reportDialog : State<Boolean> = _reportDialog
     val userProfile : ProfileDTO = _userProfile
+
+    fun exitChattingRoom(){
+
+    }
+    fun sendReport(){
+
+    }
+    fun closeProfileDialog(){
+        _profileDialog != _profileDialog
+    }
+    fun closeExitDialog(){
+        _exitDialog != _exitDialog
+    }
+    fun closeReportDialog(){
+        _reportDialog != _reportDialog
+    }
+
+    fun updateMSG(newValue : String){
+        _msg.value = newValue
+    }
 
    fun sendMSG(msg : String){
        viewModelScope.launch {

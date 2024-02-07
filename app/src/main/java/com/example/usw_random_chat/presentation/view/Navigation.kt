@@ -16,7 +16,7 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Screen.LoadingScreen.route
+        startDestination = Screen.ChatScreen.route
     )
     {
         composable(route = Screen.SignInScreen.route) {
@@ -66,7 +66,7 @@ fun Navigation() {
         }
         composable(route = Screen.ChatScreen.route) {
             val viewModel = hiltViewModel<ChatViewModel>()
-            ChattingScreen(navController,viewModel)
+            ChattingScreen(viewModel)
         }
         composable(route = Screen.MainPageScreen.route) {
             MainScreen(navController)

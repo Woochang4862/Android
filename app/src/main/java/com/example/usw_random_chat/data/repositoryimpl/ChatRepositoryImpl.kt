@@ -7,15 +7,16 @@ import com.gmail.bishoybasily.stomp.lib.Event
 import com.gmail.bishoybasily.stomp.lib.StompClient
 import io.reactivex.disposables.Disposable
 import okhttp3.OkHttpClient
+import javax.inject.Inject
 
-class ChatRepositoryImpl() : ChatRepository {
+class ChatRepositoryImpl @Inject constructor() : ChatRepository {
 
     private lateinit var stompConnection : Disposable
 
     private val client = OkHttpClient()
     private val TAG = "STOMP"
 
-    private val stomp = StompClient(client,1000L).apply { this@apply.url = server_url }
+    private val stomp = StompClient(client,5000L).apply { this@apply.url = server_url }
 
     @SuppressLint("CheckResult")
     override suspend fun sendMsg(msg: String, wss: String) {
@@ -60,6 +61,6 @@ class ChatRepositoryImpl() : ChatRepository {
     }
 
     companion object Server{
-        const val server_url : String = ""
+        const val server_url : String = "ws://3.35.83.91:8080/stomp"
     }
 }

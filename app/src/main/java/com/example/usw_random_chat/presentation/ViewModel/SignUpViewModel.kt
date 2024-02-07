@@ -2,13 +2,9 @@ package com.example.usw_random_chat.presentation.ViewModel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usw_random_chat.data.dto.UserDTO
-import com.example.usw_random_chat.data.repository.SignUpRepository
-import com.example.usw_random_chat.data.repositoryimpl.SignUpRepositoryImpl
 import com.example.usw_random_chat.domain.usecase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -79,6 +75,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                 in (200..300) -> _checkSignupIdState.value = true
                 !in (200..300) -> _dialogCheckSignUpIdState.value = true
             }
+            updateRememberTrigger()
         }
     }
 
@@ -88,6 +85,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                 in (200..300) -> _checkSignupNickNameState.value = true
                 !in (200..300) -> _dialogCheckSignUpNickNameState.value = true
             }
+            updateRememberTrigger()
         }
     }
 
@@ -154,7 +152,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     private fun updateRememberTrigger() {
         checkIdLength()
         _rememberTrigger.value = _rememberPw.value == _rememberPwCheck.value &&
-                _rememberIdLength.value && _rememberPwEqualOrNot.value
+                _checkSignupIdState.value && _rememberPwEqualOrNot.value && _checkSignupNickNameState.value
     }
 
     private fun checkIdLength() {

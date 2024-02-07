@@ -1,6 +1,5 @@
 package com.example.usw_random_chat.presentation.view
 
-import android.transition.Scene
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -14,8 +13,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -50,9 +47,7 @@ import com.example.usw_random_chat.ui.GetScreenWidthInDp
 import com.example.usw_random_chat.ui.OneButtonDialog
 import com.example.usw_random_chat.ui.RedWarning
 import com.example.usw_random_chat.ui.button
-import com.example.usw_random_chat.ui.idSearchBtn
-import com.example.usw_random_chat.ui.loginTextField
-import com.example.usw_random_chat.ui.text
+import com.example.usw_random_chat.ui.textFieldSearchBtn
 import com.example.usw_random_chat.ui.tittleWithBackArrow
 
 @Composable
@@ -79,6 +74,10 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
             { newId -> signUpViewModel.updateRememberId(newId) },
             { signUpViewModel.checkSignUpId() }
         )
+        Spacer(Modifier.padding(15.dp))
+        writeNickName(signUpViewModel.nickName,signUpViewModel.checkSignupNickNameState.value,
+            { newNickname -> signUpViewModel.updateRememberNickName(newNickname) }
+        ) { signUpViewModel.checkSignUpNickName() }
         Spacer(Modifier.padding(15.dp))
         writePW(signUpViewModel.rememberPw) { signUpViewModel.updateRememberPw(it) }
         Spacer(Modifier.padding(5.dp))
@@ -134,7 +133,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
 
 @Composable
 fun writeID(id: State<String>, onIdChanged: (String) -> Unit, onPress: () -> Unit) {
-    val idLengthCheck = id.value.length < 4 || id.value.length > 16
+    val idLengthCheck = id.value.length < 4 || id.value.length >16
     Row(
         Modifier, horizontalArrangement = Arrangement.Start
     ) {
@@ -171,7 +170,56 @@ fun writeID(id: State<String>, onIdChanged: (String) -> Unit, onPress: () -> Uni
         Spacer(Modifier.weight(0.3f))
     }
     Spacer(Modifier.padding(5.dp))
-    idSearchBtn(textFieldIdValue = id.value, onValueChange = onIdChanged, idLengthCheck) {
+    textFieldSearchBtn("아이디 입력 (4~16자)",textFieldIdValue = id.value, onValueChange = onIdChanged, idLengthCheck) {
+        onPress()
+    }
+}
+
+@Composable
+fun writeNickName(
+    nickname: State<String>,
+    nicknameTrigger: Boolean,
+    onNickNAmeChanged: (String) -> Unit, onPress: () -> Unit) {
+
+    Row(
+        Modifier, horizontalArrangement = Arrangement.Start
+    ) {
+        Spacer(Modifier.weight(0.2f))
+        Text(
+            text = "닉네임",
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            fontSize = 16.sp,
+            lineHeight = 18.sp,
+            fontWeight = FontWeight(400),
+            color = Color(0xFF000000),
+            textAlign = TextAlign.Left,
+            modifier = Modifier
+                .height(19.dp)
+                .weight(0.24f)
+        )
+
+        if (!nicknameTrigger or nickname.value.isEmpty()) {
+            RedWarning(
+                "                ",
+                Modifier
+                    .height(18.dp)
+                    .weight(1f)
+                    .padding(top = 3.dp)
+            )
+        } else {
+            RedWarning(
+                "* 이미 사용중인 닉네임입니다",
+                Modifier
+                    .height(18.dp)
+                    .weight(1f)
+                    .padding(top = 3.dp)
+            )
+
+        }
+        Spacer(Modifier.weight(0.3f))
+    }
+    Spacer(Modifier.padding(5.dp))
+    textFieldSearchBtn("닉네임 입력",textFieldIdValue = nickname.value, onValueChange = onNickNAmeChanged,nickname.value.isEmpty()) {
         onPress()
     }
 }
@@ -276,7 +324,7 @@ fun checkPW(
                 .padding(start = (screenWidthInDp + 5).dp)
             //여긴 가중치로 줄 경우 붉은 글씨가 뜰때 얘네가 움직여서 고정값으로 줌
         )
-        if (!equalCheck) {
+        if (!equalCheck && pwCheck.value.isNotEmpty()) {
             RedWarning(
                 "*비밀번호가 일치하지 않습니다",
                 Modifier

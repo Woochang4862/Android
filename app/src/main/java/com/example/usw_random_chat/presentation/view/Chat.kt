@@ -1,6 +1,7 @@
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -56,7 +57,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = viewModel()) {
+fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
     val arr = arrayListOf(
         "awfdwf",
         "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
@@ -111,6 +112,9 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
         )
     }
 
+    //chatViewModel.connectStomp()
+    //chatViewModel.subscribeStomp()
+
 
     Scaffold(
         topBar = {
@@ -120,9 +124,9 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
                 { chatViewModel.closeExitDialog() })
         },
         bottomBar = {
-            ChatBottomAppBar(chatViewModel.msg.value,
-                { chatViewModel.updateMSG(chatViewModel.msg.value) },
-                { chatViewModel.sendMSG(chatViewModel.msg.value) })
+            ChatBottomAppBar(chatViewModel.msg,
+                { chatViewModel.updateMSG(chatViewModel.msg.value) })
+                { chatViewModel.sendMSG(chatViewModel.msg.value) }
         },
         content = {
             LazyColumn(
@@ -213,7 +217,7 @@ fun ChatTopAppBar(
 }
 
 @Composable
-fun ChatBottomAppBar(text: String, onChange: () -> Unit, onPress: () -> Unit) {
+fun ChatBottomAppBar(text: State<String>, onChange: () -> Unit, onPress: () -> Unit) {
     BottomAppBar(
         modifier = Modifier.height(58.dp),
         backgroundColor = Color.White,
@@ -246,10 +250,10 @@ fun ChatBottomAppBar(text: String, onChange: () -> Unit, onPress: () -> Unit) {
                                 color = Color.Transparent,
                                 shape = RoundedCornerShape(size = 25.dp)
                             ),
-                        value = text,
-                        onValueChange = { onChange },
+                        value = text.value,
+                        onValueChange = { onChange() },
                         decorationBox = { innerTextField ->
-                            if (text.isEmpty()) {
+                            if (text.value.isEmpty()) {
                                 Text(
                                     text = "채팅을 시작해 보세요 . . .",
                                     fontSize = 16.sp,
@@ -267,9 +271,9 @@ fun ChatBottomAppBar(text: String, onChange: () -> Unit, onPress: () -> Unit) {
                     )
                     IconButton(
                         onClick = onPress,
-                        enabled = text.isNotBlank(),
+                        enabled = text.value.isNotBlank(),
                     ) {
-                        if (text.isNotBlank()) {
+                        if (text.value.isNotBlank()) {
                             sendImg(id = R.drawable.send)
                         } else {
                             sendImg(id = R.drawable.unactive_send)
@@ -412,5 +416,5 @@ fun DialogPreview() {
 @Preview(showBackground = true)
 @Composable
 fun ChattingScreenPreview() {
-    ChattingScreen(navController = rememberNavController())
+    ChattingScreen()
 }

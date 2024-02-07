@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.presentation.ViewModel
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -10,9 +11,10 @@ import com.example.usw_random_chat.data.dto.ProfileDTO
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.data.repositoryimpl.ChatRepositoryImpl
 import com.example.usw_random_chat.data.repositoryimpl.ChatRepositoryImpl.Server.server_url
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+@HiltViewModel
 class ChatViewModel @Inject constructor( private val chatRepositoryImpl: ChatRepositoryImpl) : ViewModel() {
     private val _msg = mutableStateOf("")
     private val _profileDialog = mutableStateOf(false)
@@ -44,11 +46,12 @@ class ChatViewModel @Inject constructor( private val chatRepositoryImpl: ChatRep
 
     fun updateMSG(newValue : String){
         _msg.value = newValue
+        Log.d("text Composition",_msg.value)
     }
 
    fun sendMSG(msg : String){
        viewModelScope.launch {
-           chatRepositoryImpl.sendMsg(msg,server_url)
+           chatRepositoryImpl.sendMsg(msg,"/pub/chat/message")
        }
     }
     fun connectStomp(){
@@ -63,12 +66,12 @@ class ChatViewModel @Inject constructor( private val chatRepositoryImpl: ChatRep
     }
     fun subscribeStomp(){
         viewModelScope.launch {
-            chatRepositoryImpl.subscribeStomp(server_url)
+            chatRepositoryImpl.subscribeStomp("/sub/chat/room/38be2242-f2d5-46c0-a0ea-42ea01e1269a" )
         }
     }
     fun unsubscribeStomp(){
         viewModelScope.launch {
-            chatRepositoryImpl.unsubscribeStomp(server_url)
+            chatRepositoryImpl.unsubscribeStomp("/sub/chat/room/38be2242-f2d5-46c0-a0ea-42ea01e1269a")
         }
     }
 }

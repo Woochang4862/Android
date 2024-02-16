@@ -40,7 +40,7 @@ fun Navigation() {
         }
         composable(route = Screen.PwSearchScreen.route) {
             val viewModel = hiltViewModel<UserModifyViewModel>()
-            PwSearchScreen(navController,viewModel)
+            PwSearchScreen(viewModel)
         }
         composable(route = Screen.IdSearchScreen.route) {
             val viewModel = hiltViewModel<UserModifyViewModel>()

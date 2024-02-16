@@ -375,12 +375,12 @@ fun tittleWithBackArrow(text: String, modifier: Modifier, onBackClick: () -> Uni
 
 @Composable
 fun portalEmail(
-    textFieldValue: State<String>,
+    text: State<String>,
     onValueChange: (String) -> Unit
 ) {
     TextField(
-        value = textFieldValue.value,
-        onValueChange = onValueChange,
+        value = text.value,
+        onValueChange = { onValueChange(it) },
         placeholder = {
             Text(
                 "포털 이메일 입력",

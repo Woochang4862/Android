@@ -90,7 +90,7 @@ fun IdSearchEmail(
             )
     ) {
         Spacer(modifier = Modifier.weight(0.1f))
-        portalEmail(textFieldValue = email, onValueChange = onValueEmail)
+        portalEmail(text = email, onValueChange = onValueEmail)
         Spacer(modifier = Modifier.weight(0.1f))
     }
 }

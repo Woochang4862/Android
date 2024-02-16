@@ -10,7 +10,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usw_random_chat.data.dto.ProfileDTO
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.data.repositoryimpl.ChatRepositoryImpl
-import com.example.usw_random_chat.data.repositoryimpl.ChatRepositoryImpl.Server.server_url
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

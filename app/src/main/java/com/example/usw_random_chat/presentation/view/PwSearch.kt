@@ -22,7 +22,6 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,16 +39,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
-import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
 import com.example.usw_random_chat.ui.button
 import com.example.usw_random_chat.ui.portalEmail
 
 @Composable
-fun PwSearchScreen(navController: NavController,userModifyViewModel: UserModifyViewModel = viewModel()) {
+fun PwSearchScreen(userModifyViewModel: UserModifyViewModel = viewModel()) {
     Column(
         Modifier
             .fillMaxSize()
@@ -57,12 +53,13 @@ fun PwSearchScreen(navController: NavController,userModifyViewModel: UserModifyV
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         setPwSearchTitle()
-        inputId(id = userModifyViewModel.rememberID){}
+        inputId(id = userModifyViewModel.rememberID) { userModifyViewModel.updateId(it) }
         Spacer(modifier = Modifier.height(21.dp))
-        inputEmail(email = userModifyViewModel.rememberEmail){}
+        portalEmail(text = userModifyViewModel.email) { userModifyViewModel.updateEmail(it) }
         explainText()
-        sendNumberButton(){userModifyViewModel.postAuthCode()}
-        inputCode(code = userModifyViewModel.rememberCode,{}){userModifyViewModel.checkAuthCode()}
+        sendNumberButton() { userModifyViewModel.postAuthCode() }
+        inputCode(code = userModifyViewModel.rememberCode,
+            { newValue -> userModifyViewModel.updateCode(newValue) }) { userModifyViewModel.checkAuthCode() }
     }
 }
 
@@ -86,16 +83,16 @@ fun setPwSearchTitle() {
             fontWeight = FontWeight(600),
             fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             modifier = Modifier
-                .padding(top = 12.dp,start = 80.dp)
+                .padding(top = 12.dp, start = 80.dp)
         )
     }
 }
 
 @Composable
-fun inputId(id: State<String>, onChange: () -> Unit) {
+fun inputId(id: State<String>, onChange: (String) -> Unit) {
     TextField(
         value = id.value,
-        onValueChange = { onChange },
+        onValueChange = { onChange(it) },
         placeholder = { Text("아이디 입력") },
         colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
         modifier = Modifier
@@ -108,11 +105,10 @@ fun inputId(id: State<String>, onChange: () -> Unit) {
 }
 
 @Composable
-fun inputEmail(email: State<String>, onChange: () -> Unit) {
+fun inputEmail(email: State<String>, onChange: (String) -> Unit) {
     portalEmail(
-        textFieldValue = email, onValueChange = {
-            onChange
-        })
+        text = email,
+        onValueChange = { onChange(it) })
 }
 
 @Composable
@@ -137,7 +133,7 @@ fun explainText() {
 }
 
 @Composable
-fun sendNumberButton(onPress : () -> Unit) {
+fun sendNumberButton(onPress: () -> Unit) {
     button(
         text = "인증코드 전송",
         enable = true,
@@ -147,13 +143,13 @@ fun sendNumberButton(onPress : () -> Unit) {
             .padding(top = 12.dp)
             .width(326.dp)
             .height(56.dp)
-    ){
+    ) {
         onPress
     }
 }
 
 @Composable
-fun inputCode(code: State<String>, onChange : () -> Unit, onPress: () -> Unit) {
+fun inputCode(code: State<String>, onChange: (String) -> Unit, onPress: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -167,7 +163,7 @@ fun inputCode(code: State<String>, onChange : () -> Unit, onPress: () -> Unit) {
     ) {
         TextField(
             value = code.value,
-            onValueChange = { onChange },
+            onValueChange = { newValue -> onChange(newValue) },
             placeholder = { Text(text = "인증코드 4자리 입력", color = Color.Gray) },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
@@ -201,7 +197,7 @@ fun inputCode(code: State<String>, onChange : () -> Unit, onPress: () -> Unit) {
                 fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                 fontWeight = FontWeight(600),
                 textAlign = TextAlign.Center,
-                )
+            )
         }
     }
 }
@@ -227,11 +223,11 @@ fun PwSearchScreenPreview() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         setPwSearchTitle()
-        inputId(id = id){}
+        inputId(id = id) {}
         Spacer(modifier = Modifier.height(21.dp))
-        inputEmail(email = email){}
+        inputEmail(email = email) {}
         explainText()
-        sendNumberButton(){}
-        inputCode(code = code,{}){}
+        sendNumberButton() {}
+        inputCode(code = code, {}) {}
     }
 }

@@ -20,7 +20,6 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
     private val _rememberPwLength  = mutableStateOf(false)
     private val _rememberCode  = mutableStateOf("")
     private val _rememberId  = mutableStateOf("")
-    private val _rememberEmail   = mutableStateOf("")
     private val _checkIdSearchAuthEmail = mutableStateOf(false)
     private val _dialogCheckIdSearchAuthEmail = mutableStateOf(false)
 
@@ -32,14 +31,19 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
     val email : State<String>  = _email
     val checkIdSearchAuthEmail : State<Boolean> = _checkIdSearchAuthEmail
     val dialogCheckIdSearchAuthEmail : State<Boolean> = _dialogCheckIdSearchAuthEmail
+    val rememberCode : State<String> = _rememberCode
+    val rememberID : State<String> = _rememberId
 
 
+    fun updateCode(newValue: String){
+        _rememberCode.value = newValue
+    }
+    fun updateId(newValue: String){
+        _rememberId.value = newValue
+    }
     fun updateEmail(newValue: String){
         _email.value = newValue
     }
-    val rememberCode : State<String> = _rememberCode
-    val rememberID : State<String> = _rememberId
-    val rememberEmail : State<String> = _rememberEmail
 
     fun changeCheckIdSearchAuthEmail(){
         _checkIdSearchAuthEmail.value = !_checkIdSearchAuthEmail.value
@@ -74,13 +78,13 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
 
     fun postPwChange(){
         viewModelScope.launch {
-            userModifyUseCase.pwChange(UserDTO(memberPassword = rememberPW.value) )
+            userModifyUseCase.pwChange(UserDTO(memberPassword = _rememberPW.value) )
         }
     }
 
     fun postAuthCode(){
         viewModelScope.launch {
-            userModifyUseCase.postAuthCode(UserDTO(memberID = rememberID.value, email = rememberEmail.value))
+            userModifyUseCase.postAuthCode(UserDTO(memberID = _rememberId.value, email = _email.value))
         }
     }
 
@@ -92,7 +96,7 @@ class UserModifyViewModel@Inject constructor(private val userModifyUseCase: User
 
     fun postAuthEmail() {   //아이디 찾기에 있는 확인 메일 전송 버튼 함수
         viewModelScope.launch {
-            when(userModifyUseCase.postCheckEmail(UserDTO(memberID = email.value))){
+            when(userModifyUseCase.postCheckEmail(UserDTO(email = _email.value))){
                 in (200..300) -> _checkIdSearchAuthEmail.value = true
                 !in (200..300) -> _dialogCheckIdSearchAuthEmail.value = true
             }

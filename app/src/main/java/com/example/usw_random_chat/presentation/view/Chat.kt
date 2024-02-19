@@ -115,6 +115,7 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
     //chatViewModel.connectStomp()
     //chatViewModel.subscribeStomp()
 
+
     Scaffold(
         topBar = {
             ChatTopAppBar(chatViewModel.userProfile.nickName,
@@ -124,10 +125,8 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
         },
         bottomBar = {
             ChatBottomAppBar(chatViewModel.msg,
-                { newValue ->
-                chatViewModel.updateMSG(newValue) },
-                { message ->
-                    chatViewModel.sendMSG(message) })
+                {  chatViewModel.updateMSG(it) })
+                { chatViewModel.sendMSG(chatViewModel.msg.value) }
         },
         content = {
             LazyColumn(
@@ -149,13 +148,13 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
 @Composable
 fun ChatTopAppBar(
     name: String,
-    onPressUser: () -> Unit,
+    onPressUserProfile: () -> Unit,
     onPressReport: () -> Unit,
     onPressExit: () -> Unit
 ) {
     TopAppBar(
         title = {
-            IconButton(onClick = { onPressUser }) {
+            IconButton(onClick = { onPressUserProfile }) {
                 Row(
                     modifier = Modifier
                         .padding(start = 24.dp)
@@ -218,7 +217,7 @@ fun ChatTopAppBar(
 }
 
 @Composable
-fun ChatBottomAppBar(text: State<String>, onChange: (String) -> Unit, onPress: (String) -> Unit) {
+fun ChatBottomAppBar(text: State<String>, onChange: (String) -> Unit, onPress: () -> Unit) {
     BottomAppBar(
         modifier = Modifier.height(58.dp),
         backgroundColor = Color.White,
@@ -252,7 +251,7 @@ fun ChatBottomAppBar(text: State<String>, onChange: (String) -> Unit, onPress: (
                                 shape = RoundedCornerShape(size = 25.dp)
                             ),
                         value = text.value,
-                        onValueChange = { newValue -> onChange(newValue) },
+                        onValueChange = { onChange(it) },
                         decorationBox = { innerTextField ->
                             if (text.value.isEmpty()) {
                                 Text(
@@ -271,7 +270,7 @@ fun ChatBottomAppBar(text: State<String>, onChange: (String) -> Unit, onPress: (
                         },
                     )
                     IconButton(
-                        onClick = { onPress(text.value) },
+                        onClick = onPress,
                         enabled = text.value.isNotBlank(),
                     ) {
                         if (text.value.isNotBlank()) {

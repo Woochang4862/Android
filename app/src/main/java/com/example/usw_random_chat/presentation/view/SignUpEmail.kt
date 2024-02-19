@@ -50,12 +50,11 @@ import com.example.usw_random_chat.ui.tittleWithBackArrow
 fun EmailAuthScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController){
     SignUpEmail(email = signUpViewModel.email){ signUpViewModel.updateEmail(it) }
     SignUpEmailBtn()
-    RequestEmail{signUpViewModel.postSignUp()}
-    NextBtn(navController){signUpViewModel.checkVerifyEmail()}
+    RequestEmail{signUpViewModel.verifyEmail()}
     SignUpExitBtn{navController.popBackStack()}
 
     if (signUpViewModel.authEmailState.value){
-        //이메일 전송했을 때 이벤트
+        navController.navigate(Screen.SignInScreen.route)
         signUpViewModel.changeAuthEmailState()
     }
     if(signUpViewModel.dialogAuthEmailState.value){
@@ -63,21 +62,6 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = viewModel(), navControlle
             contentText = "이메일 전송을\n실패했습니다.",
             text = "확인",
             onPress = { signUpViewModel.changeDialogAuthEmailState() },
-            image = R.drawable.baseline_error_24
-        )
-    }
-
-    if (signUpViewModel.checkAuthEmailState.value){
-        navController.navigate(Screen.SignUpScreen.route){
-            navController.popBackStack()
-        }
-        signUpViewModel.changeCheckAuthEmailState()
-    }
-    if(signUpViewModel.dialogCheckAuthEmailState.value){
-        OneButtonDialog(
-            contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
-            text = "확인",
-            onPress = { signUpViewModel.changeDialogCheckAuthEmailState() },
             image = R.drawable.baseline_error_24
         )
     }
@@ -168,34 +152,6 @@ fun RequestEmail(onPress: () -> Unit){
                 .weight(1f)
                 .height(56.dp)
         ) {
-            onPress()
-        }
-        Spacer(modifier = Modifier.weight(0.1f))
-    }
-}
-
-
-@Composable
-fun NextBtn(navController: NavController,onPress: () -> Unit){
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                top = 354.dp
-            )
-    ){
-        Spacer(modifier = Modifier.weight(0.1f))
-        button(
-            "다음",
-            enable = true,
-            Color.White,
-            Color.Black,
-            Modifier
-                .weight(1f)
-                .height(56.dp)
-                .background(color = Color.White)
-        ){
-            navController.navigate(Screen.SignUpScreen.route)//이걸로 이미지 확인 했는데 전 잘 뜨는데 혹시 다시 꺠지면 말해주세요
             onPress()
         }
         Spacer(modifier = Modifier.weight(0.1f))

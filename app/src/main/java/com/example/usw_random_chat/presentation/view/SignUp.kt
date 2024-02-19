@@ -73,12 +73,15 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
             signUpViewModel.updateRememberPwCheck(it)
         }
         Spacer(Modifier.padding(20.dp))
-        signUpButton(signUpViewModel.rememberTrigger.value) {
-            navController.navigate(Screen.EmailAuthScreen.route)
-        }
+        signUpNextButton(signUpViewModel.rememberTrigger.value, navController)
         if (signUpViewModel.checkSignupIdState.value) {
             //중복확인 성공했을때 이벤트
-            signUpViewModel.changeCheckSignUpIdState()
+            OneButtonDialog(
+                contentText = "아이디 사용이 \n가능합니다.",
+                text = "확인",
+                onPress = { signUpViewModel.changeCheckSignUpIdState() },
+                image = R.drawable.baseline_error_24
+            )
         }
         if (signUpViewModel.dialogCheckSignUpIdState.value) {
             OneButtonDialog(
@@ -91,7 +94,12 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
 
         if (signUpViewModel.checkSignupNickNameState.value) {
             //중복확인 성공했을때 이벤트
-            signUpViewModel.changeCheckSignUpNickNameState()
+            OneButtonDialog(
+                contentText = "닉네임 사용이 \n가능합니다.",
+                text = "확인",
+                onPress = { signUpViewModel.changeCheckSignUpNickNameState() },
+                image = R.drawable.baseline_error_24
+            )
         }
         if (signUpViewModel.dialogCheckSignUpNickNameState.value) {
             OneButtonDialog(
@@ -100,22 +108,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
                 onPress = { signUpViewModel.changeDialogCheckSignUpNickNameState() },
                 image = R.drawable.baseline_error_24
             )
-        }// 이건 닉네임 중복 확인에 쓰는 건데 닉네임 부분이 없어요
-
-        if (signUpViewModel.signupState.value) {
-            navController.navigate(Screen.SignInScreen.route) {
-                navController.popBackStack()
-            }
-            signUpViewModel.changeSignupState()
-        }
-        if (signUpViewModel.dialogSignupState.value) {
-            OneButtonDialog(
-                contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
-                text = "확인",
-                onPress = { signUpViewModel.changeDialogSignupState() },
-                image = R.drawable.baseline_error_24
-            )
-        }
+        }// 여기 있는 if문 필요없어서 뺐어요
     }
 }
 
@@ -256,7 +249,7 @@ fun EmailTextFieldSignUp(email: State<String>, onRememberEmail: (String) -> Unit
 }*/
 
 @Composable
-fun signUpButton(trigger: Boolean, onPress: () -> Unit) {
+fun signUpNextButton(trigger: Boolean, navController: NavController) {
     Column(
         Modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -272,7 +265,8 @@ fun signUpButton(trigger: Boolean, onPress: () -> Unit) {
                     .height(56.dp)
                     .background(color = Color.White)
             ) {
-                onPress()
+                navController.navigate(Screen.EmailAuthScreen.route)
+                //onPress 필요없어서 뺐어요 이메일 인증 화면으로 넘어가서 서버에 전달 해주기 떄문에
             }
             Spacer(Modifier.weight(0.1f))
         }

@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.usw_random_chat.presentation.view.MatchingScreen
 import com.example.usw_random_chat.presentation.view.Navigation
 import com.example.usw_random_chat.ui.theme.USW_Random_ChatTheme
 import dagger.hilt.android.AndroidEntryPoint

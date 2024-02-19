@@ -25,7 +25,6 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun MatchingScreen(navController: NavController) {
-    val screenHeightInDp = (GetScreenHeightInDp() - 295)
     val matchingBlank = remember {
         mutableStateOf(false)
     }
@@ -63,7 +62,7 @@ fun MatchingScreen(navController: NavController) {
     }
     TextBlue()
     TextBlack()
-    MatchingStopBtn()
+    MatchingStopBtn{navController.popBackStack()}
     MatchingAnimation(
         screen1 = matchingBlank.value,
         screen2 = matchingDot1.value,
@@ -131,7 +130,7 @@ fun TextBlack(){
 
 
 @Composable
-fun MatchingStopBtn(){
+fun MatchingStopBtn(onPress: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -149,8 +148,8 @@ fun MatchingStopBtn(){
                 .weight(1f)
                 .height(56.dp)
                 .background(color = Color.White)
-        ) {
-
+        ){
+            onPress()
         }
         Spacer(modifier = Modifier.weight(0.1f))
     }
@@ -158,7 +157,6 @@ fun MatchingStopBtn(){
 
 @Composable
 fun MatchingAnimation(screen1: Boolean, screen2: Boolean, screen3: Boolean, screen4:Boolean, screen5:Boolean) {
-    val screenHeightInDp = (GetScreenHeightInDp() - 549)
 
     Box(
         modifier = Modifier

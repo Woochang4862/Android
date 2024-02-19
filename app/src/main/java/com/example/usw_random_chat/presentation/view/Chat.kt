@@ -115,7 +115,6 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
     //chatViewModel.connectStomp()
     //chatViewModel.subscribeStomp()
 
-
     Scaffold(
         topBar = {
             ChatTopAppBar(chatViewModel.userProfile.nickName,
@@ -125,8 +124,10 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
         },
         bottomBar = {
             ChatBottomAppBar(chatViewModel.msg,
-                { chatViewModel.updateMSG(chatViewModel.msg.value) })
-                { chatViewModel.sendMSG(chatViewModel.msg.value) }
+                { newValue ->
+                chatViewModel.updateMSG(newValue) },
+                { message ->
+                    chatViewModel.sendMSG(message) })
         },
         content = {
             LazyColumn(
@@ -217,7 +218,7 @@ fun ChatTopAppBar(
 }
 
 @Composable
-fun ChatBottomAppBar(text: State<String>, onChange: () -> Unit, onPress: () -> Unit) {
+fun ChatBottomAppBar(text: State<String>, onChange: (String) -> Unit, onPress: (String) -> Unit) {
     BottomAppBar(
         modifier = Modifier.height(58.dp),
         backgroundColor = Color.White,
@@ -251,7 +252,7 @@ fun ChatBottomAppBar(text: State<String>, onChange: () -> Unit, onPress: () -> U
                                 shape = RoundedCornerShape(size = 25.dp)
                             ),
                         value = text.value,
-                        onValueChange = { onChange() },
+                        onValueChange = { newValue -> onChange(newValue) },
                         decorationBox = { innerTextField ->
                             if (text.value.isEmpty()) {
                                 Text(
@@ -270,7 +271,7 @@ fun ChatBottomAppBar(text: State<String>, onChange: () -> Unit, onPress: () -> U
                         },
                     )
                     IconButton(
-                        onClick = onPress,
+                        onClick = { onPress(text.value) },
                         enabled = text.value.isNotBlank(),
                     ) {
                         if (text.value.isNotBlank()) {

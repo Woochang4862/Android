@@ -143,9 +143,9 @@ fun PwChangeBotton(trigger: Boolean, navController: NavController, onPress: () -
                 //.width(326.dp)
                 .weight(1f)
                 .height(56.dp)
-        ) {
-            onPress
-            navController.navigate(Screen.SignInScreen.route)
+        ){
+        onPress()
+        navController.navigate(Screen.SignInScreen.route)
         }
         Spacer(Modifier.weight(0.1f))
     }

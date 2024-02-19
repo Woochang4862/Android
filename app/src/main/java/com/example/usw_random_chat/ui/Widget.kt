@@ -31,6 +31,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -258,17 +260,17 @@ fun tittleWithBackArrow(text: String, modifier: Modifier, onBackClick: () -> Uni
         Modifier, //horizontalArrangement = Arrangement.Center
     )
     {
-        Spacer(Modifier.weight(0.1f))
+        Spacer(Modifier.weight(0.12f))
         IconButton(onClick = { onBackClick() }) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack, contentDescription = "back",
                 Modifier
-                    .height(36.dp)
-                    .width(36.dp)
+                    .height(26.dp)
+                    .width(26.dp)
                     .weight(0.1f)
             )
         }
-        Spacer(Modifier.weight(0.25f))
+        Spacer(Modifier.weight(0.2f))
         Text(
             text = buildAnnotatedString {
                 append(text)
@@ -349,8 +351,7 @@ fun textFieldSearchBtn(
         TextField(
             value = textFieldIdValue,
             onValueChange = { idValue -> onValueChange(idValue) },
-            placeholder = { Text(text = graytext, color = Color.Gray) },
-
+            placeholder = { Text(text = graytext, color = Color.Gray, fontSize = 14.sp) },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
                 focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
@@ -791,4 +792,70 @@ fun RedWarning(warningText: String, modifier: Modifier) {
         textAlign = TextAlign.Left,
         modifier = modifier
     )
+}
+
+@Composable
+fun TextfiledTitle(title: String,redTrueText:String,textModifier:Modifier,redBool : Boolean,redFalseText:String,redModifier:Modifier) {
+    Text(
+        text = title,
+        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+        fontSize = 16.sp,
+        lineHeight = 18.sp,
+        fontWeight = FontWeight(400),
+        color = Color(0xFF000000),
+        textAlign = TextAlign.Left,
+        modifier = textModifier
+
+    )
+    if (redBool) {
+        RedWarning(
+            redTrueText,
+            modifier = redModifier
+        )
+    } else {
+        RedWarning(
+            redFalseText,
+            modifier = redModifier
+        )
+    }
+}
+
+@Composable
+fun VisibleText(textValue: State<String>, onValueChange : (String)-> Unit,placeholder:String,textModifier : Float,spacerModifier: Float){
+    val screenWidthInDp = (GetScreenWidthInDp() - 326) / 2
+    val passwordVisible = remember { mutableStateOf(false) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            //.fillMaxWidth()
+            .height(55.dp)
+            .padding(start = screenWidthInDp.dp, end = screenWidthInDp.dp)
+            .border(
+                width = 1.dp, color = Color(0xFFBFBFBF),
+                shape = RoundedCornerShape(8.dp)
+            )
+    ) {
+        TextField(
+            value = textValue.value,
+            onValueChange = {textValue -> onValueChange(textValue)},
+            visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+            placeholder = { Text(text = placeholder, color = Color.Gray,fontSize = 14.sp) },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.White,
+                focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
+                unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
+                disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
+            ),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .weight(textModifier)
+        )
+        IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
+            Icon(
+                painter = painterResource(id = if (passwordVisible.value) R.drawable.visibility else R.drawable.visibility_off),
+                contentDescription = null // decorative element
+            )
+        }
+        Spacer(Modifier.weight(spacerModifier))
+    }
 }

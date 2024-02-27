@@ -1,7 +1,7 @@
 package com.example.usw_random_chat.domain.usecase
 
 import com.example.usw_random_chat.data.dto.UserDTO
-import com.example.usw_random_chat.data.repository.UserModifyRepository
+import com.example.usw_random_chat.domain.repository.UserModifyRepository
 
 class UserModifyUseCase(private val userModifyRepository: UserModifyRepository) {
 
@@ -24,4 +24,5 @@ class UserModifyUseCase(private val userModifyRepository: UserModifyRepository) 
     suspend fun postCheckEmail(param : UserDTO) : Int {
         return userModifyRepository.postCheckEmail(param)
     }
+
 }

@@ -1,15 +1,11 @@
 package com.example.usw_random_chat.data.repositoryimpl
 
 import android.util.Log
-import androidx.navigation.NavController
 import com.example.usw_random_chat.data.api.SignInApiService
 import com.example.usw_random_chat.data.dto.Token
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.data.local.TokenSharedPreference
-import com.example.usw_random_chat.data.repository.SignInRepository
-import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
-import com.example.usw_random_chat.presentation.view.Screen
-import kotlinx.coroutines.delay
+import com.example.usw_random_chat.domain.repository.SignInRepository
 import javax.inject.Inject
 
 class SignInRepositoryImpl @Inject constructor(

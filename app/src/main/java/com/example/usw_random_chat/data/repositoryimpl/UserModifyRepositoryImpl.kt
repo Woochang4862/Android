@@ -3,7 +3,7 @@ package com.example.usw_random_chat.data.repositoryimpl
 import android.util.Log
 import com.example.usw_random_chat.data.api.UserModifyApiService
 import com.example.usw_random_chat.data.dto.UserDTO
-import com.example.usw_random_chat.data.repository.UserModifyRepository
+import com.example.usw_random_chat.domain.repository.UserModifyRepository
 import javax.inject.Inject
 
 class UserModifyRepositoryImpl @Inject constructor(
@@ -60,4 +60,5 @@ class UserModifyRepositoryImpl @Inject constructor(
             response.code()
         }
     }
+
 }

@@ -1,12 +1,9 @@
 package com.example.usw_random_chat.data.repositoryimpl
 
 import android.util.Log
-import androidx.navigation.NavController
 import com.example.usw_random_chat.data.api.SignUpApiService
 import com.example.usw_random_chat.data.dto.UserDTO
-import com.example.usw_random_chat.data.repository.SignUpRepository
-import com.example.usw_random_chat.di.ApiModule
-import com.example.usw_random_chat.presentation.view.Screen
+import com.example.usw_random_chat.domain.repository.SignUpRepository
 import javax.inject.Inject
 
 class SignUpRepositoryImpl @Inject constructor(

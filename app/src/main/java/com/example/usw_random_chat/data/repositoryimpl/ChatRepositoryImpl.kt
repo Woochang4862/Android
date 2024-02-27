@@ -2,7 +2,7 @@ package com.example.usw_random_chat.data.repositoryimpl
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.example.usw_random_chat.data.repository.ChatRepository
+import com.example.usw_random_chat.domain.repository.ChatRepository
 import com.gmail.bishoybasily.stomp.lib.Event
 import com.gmail.bishoybasily.stomp.lib.StompClient
 import io.reactivex.disposables.Disposable

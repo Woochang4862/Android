@@ -1,4 +1,5 @@
-package com.example.usw_random_chat.data.repository
+package com.example.usw_random_chat.domain.repository
+
 
 interface ChatRepository {
     

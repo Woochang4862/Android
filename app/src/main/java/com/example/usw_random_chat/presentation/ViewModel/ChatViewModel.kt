@@ -1,20 +1,20 @@
 package com.example.usw_random_chat.presentation.ViewModel
 
-import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.usw_random_chat.data.dto.MessageDTO
 import com.example.usw_random_chat.data.dto.ProfileDTO
-import com.example.usw_random_chat.data.dto.UserDTO
-import com.example.usw_random_chat.data.repositoryimpl.ChatRepositoryImpl
+import com.example.usw_random_chat.domain.repository.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
+
 @HiltViewModel
-class ChatViewModel @Inject constructor( private val chatRepositoryImpl: ChatRepositoryImpl) : ViewModel() {
+class ChatViewModel @Inject constructor( private val chatRepository: ChatRepository) : ViewModel() {
     private val _msg = mutableStateOf("")
     private val _profileDialog = mutableStateOf(false)
     private val _reportDialog = mutableStateOf(false)
@@ -45,32 +45,31 @@ class ChatViewModel @Inject constructor( private val chatRepositoryImpl: ChatRep
 
     fun updateMSG(newValue : String){
         _msg.value = newValue
-        Log.d("text Composition",_msg.value)
     }
 
-   fun sendMSG(msg : String){
+   fun sendMSG(){
        viewModelScope.launch {
-           chatRepositoryImpl.sendMsg(msg,"/pub/chat/message")
+           chatRepository.sendMsg(Json.encodeToString(MessageDTO("1234","이경수",_msg.value)),"/pub/chat/message/1234")
        }
     }
     fun connectStomp(){
         viewModelScope.launch {
-            chatRepositoryImpl.connectStomp()
+            chatRepository.connectStomp()
         }
     }
     fun disconnectStomp(){
         viewModelScope.launch {
-            chatRepositoryImpl.disconnectStomp()
+            chatRepository.disconnectStomp()
         }
     }
     fun subscribeStomp(){
         viewModelScope.launch {
-            chatRepositoryImpl.subscribeStomp("/sub/chat/room/38be2242-f2d5-46c0-a0ea-42ea01e1269a" )
+            chatRepository.subscribeStomp("/sub/chat/room/1234" )
         }
     }
     fun unsubscribeStomp(){
         viewModelScope.launch {
-            chatRepositoryImpl.unsubscribeStomp("/sub/chat/room/38be2242-f2d5-46c0-a0ea-42ea01e1269a")
+            chatRepository.unsubscribeStomp("/sub/chat/room/1234")
         }
     }
 }

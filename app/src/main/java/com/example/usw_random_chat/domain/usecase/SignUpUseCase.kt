@@ -1,7 +1,7 @@
 package com.example.usw_random_chat.domain.usecase
 
 import com.example.usw_random_chat.data.dto.UserDTO
-import com.example.usw_random_chat.data.repository.SignUpRepository
+import com.example.usw_random_chat.domain.repository.SignUpRepository
 
 class SignUpUseCase(private val signUpRepository: SignUpRepository) {
 

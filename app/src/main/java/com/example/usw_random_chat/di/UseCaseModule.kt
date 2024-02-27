@@ -1,9 +1,9 @@
 package com.example.usw_random_chat.di
 
-import com.example.usw_random_chat.data.repository.ProfileRepository
-import com.example.usw_random_chat.data.repository.SignInRepository
-import com.example.usw_random_chat.data.repository.SignUpRepository
-import com.example.usw_random_chat.data.repository.UserModifyRepository
+import com.example.usw_random_chat.domain.repository.ProfileRepository
+import com.example.usw_random_chat.domain.repository.SignInRepository
+import com.example.usw_random_chat.domain.repository.SignUpRepository
+import com.example.usw_random_chat.domain.repository.UserModifyRepository
 import com.example.usw_random_chat.domain.usecase.ProfileUseCase
 import com.example.usw_random_chat.domain.usecase.SignInUseCase
 import com.example.usw_random_chat.domain.usecase.SignUpUseCase

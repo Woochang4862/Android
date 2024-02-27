@@ -126,7 +126,7 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
         bottomBar = {
             ChatBottomAppBar(chatViewModel.msg,
                 {  chatViewModel.updateMSG(it) })
-                { chatViewModel.sendMSG(chatViewModel.msg.value) }
+                { chatViewModel.sendMSG() }
         },
         content = {
             LazyColumn(

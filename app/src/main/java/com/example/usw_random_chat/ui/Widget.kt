@@ -63,11 +63,12 @@ import java.text.SimpleDateFormat
 
 
 @Composable
-fun text(text1: String,
-         text2: String,
-         text3: String,
-         modifier: Modifier
-){
+fun text(
+    text1: String,
+    text2: String,
+    text3: String,
+    modifier: Modifier
+) {
     Text(
         text = buildAnnotatedString {
             withStyle(style = SpanStyle(color = Color(0xFF989898))) {
@@ -76,7 +77,7 @@ fun text(text1: String,
             withStyle(style = SpanStyle(color = Color(0xFF2D64D8))) {
                 append(text2)
             }
-            withStyle(style = SpanStyle(color = Color(0xFF989898))){
+            withStyle(style = SpanStyle(color = Color(0xFF989898))) {
                 append(text3)
             }
         },
@@ -88,14 +89,14 @@ fun text(text1: String,
 }
 
 @Composable
-fun image(){
+fun image() {
     Box(
         modifier = Modifier
             .padding(top = 10.dp)
             .fillMaxSize(),
         contentAlignment = Alignment.TopEnd
-    ){
-        Row(){
+    ) {
+        Row() {
             Spacer(modifier = Modifier.weight(0.1f))
             Image(
                 painter = painterResource(id = R.drawable.balloon),
@@ -203,7 +204,7 @@ fun loginTextFieldId(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(1.2f))
         Row(
             modifier = Modifier
@@ -249,7 +250,7 @@ fun loginTextFieldPw(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(1.4f))
         Row(
             modifier = Modifier
@@ -285,7 +286,6 @@ fun loginTextFieldPw(
         Spacer(modifier = Modifier.weight(0.8f))
     }
 }
-
 
 
 @Composable
@@ -324,7 +324,7 @@ fun copyRightByFlag(modifier: Modifier) {
         modifier = Modifier
             .fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
-    ){
+    ) {
         Text(
             text = "@copyright by Flag",
             fontSize = 12.sp,
@@ -414,7 +414,7 @@ fun portalEmail(
 
 @Composable
 fun textFieldSearchBtn(
-    graytext : String,
+    graytext: String,
     textFieldIdValue: String,
     onValueChange: (String) -> Unit,
     trigger: Boolean,
@@ -466,6 +466,7 @@ fun textFieldSearchBtn(
         Spacer(Modifier.weight(0.02f))
     }
 }
+
 @Composable
 fun MatchingAnimationText(text: String) {
     Text(
@@ -793,7 +794,7 @@ fun drawerProfile() {
 @Composable
 fun drawerMenu(image: Int, menuName: String, onPress: () -> Unit) {
     Button(
-        onClick = {onPress()},
+        onClick = { onPress() },
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
         elevation = ButtonDefaults.elevation(0.dp),
     ) {
@@ -881,7 +882,14 @@ fun RedWarning(warningText: String, modifier: Modifier) {
 }
 
 @Composable
-fun TextfiledTitle(title: String,redTrueText:String,textModifier:Modifier,redBool : Boolean,redFalseText:String,redModifier:Modifier) {
+fun TextfiledTitle(
+    title: String,
+    redTrueText: String,
+    textModifier: Modifier,
+    redBool: Boolean,
+    redFalseText: String,
+    redModifier: Modifier
+) {
     Text(
         text = title,
         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -907,7 +915,13 @@ fun TextfiledTitle(title: String,redTrueText:String,textModifier:Modifier,redBoo
 }
 
 @Composable
-fun VisibleText(textValue: State<String>, onValueChange : (String)-> Unit,placeholder:String,textModifier : Float,spacerModifier: Float){
+fun VisibleText(
+    textValue: State<String>,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    textModifier: Float,
+    spacerModifier: Float
+) {
     val screenWidthInDp = (GetScreenWidthInDp() - 326) / 2
     val passwordVisible = remember { mutableStateOf(false) }
     Row(
@@ -923,9 +937,9 @@ fun VisibleText(textValue: State<String>, onValueChange : (String)-> Unit,placeh
     ) {
         TextField(
             value = textValue.value,
-            onValueChange = {textValue -> onValueChange(textValue)},
+            onValueChange = { textValue -> onValueChange(textValue) },
             visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
-            placeholder = { Text(text = placeholder, color = Color.Gray,fontSize = 14.sp) },
+            placeholder = { Text(text = placeholder, color = Color.Gray, fontSize = 14.sp) },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
                 focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
@@ -942,6 +956,20 @@ fun VisibleText(textValue: State<String>, onValueChange : (String)-> Unit,placeh
                 contentDescription = null // decorative element
             )
         }
-        Spacer(Modifier.weight(spacerModifier))
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun VisibleTextPreview() {
+    val sad: State<String> = remember {
+        mutableStateOf("")
+    }
+    VisibleText(
+        textValue = sad,
+        onValueChange = {},
+        placeholder = "안녕하세요",
+        textModifier = 1f,
+        spacerModifier = 0.005f
+    )
 }

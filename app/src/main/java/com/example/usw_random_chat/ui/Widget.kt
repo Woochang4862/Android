@@ -420,51 +420,46 @@ fun textFieldSearchBtn(
     trigger: Boolean,
     onPress: () -> Unit
 ) {
-    val screenWidthInDp = (GetScreenWidthInDp() - 326) / 2
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(55.dp)
-            //.width(360.dp)
-            .padding(start = screenWidthInDp.dp, top = 3.dp, end = screenWidthInDp.dp)
-            .border(
-                width = 1.dp, color = Color(0xFFBFBFBF),
-                shape = RoundedCornerShape(8.dp)
-            )
-    ) {
-        TextField(
-            value = textFieldIdValue,
-            onValueChange = { idValue -> onValueChange(idValue) },
-            placeholder = { Text(text = graytext, color = Color.Gray, fontSize = 14.sp) },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-                focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
-                unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
-                disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
-            ),
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .weight(0.8f)
-        )
-        Button(
-            enabled = !trigger,
-            onClick = onPress,
-            modifier = Modifier
-                //.padding(start = 30.dp)
-                .align(Alignment.CenterVertically)
-                .width(100.dp)
-                .height(40.dp),
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                backgroundColor = Color(0xFF2D64D8)
-            ),
+                .height(55.dp)
+                .width(330.dp)
+                .padding(top = 3.dp)
+                .border(
+                    width = 1.dp, color = Color(0xFFBFBFBF),
+                    shape = RoundedCornerShape(8.dp)
+                )
         ) {
-            Text(text = "중복 확인")
+            TextField(
+                value = textFieldIdValue,
+                onValueChange = { idValue -> onValueChange(idValue) },
+                placeholder = { Text(text = graytext, color = Color.Gray, fontSize = 14.sp) },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
+                    unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
+                    disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
+                ),
+                modifier = Modifier.weight(0.8f)
+            )
+            Button(
+                enabled = !trigger,
+                onClick = onPress,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .width(100.dp)
+                    .height(40.dp),
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    backgroundColor = Color(0xFF2D64D8)
+                ),
+            ) {
+                Text(text = "중복 확인")
+            }
+            Spacer(Modifier.weight(0.02f))
         }
-        Spacer(Modifier.weight(0.02f))
-    }
 }
 
 @Composable
@@ -915,47 +910,43 @@ fun TextfiledTitle(
 }
 
 @Composable
-fun VisibleText(
-    textValue: State<String>,
-    onValueChange: (String) -> Unit,
-    placeholder: String,
-    textModifier: Float,
-    spacerModifier: Float
-) {
-    val screenWidthInDp = (GetScreenWidthInDp() - 326) / 2
+fun VisibleText(textValue: State<String>, onValueChange : (String)-> Unit,placeholder:String){
     val passwordVisible = remember { mutableStateOf(false) }
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            //.fillMaxWidth()
-            .height(55.dp)
-            .padding(start = screenWidthInDp.dp, end = screenWidthInDp.dp)
-            .border(
-                width = 1.dp, color = Color(0xFFBFBFBF),
-                shape = RoundedCornerShape(8.dp)
-            )
-    ) {
-        TextField(
-            value = textValue.value,
-            onValueChange = { textValue -> onValueChange(textValue) },
-            visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
-            placeholder = { Text(text = placeholder, color = Color.Gray, fontSize = 14.sp) },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-                focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
-                unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
-                disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
-            ),
-            shape = RoundedCornerShape(8.dp),
+
+    Row() {
+        Spacer(Modifier.weight(0.07f))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .weight(textModifier)
-        )
-        IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-            Icon(
-                painter = painterResource(id = if (passwordVisible.value) R.drawable.visibility else R.drawable.visibility_off),
-                contentDescription = null // decorative element
+                .height(55.dp)
+                .border(
+                    width = 1.dp, color = Color(0xFFBFBFBF),
+                    shape = RoundedCornerShape(8.dp)
+                )
+        ) {
+
+            TextField(
+                value = textValue.value,
+                onValueChange = { textValue -> onValueChange(textValue) },
+                visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+                placeholder = { Text(text = placeholder, color = Color.Gray, fontSize = 14.sp) },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
+                    unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
+                    disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
+                ),
+                shape = RoundedCornerShape(8.dp),
             )
+            IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
+                Icon(
+                    painter = painterResource(id = if (passwordVisible.value) R.drawable.visibility else R.drawable.visibility_off),
+                    contentDescription = null // decorative element
+                )
+            }
+
         }
+        Spacer(Modifier.weight(0.07f))
     }
 }
 

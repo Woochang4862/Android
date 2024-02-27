@@ -41,8 +41,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
-import com.example.usw_random_chat.ui.button
-import com.example.usw_random_chat.ui.portalEmail
+import com.example.usw_random_chat.ui.CustomButton
+import com.example.usw_random_chat.ui.PortalEmail
 
 @Composable
 fun PwSearchScreen(userModifyViewModel: UserModifyViewModel = viewModel()) {
@@ -55,7 +55,7 @@ fun PwSearchScreen(userModifyViewModel: UserModifyViewModel = viewModel()) {
         setPwSearchTitle()
         inputId(id = userModifyViewModel.rememberID) { userModifyViewModel.updateId(it) }
         Spacer(modifier = Modifier.height(21.dp))
-        portalEmail(text = userModifyViewModel.email) { userModifyViewModel.updateEmail(it) }
+        PortalEmail(text = userModifyViewModel.email) { userModifyViewModel.updateEmail(it) }
         explainText()
         sendNumberButton() { userModifyViewModel.postAuthCode() }
         inputCode(code = userModifyViewModel.rememberCode,
@@ -106,7 +106,7 @@ fun inputId(id: State<String>, onChange: (String) -> Unit) {
 
 @Composable
 fun inputEmail(email: State<String>, onChange: (String) -> Unit) {
-    portalEmail(
+    PortalEmail(
         text = email,
         onValueChange = { onChange(it) })
 }
@@ -134,7 +134,7 @@ fun explainText() {
 
 @Composable
 fun sendNumberButton(onPress: () -> Unit) {
-    button(
+    CustomButton(
         text = "인증코드 전송",
         enable = true,
         content = Color.White,

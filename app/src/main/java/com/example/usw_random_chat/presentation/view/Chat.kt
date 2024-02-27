@@ -1,7 +1,6 @@
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,10 +25,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -45,14 +41,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.ChatViewModel
 import com.example.usw_random_chat.ui.TimeText
 import com.example.usw_random_chat.ui.TwoButtonDialog
-import com.example.usw_random_chat.ui.msg
-import com.example.usw_random_chat.ui.sendImg
+import com.example.usw_random_chat.ui.MSG
+import com.example.usw_random_chat.ui.SendImg
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -274,9 +268,9 @@ fun ChatBottomAppBar(text: State<String>, onChange: (String) -> Unit, onPress: (
                         enabled = text.value.isNotBlank(),
                     ) {
                         if (text.value.isNotBlank()) {
-                            sendImg(id = R.drawable.send)
+                            SendImg(id = R.drawable.send)
                         } else {
-                            sendImg(id = R.drawable.unactive_send)
+                            SendImg(id = R.drawable.unactive_send)
                         }
 
                     }
@@ -380,7 +374,7 @@ fun sendMsg(text: String) {
         verticalAlignment = Alignment.Bottom
     ) {
         TimeText()
-        msg(text = text, color = Color(0xFFD3DFFF))
+        MSG(text = text, color = Color(0xFFD3DFFF))
     }
 }
 
@@ -393,7 +387,7 @@ fun receiveMsg(text: String) {
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.Bottom
     ) {
-        msg(text = text, color = Color(0xFFFFFFFF))
+        MSG(text = text, color = Color(0xFFFFFFFF))
         TimeText()
     }
 }

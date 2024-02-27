@@ -18,9 +18,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
-import com.example.usw_random_chat.ui.GetScreenHeightInDp
 import com.example.usw_random_chat.ui.MatchingAnimationText
-import com.example.usw_random_chat.ui.button
+import com.example.usw_random_chat.ui.CustomButton
 import kotlinx.coroutines.delay
 
 @Composable
@@ -139,7 +138,7 @@ fun MatchingStopBtn(onPress: () -> Unit){
             )
     ){
         Spacer(modifier = Modifier.weight(0.1f))
-        button(
+        CustomButton(
             "매칭 중단하기",
             enable = true,
             Color.White,

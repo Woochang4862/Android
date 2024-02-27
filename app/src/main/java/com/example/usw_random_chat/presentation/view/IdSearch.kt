@@ -20,10 +20,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
 import com.example.usw_random_chat.ui.OneButtonDialog
-import com.example.usw_random_chat.ui.button
-import com.example.usw_random_chat.ui.portalEmail
-import com.example.usw_random_chat.ui.text
-import com.example.usw_random_chat.ui.tittleWithBackArrow
+import com.example.usw_random_chat.ui.CustomButton
+import com.example.usw_random_chat.ui.PortalEmail
+import com.example.usw_random_chat.ui.CustomText
+import com.example.usw_random_chat.ui.TittleWithBackArrow
 
 @Composable
 fun IdSearch(userModifyViewModel: UserModifyViewModel = viewModel(), navController: NavController){
@@ -62,7 +62,7 @@ fun IdSearchExitBtn(onPress: () -> Unit){
             )
     ){
         Spacer(modifier = Modifier.weight(0.1f))
-        tittleWithBackArrow(
+        TittleWithBackArrow(
             "아이디 찾기",
             Modifier
                 .height(48.dp)
@@ -90,7 +90,7 @@ fun IdSearchEmail(
             )
     ) {
         Spacer(modifier = Modifier.weight(0.1f))
-        portalEmail(text = email, onValueChange = onValueEmail)
+        PortalEmail(text = email, onValueChange = onValueEmail)
         Spacer(modifier = Modifier.weight(0.1f))
     }
 }
@@ -105,7 +105,7 @@ fun IdText(){
             ),
     ) {
         Spacer(modifier = Modifier.weight(0.3f))
-        text(
+        CustomText(
             text1 = "*입력하신 메일로 ",
             text2 = "가입된 아이디 ",
             text3 = "정보를 전송합니다",
@@ -128,7 +128,7 @@ fun IdSearchEmailBtn(onPress: () -> Unit){
             )
     ){
         Spacer(modifier = Modifier.weight(0.1f))
-        button(
+        CustomButton(
             text = "확인메일 전송",
             enable = true,
             content = Color.White,
@@ -154,7 +154,7 @@ fun GoLogin(navController: NavController){
             )
     ){
         Spacer(modifier = Modifier.weight(0.1f))
-        button(
+        CustomButton(
             "로그인 하러가기",
             enable = true,
             Color.White,

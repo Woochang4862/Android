@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
-import com.example.usw_random_chat.ui.button
+import com.example.usw_random_chat.ui.CustomButton
 import kotlinx.coroutines.delay
 
 @Composable
@@ -89,7 +89,7 @@ fun SignUpDoneScreen(navController: NavController) {
         )
         Row {
             Spacer(modifier = Modifier.weight(0.1f))
-            button(
+            CustomButton(
                 text = "로그인",
                 enable = true,
                 content = Color.Black,
@@ -113,7 +113,7 @@ fun SignUpDoneScreen(navController: NavController) {
             Spacer(modifier = Modifier.weight(0.1f))
         }
 
-        button(
+        CustomButton(
             "메일 재발송",
             enable = true,
             Color.White,

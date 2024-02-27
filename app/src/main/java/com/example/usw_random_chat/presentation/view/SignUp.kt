@@ -33,11 +33,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
 import com.example.usw_random_chat.ui.OneButtonDialog
-import com.example.usw_random_chat.ui.TextfiledTitle
+import com.example.usw_random_chat.ui.TextFiledTitle
 import com.example.usw_random_chat.ui.VisibleText
-import com.example.usw_random_chat.ui.button
-import com.example.usw_random_chat.ui.textFieldSearchBtn
-import com.example.usw_random_chat.ui.tittleWithBackArrow
+import com.example.usw_random_chat.ui.CustomButton
+import com.example.usw_random_chat.ui.TextFieldSearchBtn
+import com.example.usw_random_chat.ui.TittleWithBackArrow
 
 @Composable
 fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController) {
@@ -48,7 +48,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
             .background(color = Color(0xFFFFFFFF))
     ) {
         Spacer(Modifier.padding(20.dp))
-        tittleWithBackArrow(
+        TittleWithBackArrow(
             "회원가입",
             Modifier
                 .height(48.dp)
@@ -121,7 +121,7 @@ fun writeID(id: State<String>, onIdChanged: (String) -> Unit, onPress: () -> Uni
     ) {
         Spacer(Modifier.weight(0.2f))
 
-        TextfiledTitle(
+        TextFiledTitle(
             "아이디", "*4자 이상 16자 이내로 작성해주세요",
             Modifier
                 .height(19.dp)
@@ -138,7 +138,7 @@ fun writeID(id: State<String>, onIdChanged: (String) -> Unit, onPress: () -> Uni
     Spacer(Modifier.padding(5.dp))
     Row( modifier = Modifier.fillMaxWidth()){
         Spacer(Modifier.weight(0.1f))
-        textFieldSearchBtn(
+        TextFieldSearchBtn(
             "아이디 입력 (4~16자)",
             textFieldIdValue = id.value,
             onValueChange = onIdChanged,
@@ -162,7 +162,7 @@ fun writeNickName(
         ) {
             Spacer(Modifier.weight(0.2f))
 
-            TextfiledTitle(
+            TextFiledTitle(
                 "닉네임", "                ",
                 Modifier
                     .height(19.dp)
@@ -179,7 +179,7 @@ fun writeNickName(
         Spacer(Modifier.padding(5.dp))
     Row( modifier = Modifier.fillMaxWidth()){
         Spacer(Modifier.weight(0.1f))
-        textFieldSearchBtn(
+        TextFieldSearchBtn(
             "닉네임 입력",
             textFieldIdValue = nickname.value,
             onValueChange = onNickNAmeChanged,
@@ -199,7 +199,7 @@ fun writePW(pw: State<String>, onRememberPw: (String) -> Unit) {
     ) {
         Spacer(Modifier.weight(0.14f))
 
-        TextfiledTitle(
+        TextFiledTitle(
             "비밀번호", "*6자 이상 20자 이내로 작성해 주세요",
             Modifier
                 .height(19.dp)
@@ -227,7 +227,7 @@ fun checkPW(
         Modifier, horizontalArrangement = Arrangement.Start
     ) {
         Spacer(Modifier.weight(0.145f))
-        TextfiledTitle(
+        TextFiledTitle(
             "비밀번호 확인", "*비밀번호가 일치하지 않습니다",
             Modifier
                 .height(19.dp)
@@ -265,7 +265,7 @@ fun signUpNextButton(trigger: Boolean, navController: NavController) {
     ) {
         Row(Modifier) {
             Spacer(Modifier.weight(0.1f))
-            button(
+            CustomButton(
                 "다음",
                 enable = trigger,
                 Color.White,

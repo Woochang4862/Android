@@ -43,10 +43,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
-import com.example.usw_random_chat.ui.copyRightByFlag
-import com.example.usw_random_chat.ui.drawerBottom
-import com.example.usw_random_chat.ui.drawerMenu
-import com.example.usw_random_chat.ui.drawerProfile
+import com.example.usw_random_chat.ui.CopyRightByFlag
+import com.example.usw_random_chat.ui.DrawerBottom
+import com.example.usw_random_chat.ui.DrawerMenu
+import com.example.usw_random_chat.ui.DrawerProfile
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -106,7 +106,7 @@ fun DrawerScreen(navController: NavController, onPress: () -> Unit) {
             }
             Row(){
                 Spacer(modifier = Modifier.weight(0.1f))
-                drawerProfile()
+                DrawerProfile()
                 Spacer(modifier = Modifier.weight(0.5f))
             }
             Box(
@@ -118,19 +118,19 @@ fun DrawerScreen(navController: NavController, onPress: () -> Unit) {
             )
             Column(modifier = Modifier.weight(1f)){
                 Spacer(modifier = Modifier.height(30.dp))
-                drawerMenu(image = R.drawable.profile_img, menuName = "프로필 설정") {
+                DrawerMenu(image = R.drawable.profile_img, menuName = "프로필 설정") {
                     navController.navigate(Screen.ProfileScreen.route)
                 }
                 Spacer(modifier = Modifier.height(25.dp))
-                drawerMenu(image = R.drawable.privacy_policy, menuName = "이용 약관") {
+                DrawerMenu(image = R.drawable.privacy_policy, menuName = "이용 약관") {
                     navController.navigate(Screen.PolicyScreen.route)
                 }
                 Spacer(modifier = Modifier.height(25.dp))
-                drawerMenu(image = R.drawable.codicon_feedback, menuName = "피드백") {
+                DrawerMenu(image = R.drawable.codicon_feedback, menuName = "피드백") {
                     navController.navigate(Screen.FeedBackScreen.route)
                 }
                 Spacer(modifier = Modifier.height(25.dp))
-                drawerMenu(image = R.drawable.logout, menuName = "로그아웃") {
+                DrawerMenu(image = R.drawable.logout, menuName = "로그아웃") {
 
                 }
             }
@@ -142,7 +142,7 @@ fun DrawerScreen(navController: NavController, onPress: () -> Unit) {
             ) {
                 Row(){
                     Spacer(modifier = Modifier.weight(0.1f))
-                    drawerBottom()
+                    DrawerBottom()
                     Spacer(modifier = Modifier.weight(0.7f))
                 }
             }
@@ -196,7 +196,7 @@ fun MainContents(navController: NavController) {
         MatchingButton(navController)
         subText()
     }
-    copyRightByFlag(modifier = Modifier.padding(bottom = 30.dp))
+    CopyRightByFlag(modifier = Modifier.padding(bottom = 30.dp))
 }
 
 @Composable

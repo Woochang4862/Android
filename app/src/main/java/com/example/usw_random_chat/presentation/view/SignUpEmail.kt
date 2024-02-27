@@ -1,7 +1,6 @@
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,10 +20,10 @@ import androidx.navigation.NavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
 import com.example.usw_random_chat.ui.OneButtonDialog
-import com.example.usw_random_chat.ui.button
-import com.example.usw_random_chat.ui.portalEmail
-import com.example.usw_random_chat.ui.text
-import com.example.usw_random_chat.ui.tittleWithBackArrow
+import com.example.usw_random_chat.ui.CustomButton
+import com.example.usw_random_chat.ui.PortalEmail
+import com.example.usw_random_chat.ui.CustomText
+import com.example.usw_random_chat.ui.TittleWithBackArrow
 
 @Composable
 fun EmailAuthScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController){
@@ -58,7 +57,7 @@ fun SignUpExitBtn(onPress: () -> Unit){
             )
     ){
         Spacer(modifier = Modifier.weight(0.1f))
-        tittleWithBackArrow(
+        TittleWithBackArrow(
             "회원가입",
             Modifier
                 .height(48.dp)
@@ -86,7 +85,7 @@ fun SignUpEmail(
             )
     ) {
         Spacer(modifier = Modifier.weight(0.1f))
-        portalEmail(text = email, onValueChange = onValueEmail)
+        PortalEmail(text = email, onValueChange = onValueEmail)
         Spacer(modifier = Modifier.weight(0.1f))
     }
 }
@@ -101,7 +100,7 @@ fun SignUpEmailBtn(){
             ),
     ) {
         Spacer(modifier = Modifier.weight(0.3f))
-        text(
+        CustomText(
             text1 = "*입력하신 메일로 ",
             text2 = "이메일 인증 URL",
             text3 = "을 전송합니다",
@@ -123,7 +122,7 @@ fun RequestEmail(onPress: () -> Unit){
             )
     ){
         Spacer(modifier = Modifier.weight(0.1f))
-        button(
+        CustomButton(
             text = "인증메일 전송",
             enable = true,
             content = Color.White,

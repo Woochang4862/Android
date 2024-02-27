@@ -12,13 +12,14 @@ import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
 
 @Composable
-fun Navigation() {
+fun Navigation () {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Screen.IdSearchScreen.route
+        startDestination = Screen.LoadingScreen.route
     )
     {
+
         composable(route = Screen.SignInScreen.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
             SignInScreen(viewModel,navController)

@@ -32,12 +32,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
-import com.example.usw_random_chat.ui.OneButtonDialog
-import com.example.usw_random_chat.ui.TextFiledTitle
-import com.example.usw_random_chat.ui.VisibleText
 import com.example.usw_random_chat.ui.CustomButton
+import com.example.usw_random_chat.ui.OneButtonDialog
+import com.example.usw_random_chat.ui.RedWarning
 import com.example.usw_random_chat.ui.TextFieldSearchBtn
+import com.example.usw_random_chat.ui.TextFiledTitle
 import com.example.usw_random_chat.ui.TittleWithBackArrow
+import com.example.usw_random_chat.ui.VisibleText
 
 @Composable
 fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController) {
@@ -65,7 +66,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
         )
         Spacer(Modifier.padding(10.dp))
         writeNickName(signUpViewModel.nickName, signUpViewModel.checkSignupNickNameState.value,
-            { newNickname -> signUpViewModel.updateRememberNickName(newNickname) }
+            { newNickname -> signUpViewModel.updateRememberNickName(newNickname)}
         ) { signUpViewModel.checkSignUpNickName() }
         Spacer(Modifier.padding(15.dp))
         writePW(signUpViewModel.rememberPw) { signUpViewModel.updateRememberPw(it) }
@@ -109,7 +110,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: 
                 onPress = { signUpViewModel.changeDialogCheckSignUpNickNameState() },
                 image = R.drawable.baseline_error_24
             )
-        }// 여기 있는 if문 필요없어서 뺐어요
+        }
     }
 }
 
@@ -157,6 +158,7 @@ fun writeNickName(
     nicknameTrigger: Boolean,
     onNickNAmeChanged: (String) -> Unit, onPress: () -> Unit
 ) {
+    val nickNameLength = nickname.value.length in 1..8
         Row(
             Modifier, horizontalArrangement = Arrangement.Start
         ) {
@@ -183,12 +185,19 @@ fun writeNickName(
             "닉네임 입력",
             textFieldIdValue = nickname.value,
             onValueChange = onNickNAmeChanged,
-            nickname.value.isEmpty()
+            (!nickNameLength)
         ) {
             onPress()
         }
         Spacer(Modifier.weight(0.1f))
     }
+    if(!nickNameLength) {
+        Row(){
+            Spacer(Modifier.weight(0.12f))
+            RedWarning("* 닉네임은 8자 이내로 작성해주세요", Modifier.height(20.dp).weight(0.9f).padding(top = 5.dp))
+        }
+
+}
 }
 
 @Composable
@@ -245,19 +254,6 @@ fun checkPW(
 
 }
 
-/*@Composable
-fun EmailTextFieldSignUp(email: State<String>, onRememberEmail: (String) -> Unit) {
-    Row(
-        Modifier
-    ) {
-        Spacer(Modifier.weight(0.1f))
-        portalEmail(
-            textFieldValue = email, onValueChange = onRememberEmail
-        )
-        Spacer(Modifier.weight(0.1f))
-    }
-}*/
-
 @Composable
 fun signUpNextButton(trigger: Boolean, navController: NavController) {
     Column(
@@ -276,12 +272,10 @@ fun signUpNextButton(trigger: Boolean, navController: NavController) {
                     .background(color = Color.White)
             ) {
                 navController.navigate(Screen.EmailAuthScreen.route)
-                //onPress 필요없어서 뺐어요 이메일 인증 화면으로 넘어가서 서버에 전달 해주기 떄문에
             }
             Spacer(Modifier.weight(0.1f))
         }
         Row(Modifier) {
-            // 아래 부분 코드를 더 줄일 수 있는 방법이 있는지 고민해주세요
             Spacer(Modifier.weight(0.2f))
             Text(
                 text = buildAnnotatedString {

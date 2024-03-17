@@ -289,14 +289,12 @@ fun ProfilePreview() {
 @Preview(showBackground = true)
 @Composable
 fun getNickNamePreview() {
-
     //getNickName(qwe)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun getMBTIPreview() {
-
     //getMBTI(qwe)
 }
 

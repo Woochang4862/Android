@@ -209,5 +209,30 @@ fun MatchingAnimation(screen1: Boolean, screen2: Boolean, screen3: Boolean, scre
 @Preview(showBackground = true)
 @Composable
 fun MatchingScreenPreview() {
-    MatchingScreen(navController = rememberNavController())
+    val matchingBlank = remember {
+        mutableStateOf(false)
+    }
+    val matchingDot1 = remember {
+        mutableStateOf(false)
+    }
+    val matchingDot2 = remember {
+        mutableStateOf(false)
+    }
+    val matchingDot3 = remember {
+        mutableStateOf(false)
+    }
+    val matchingDot4 = remember {
+        mutableStateOf(false)
+    }
+
+    TextBlue()
+    TextBlack()
+    MatchingStopBtn{}
+    MatchingAnimation(
+        screen1 = matchingBlank.value,
+        screen2 = matchingDot1.value,
+        screen3 = matchingDot2.value,
+        screen4 = matchingDot3.value,
+        screen5 = matchingDot4.value
+    )
 }

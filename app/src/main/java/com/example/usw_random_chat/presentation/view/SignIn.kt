@@ -1,7 +1,9 @@
 
 package com.example.usw_random_chat.presentation.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,21 +14,29 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignInViewModel
 import com.example.usw_random_chat.ui.OneButtonDialog
 import com.example.usw_random_chat.ui.CustomButton
 import com.example.usw_random_chat.ui.LoginFindIdAndPassword
-import com.example.usw_random_chat.ui.LoginTextFieldId
+import com.example.usw_random_chat.ui.LoginTextFieldID
 import com.example.usw_random_chat.ui.LoginTextFieldPW
 import com.example.usw_random_chat.ui.MadeAccount
 
@@ -35,8 +45,12 @@ import com.example.usw_random_chat.ui.MadeAccount
 fun SignInScreen(signInViewModel: SignInViewModel = viewModel(),navController: NavController) {
 
     LoginImage()
-    LoginTextFieldId(id = signInViewModel.id) { signInViewModel.updateID(it) }
-    LoginTextFieldPW(password = signInViewModel.password) { signInViewModel.updatePassWord(it) }
+    LoginTextFieldId(
+        id = signInViewModel.id)
+        { newId -> signInViewModel.updateID(newId) }
+    LoginTextFieldPw(
+        password = signInViewModel.password
+    ) { signInViewModel.updatePassWord(it) }
     LoginBtn(){signInViewModel.postSignIn()}
     OnLoginFindIdAndPassword(navController)
     MadeAccountText()
@@ -46,7 +60,7 @@ fun SignInScreen(signInViewModel: SignInViewModel = viewModel(),navController: N
         navController.navigate(Screen.MainPageScreen.route){
             navController.popBackStack()
         }
-        signInViewModel.changeLoginState()//다 괜찮은데 이거 아이디 비번 모두 입력 안하니까
+        signInViewModel.changeLoginState()
     }
     if(signInViewModel.dialogState.value){
         OneButtonDialog(
@@ -57,7 +71,6 @@ fun SignInScreen(signInViewModel: SignInViewModel = viewModel(),navController: N
         )
     }
 }
-
 
 @Composable
 fun LoginImage() {
@@ -87,7 +100,7 @@ fun LoginTextFieldId(  // textfield를 하나만 만들고 이름만 바꿔서 �
     id: State<String>,
     onValueId: (String) -> Unit
 ) {
-    LoginTextFieldId(
+    LoginTextFieldID(
         text = id,
         text2 = "ID",
         onValueChange = onValueId
@@ -95,7 +108,7 @@ fun LoginTextFieldId(  // textfield를 하나만 만들고 이름만 바꿔서 �
 }
 
 @Composable
-fun LoginTextFieldPW(  // textfield를 하나만 만들고 이름만 바꿔서 함수를 재사용 할 수 있게 변경해주세요
+fun LoginTextFieldPw(  // textfield를 하나만 만들고 이름만 바꿔서 함수를 재사용 할 수 있게 변경해주세요
     password: State<String>,
     onValuePw: (String) -> Unit
 ) {
@@ -105,14 +118,13 @@ fun LoginTextFieldPW(  // textfield를 하나만 만들고 이름만 바꿔서 �
         onValueChange = onValuePw
     )
 }
-
 @Composable
 fun LoginBtn(onPress: () -> Unit) { //onPress란 람다 함수를 추가시키세요
     Column(
         modifier = Modifier
             .fillMaxHeight()
     ){
-        Spacer(modifier = Modifier.weight(4.4f))
+        Spacer(modifier = Modifier.weight(4.9f))
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -132,7 +144,7 @@ fun LoginBtn(onPress: () -> Unit) { //onPress란 람다 함수를 추가시키�
             }
             Spacer(modifier = Modifier.weight(0.1f))
         }
-        Spacer(modifier = Modifier.weight(2.7f))
+        Spacer(modifier = Modifier.weight(2.2f))
     }
 }
 
@@ -142,7 +154,7 @@ fun OnLoginFindIdAndPassword(navController: NavController) { //textbutton 이름
         modifier = Modifier
             .fillMaxHeight()
     ){
-        Spacer(modifier = Modifier.weight(4.7f))
+        Spacer(modifier = Modifier.weight(5.2f))
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -151,7 +163,7 @@ fun OnLoginFindIdAndPassword(navController: NavController) { //textbutton 이름
         ) {
             LoginFindIdAndPassword(navController)
         }
-        Spacer(modifier = Modifier.weight(2.3f))
+        Spacer(modifier = Modifier.weight(1.8f))
     }
 }
 
@@ -167,7 +179,7 @@ fun SignUpBtn(navController: NavController) { // asdasd변수 이름 적절하�
         modifier = Modifier
             .fillMaxHeight()
     ) {
-        Spacer(modifier = Modifier.weight(5.8f))
+        Spacer(modifier = Modifier.weight(6.4f))
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -187,10 +199,27 @@ fun SignUpBtn(navController: NavController) { // asdasd변수 이름 적절하�
             }
             Spacer(modifier = Modifier.weight(0.1f))
         }
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(0.6f))
     }
 }
 
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = true)
+@Composable
+fun SignInPreview(navController: NavController = rememberNavController()) {
+    val id : State<String> = mutableStateOf("")
+    val password : State<String>  = mutableStateOf("")
+
+    LoginImage()
+    LoginTextFieldId(id)
+    {  }
+    LoginTextFieldPw(password) {  }
+    LoginBtn(){}
+    OnLoginFindIdAndPassword(navController)
+    MadeAccountText()
+    SignUpBtn(navController)
+}
 
 /*@Preview(showBackground = true)
 @Composable

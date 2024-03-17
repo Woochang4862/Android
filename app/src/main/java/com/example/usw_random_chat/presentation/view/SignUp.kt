@@ -159,26 +159,26 @@ fun writeNickName(
     onNickNAmeChanged: (String) -> Unit, onPress: () -> Unit
 ) {
     val nickNameLength = nickname.value.length in 1..8
-        Row(
-            Modifier, horizontalArrangement = Arrangement.Start
-        ) {
-            Spacer(Modifier.weight(0.2f))
+    Row(
+        Modifier, horizontalArrangement = Arrangement.Start
+    ) {
+        Spacer(Modifier.weight(0.2f))
 
-            TextFiledTitle(
-                "닉네임", "                ",
-                Modifier
-                    .height(19.dp)
-                    .weight(0.24f), !nicknameTrigger or nickname.value.isEmpty(),
-                "* 이미 사용중인 닉네임입니다",
-                Modifier
-                    .height(18.dp)
-                    .weight(1f)
-                    .padding(top = 3.dp)
-            )
+        TextFiledTitle(
+            "닉네임", "                ",
+            Modifier
+                .height(19.dp)
+                .weight(0.24f), !nicknameTrigger or nickname.value.isEmpty(),
+            "* 이미 사용중인 닉네임입니다",
+            Modifier
+                .height(18.dp)
+                .weight(1f)
+                .padding(top = 3.dp)
+        )
 
-            Spacer(Modifier.weight(0.3f))
-        }
-        Spacer(Modifier.padding(5.dp))
+        Spacer(Modifier.weight(0.3f))
+    }
+    Spacer(Modifier.padding(5.dp))
     Row( modifier = Modifier.fillMaxWidth()){
         Spacer(Modifier.weight(0.1f))
         TextFieldSearchBtn(
@@ -194,7 +194,11 @@ fun writeNickName(
     if(!nickNameLength) {
         Row(){
             Spacer(Modifier.weight(0.12f))
-            RedWarning("* 닉네임은 8자 이내로 작성해주세요", Modifier.height(20.dp).weight(0.9f).padding(top = 5.dp))
+            RedWarning("* 닉네임은 8자 이내로 작성해주세요",
+                Modifier
+                    .height(20.dp)
+                    .weight(0.9f)
+                    .padding(top = 5.dp))
         }
 
 }

@@ -93,7 +93,7 @@ fun MadeAccount() {
         modifier = Modifier
             .fillMaxHeight()
     ) {
-        Spacer(modifier = Modifier.weight(5f))
+        Spacer(modifier = Modifier.weight(5.6f))
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -122,12 +122,12 @@ fun MadeAccount() {
             Divider(
                 color = Color(0xFFBFBFBF),
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1.1f)
                     .padding(top = 9.dp)
             )
             Spacer(modifier = Modifier.weight(0.4f))
         }
-        Spacer(modifier = Modifier.weight(1.5f))
+        Spacer(modifier = Modifier.weight(1.1f))
     }
 }
 
@@ -171,7 +171,7 @@ fun LoginFindIdAndPassword(navController: NavController) {
 }
 
 @Composable
-fun LoginTextFieldId(
+fun LoginTextFieldID(
     text: State<String>,
     text2: String,
     onValueChange: (String) -> Unit
@@ -180,11 +180,11 @@ fun LoginTextFieldId(
         modifier = Modifier
             .fillMaxHeight()
     ) {
-        Spacer(modifier = Modifier.weight(1.2f))
+        Spacer(modifier = Modifier.weight(11f))
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .weight(0.8f)
+                .weight(5f)
+                .fillMaxWidth()
         ) {
             Spacer(modifier = Modifier.weight(0.1f))
             OutlinedTextField(
@@ -212,7 +212,7 @@ fun LoginTextFieldId(
             )
             Spacer(modifier = Modifier.weight(0.1f))
         }
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(8.2f))
     }
 }
 
@@ -226,11 +226,11 @@ fun LoginTextFieldPW(
         modifier = Modifier
             .fillMaxHeight()
     ) {
-        Spacer(modifier = Modifier.weight(1.4f))
+        Spacer(modifier = Modifier.weight(3f))
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .weight(0.8f)
+                .weight(1f)
+                .fillMaxWidth()
         ) {
             Spacer(modifier = Modifier.weight(0.1f))
             OutlinedTextField(
@@ -258,7 +258,7 @@ fun LoginTextFieldPW(
             )
             Spacer(modifier = Modifier.weight(0.1f))
         }
-        Spacer(modifier = Modifier.weight(0.8f))
+        Spacer(modifier = Modifier.weight(1.6f))
     }
 }
 

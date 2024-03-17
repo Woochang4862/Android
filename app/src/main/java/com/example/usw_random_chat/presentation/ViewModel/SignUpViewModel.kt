@@ -122,18 +122,17 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     }
     fun changeCheckSignUpNickNameState(){
         _checkSignupNickNameState.value = !_checkSignupNickNameState.value
+        _signUpNickNameState.value = true
     }
     fun changeDialogCheckSignUpNickNameState(){
-        _signUpNickNameState.value = !_signUpNickNameState.value
         _dialogCheckSignUpNickNameState.value = !_dialogCheckSignUpNickNameState.value
     }
     fun changeCheckSignUpIdState(){
         _checkSignupIdState.value = !_checkSignupIdState.value// 새로 만든 boolean값 여기에 같이 바꿨어요
-        _signUpNickNameState.value = true//그러면 성공했을때 RememberTrigger 값이 true가 되면 버튼 활성화 됩니다
+        _signUpIdState.value = true//그러면 성공했을때 RememberTrigger 값이 true가 되면 버튼 활성화 됩니다
     }
     fun changeDialogCheckSignUpIdState(){
         _dialogCheckSignUpIdState.value = !_dialogCheckSignUpIdState.value
-        _signUpIdState.value = true
     }
     fun changeAuthEmailState(){
         _authEmailState.value = !_authEmailState.value

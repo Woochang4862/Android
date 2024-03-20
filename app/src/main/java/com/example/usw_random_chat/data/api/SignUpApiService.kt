@@ -10,7 +10,7 @@ interface SignUpApiService {
     @POST("member/sign-up")
     @Headers("content-type: application/json")
     suspend fun registerSignUp(@Body jsonpath: UserDTO) : Response<UserDTO>
-    @POST("member/check-duplicate-id")
+    @POST("member/check-duplicate-id-signUp")
     suspend fun registerIdDoubleCheck(@Body jsonpath: UserDTO) : Response<UserDTO>
 
     @POST("member/confirm-email")
@@ -21,7 +21,7 @@ interface SignUpApiService {
     @Headers("content-type: application/json")
     suspend fun registerCheckAuthEmail(@Body jsonpath: UserDTO): Response<UserDTO>
 
-    @POST("member/check-duplicate-id")
+    @POST("member/check-duplicate-nickname-signUp")
     @Headers("content-type: application/json")
     suspend fun registerCheckSignUpNickName(@Body jsonpath: UserDTO): Response<UserDTO>
 }

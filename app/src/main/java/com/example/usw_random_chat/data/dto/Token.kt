@@ -3,8 +3,8 @@ package com.example.usw_random_chat.data.dto
 import com.google.gson.annotations.SerializedName
 
 data class Token(
-    @SerializedName("access_token")
+    @SerializedName("accessToken")
     val accessToken: String? = "",
-    @SerializedName("refresh_token")
+    @SerializedName("refreshToken")
     val refreshToken: String? = ""
 )

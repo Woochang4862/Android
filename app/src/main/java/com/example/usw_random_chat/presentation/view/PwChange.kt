@@ -18,10 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
 import com.example.usw_random_chat.ui.TextFiledTitle
 import com.example.usw_random_chat.ui.VisibleText
 import com.example.usw_random_chat.ui.CustomButton
+import com.example.usw_random_chat.ui.OneButtonDialog
 import com.example.usw_random_chat.ui.TittleWithBackArrow
 
 
@@ -62,10 +64,19 @@ fun PwChangeScreen(
         }
 
         Spacer(Modifier.padding(20.dp))
-        PwChangeBotton(userModifyViewModel.rememberTrigger.value, navController = navController) {
-            userModifyViewModel.postPwChange()
+        PwChangeButton(userModifyViewModel.rememberTrigger.value, navController = navController) {
+            userModifyViewModel.changePW()
         }
     }
+    if (userModifyViewModel.checkIdSearchAuthEmail.value){
+        OneButtonDialog(
+            contentText = "비밀번호가 변경되었습니다.",
+            text = "확인",
+            onPress = { userModifyViewModel.changeCheckIdSearchAuthEmail() },
+            image = R.drawable.baseline_error_24
+        )
+    }
+
 }
 
 @Composable
@@ -129,7 +140,7 @@ fun TextFieldOfPwCheck(
 }
 
 @Composable
-fun PwChangeBotton(trigger: Boolean, navController: NavController, onPress: () -> Unit) {
+fun PwChangeButton(trigger: Boolean, navController: NavController, onPress: () -> Unit) {
     Row(
         Modifier
     ) {

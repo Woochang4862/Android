@@ -42,6 +42,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
 import com.example.usw_random_chat.ui.CustomButton
+import com.example.usw_random_chat.ui.OneButtonDialog
 import com.example.usw_random_chat.ui.PortalEmail
 
 @Composable
@@ -57,9 +58,25 @@ fun PwSearchScreen(userModifyViewModel: UserModifyViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(21.dp))
         PortalEmail(text = userModifyViewModel.email) { userModifyViewModel.updateEmail(it) }
         explainText()
-        sendNumberButton() { userModifyViewModel.postAuthCode() }
+        sendNumberButton() { userModifyViewModel.searchPW() }
         inputCode(code = userModifyViewModel.rememberCode,
-            { newValue -> userModifyViewModel.updateCode(newValue) }) { userModifyViewModel.checkAuthCode() }
+            { newValue -> userModifyViewModel.updateCode(newValue) }) { userModifyViewModel.changePW() }
+    }
+    if (userModifyViewModel.checkIdSearchAuthEmail.value){
+        OneButtonDialog(
+            contentText = "인증코드가 전송되었습니다",
+            text = "확인",
+            onPress = { userModifyViewModel.changeCheckIdSearchAuthEmail() },
+            image = R.drawable.baseline_error_24
+        )
+    }
+    if(userModifyViewModel.dialogCheckIdSearchAuthEmail.value){
+        OneButtonDialog(
+            contentText = "올바르지 않은 아이디 혹은 이메일입니다",
+            text = "확인",
+            onPress = { userModifyViewModel.changeDialogCheckIdSearchAuthEmail() },
+            image = R.drawable.baseline_error_24
+        )
     }
 }
 
@@ -144,7 +161,7 @@ fun sendNumberButton(onPress: () -> Unit) {
             .width(326.dp)
             .height(56.dp)
     ) {
-        onPress
+        onPress()
     }
 }
 

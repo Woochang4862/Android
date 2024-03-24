@@ -5,10 +5,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.domain.usecase.UserModifyUseCase
-import com.example.usw_random_chat.presentation.view.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -89,30 +87,32 @@ class UserModifyViewModel @Inject constructor(
 
     fun postPwChange() {
         viewModelScope.launch {
-            userModifyUseCase.pwChange(UserDTO(memberPassword = _rememberPW.value))
+            userModifyUseCase.searchPW(UserDTO(memberPassword = _rememberPW.value))
         }
     }
 
-    fun postAuthCode() {
+    fun searchPW() {
         viewModelScope.launch {
-            userModifyUseCase.postAuthCode(
-                UserDTO(
-                    memberID = _rememberId.value,
-                    email = _email.value
-                )
-            )
+            when(userModifyUseCase.searchPW(UserDTO(memberID = _rememberId.value, email = _email.value))) {
+                in (200..300) -> _checkIdSearchAuthEmail.value = true
+                !in (200..300) -> _dialogCheckIdSearchAuthEmail.value = true
+            }
+            Log.d("PWPW","!@#!@#")
         }
     }
 
-    fun checkAuthCode() {
+    fun changePW() {
         viewModelScope.launch {
-            // userModifyUseCase.checkAuthCode(UserDTO(code = rememberCode.value))
+            when(userModifyUseCase.changePW(UserDTO(tmp = _rememberPW.value, tmp2 = _rememberPWCheck.value))){
+                in (200..300) -> _checkIdSearchAuthEmail.value = true
+                !in (200..300) -> _dialogCheckIdSearchAuthEmail.value = true
+            }
         }
     }
 
     fun postAuthEmail() {   //아이디 찾기에 있는 확인 메일 전송 버튼 함수
         viewModelScope.launch {
-            when (userModifyUseCase.postCheckEmail(UserDTO(email = _email.value))) {
+            when (userModifyUseCase.postAuthCode(UserDTO(email = _email.value))) {
                 in (200..300) -> _checkIdSearchAuthEmail.value = true
                 !in (200..300) -> _dialogCheckIdSearchAuthEmail.value = true
             }

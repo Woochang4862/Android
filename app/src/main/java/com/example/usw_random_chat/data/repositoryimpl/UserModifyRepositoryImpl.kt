@@ -10,22 +10,25 @@ class UserModifyRepositoryImpl @Inject constructor(
     private val userModifyApiService: UserModifyApiService
     ) : UserModifyRepository {
 
-    override suspend fun changePW(param: UserDTO): UserDTO {
-        val response = userModifyApiService.registerPwChange(param)
+    override suspend fun searchPW(param: UserDTO): Int {
+        val response = userModifyApiService.postCodePwSearch(param)
 
         if (response.isSuccessful){
-            return response.body()!!
+            Log.d("PW",response.body().toString())
+            return response.code()
         }else{
             throw Exception("Fail!!")
         }
     }
 
-    override suspend fun postAuthCode(param: UserDTO): UserDTO {
+    override suspend fun postAuthCode(param: UserDTO): Int {
         val response = userModifyApiService.postAuthCode(param)
 
         if (response.isSuccessful){
-            return response.body()!!
+            Log.d("ID",response.body().toString())
+            return response.code()
         }else{
+            Log.d("ID",response.body().toString())
             throw Exception("Fail!!")
         }
     }
@@ -40,11 +43,13 @@ class UserModifyRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun postEmail(param: UserDTO): UserDTO {
-        val response = userModifyApiService.postEmail(param)
+    override suspend fun changePW(param: UserDTO): Int {
+        val response = userModifyApiService.changePW(param)
 
         if (response.isSuccessful){
-            return response.body()!!
+
+            Log.d("changePW",response.body().toString())
+            return response.code()
         }else{
             throw Exception("Fail!!")
         }

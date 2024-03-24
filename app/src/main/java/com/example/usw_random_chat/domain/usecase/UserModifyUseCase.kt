@@ -5,11 +5,11 @@ import com.example.usw_random_chat.domain.repository.UserModifyRepository
 
 class UserModifyUseCase(private val userModifyRepository: UserModifyRepository) {
 
-    suspend fun pwChange(param : UserDTO) : UserDTO {
-        return userModifyRepository.changePW(param)
+    suspend fun searchPW(param : UserDTO) : Int {
+        return userModifyRepository.searchPW(param)
     }
 
-    suspend fun postAuthCode(param : UserDTO) : UserDTO {
+    suspend fun postAuthCode(param : UserDTO) : Int {
         return userModifyRepository.postAuthCode(param)
     }
 
@@ -17,8 +17,8 @@ class UserModifyUseCase(private val userModifyRepository: UserModifyRepository) 
         return userModifyRepository.checkAuthCode(param)
     }
 
-    suspend fun postEmail(param : UserDTO) : UserDTO {
-        return userModifyRepository.postEmail(param)
+    suspend fun changePW(param : UserDTO) : Int {
+        return userModifyRepository.changePW(param)
     }
 
     suspend fun postCheckEmail(param : UserDTO) : Int {

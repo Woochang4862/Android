@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.domain.repository
 
+import com.example.usw_random_chat.data.dto.PassWordDTO
 import com.example.usw_random_chat.data.dto.UserDTO
 
 interface UserModifyRepository {
@@ -10,7 +11,7 @@ interface UserModifyRepository {
 
     suspend fun checkAuthCode(param : UserDTO) : UserDTO
 
-    suspend fun changePW(param : UserDTO) : Int
+    suspend fun changePW(param : PassWordDTO) : Int
 
     suspend fun postCheckEmail(param : UserDTO) : Int
 

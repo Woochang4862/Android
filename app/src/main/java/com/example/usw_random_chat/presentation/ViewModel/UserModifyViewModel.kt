@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.usw_random_chat.data.dto.PassWordDTO
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.domain.usecase.UserModifyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -103,7 +104,7 @@ class UserModifyViewModel @Inject constructor(
 
     fun changePW() {
         viewModelScope.launch {
-            when(userModifyUseCase.changePW(UserDTO(tmp = _rememberPW.value, tmp2 = _rememberPWCheck.value))){
+            when(userModifyUseCase.changePW(PassWordDTO(_rememberPW.value,_rememberPWCheck.value))){
                 in (200..300) -> _checkIdSearchAuthEmail.value = true
                 !in (200..300) -> _dialogCheckIdSearchAuthEmail.value = true
             }

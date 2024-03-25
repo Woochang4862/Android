@@ -2,6 +2,7 @@ package com.example.usw_random_chat.data.repositoryimpl
 
 import android.util.Log
 import com.example.usw_random_chat.data.api.UserModifyApiService
+import com.example.usw_random_chat.data.dto.PassWordDTO
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.domain.repository.UserModifyRepository
 import javax.inject.Inject
@@ -43,7 +44,7 @@ class UserModifyRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun changePW(param: UserDTO): Int {
+    override suspend fun changePW(param: PassWordDTO): Int {
         val response = userModifyApiService.changePW(param)
 
         if (response.isSuccessful){

@@ -4,16 +4,21 @@ import android.util.Log
 import com.example.usw_random_chat.data.api.UserModifyApiService
 import com.example.usw_random_chat.data.dto.PassWordDTO
 import com.example.usw_random_chat.data.dto.UserDTO
+import com.example.usw_random_chat.data.local.TokenSharedPreference
 import com.example.usw_random_chat.domain.repository.UserModifyRepository
 import javax.inject.Inject
 
 class UserModifyRepositoryImpl @Inject constructor(
-    private val userModifyApiService: UserModifyApiService
+    private val userModifyApiService: UserModifyApiService,
+    private val tokenSharedPreference: TokenSharedPreference
     ) : UserModifyRepository {
 
     override suspend fun searchPW(param: UserDTO): Int {
         val response = userModifyApiService.postCodePwSearch(param)
-
+        val uuid = response.body()?.data?.uuid
+        if (uuid != null) {
+            tokenSharedPreference.setUUID("uuid",uuid)
+        }
         if (response.isSuccessful){
             Log.d("PW",response.body().toString())
             return response.code()
@@ -45,7 +50,7 @@ class UserModifyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun changePW(param: PassWordDTO): Int {
-        val response = userModifyApiService.changePW(param)
+        val response = userModifyApiService.changePW(param,tokenSharedPreference.getUUID("uuid",""))
 
         if (response.isSuccessful){
 
@@ -57,7 +62,7 @@ class UserModifyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postCheckEmail(param: UserDTO) : Int{
-        val response = userModifyApiService.RegisterPostCheckEmail(param)
+        val response = userModifyApiService.registerPostCheckEmail(param)
 
         return if (response.isSuccessful) {
             response.code()

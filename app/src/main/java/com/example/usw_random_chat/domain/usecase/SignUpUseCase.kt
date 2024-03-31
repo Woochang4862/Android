@@ -14,15 +14,19 @@ class SignUpUseCase(private val signUpRepository: SignUpRepository) {
         return signUpRepository.idDoubleCheck(param)
     }
 
-    suspend fun authEmail(param : UserDTO) : Int {
-        return signUpRepository.authEmail(param)
+    suspend fun reAuthEmail(param : UserDTO) : Int {
+        return signUpRepository.reAuthEmail(param)
+    }
+    suspend fun checkAuthEmail() : Int {
+        return signUpRepository.checkAuthEmail()
     }
 
-    suspend fun checkAuthEmail(param : UserDTO) : Int {
-        return signUpRepository.checkAuthEmail(param)
+
+    suspend fun checkDoubleEmail(param : UserDTO) : Int {
+        return signUpRepository.emailDoubleCheck(param)
     }
 
     suspend fun checkSignUpNickName(param : UserDTO) : Int {
-        return signUpRepository.checkSignUpNickName(param)
+        return signUpRepository.nickNameDoubleCheck(param)
     }
 }

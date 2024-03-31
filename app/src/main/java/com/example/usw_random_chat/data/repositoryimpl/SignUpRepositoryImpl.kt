@@ -3,11 +3,13 @@ package com.example.usw_random_chat.data.repositoryimpl
 import android.util.Log
 import com.example.usw_random_chat.data.api.SignUpApiService
 import com.example.usw_random_chat.data.dto.UserDTO
+import com.example.usw_random_chat.data.local.TokenSharedPreference
 import com.example.usw_random_chat.domain.repository.SignUpRepository
 import javax.inject.Inject
 
 class SignUpRepositoryImpl @Inject constructor(
-    private val signUpApiService: SignUpApiService
+    private val signUpApiService: SignUpApiService,
+    private val tokenSharedPreference: TokenSharedPreference
 )  : SignUpRepository {
 
 
@@ -15,6 +17,10 @@ class SignUpRepositoryImpl @Inject constructor(
         val response = signUpApiService.registerSignUp(param)
 
         return if (response.isSuccessful) {
+            val uuid = response.body()?.message
+            if (uuid != null) {
+                tokenSharedPreference.setUUID("uuid",uuid)
+            }
             response.code()
         } else {
             Log.d("회원 가입 실패",response.body().toString())
@@ -33,7 +39,7 @@ class SignUpRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun authEmail(param: UserDTO): Int {
+    override suspend fun reAuthEmail(param: UserDTO): Int {
         val response = signUpApiService.registerAuthEmail(param)
 
         return if (response.isSuccessful) {
@@ -44,9 +50,8 @@ class SignUpRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun checkAuthEmail(param: UserDTO): Int {
-        val response = signUpApiService.registerCheckAuthEmail(param)
-
+    override suspend fun checkAuthEmail(): Int {
+        val response = signUpApiService.checkAuthEmail(tokenSharedPreference.getUUID("uuid",""))
         return if (response.isSuccessful) {
             response.code()
         } else {
@@ -55,7 +60,18 @@ class SignUpRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun checkSignUpNickName(param: UserDTO): Int {
+    override suspend fun emailDoubleCheck(param: UserDTO): Int {
+        val response = signUpApiService.registerEmailDoubleCheck(param)
+
+        return if (response.isSuccessful) {
+            response.code()
+        } else {
+            Log.d("이메일이 중복됩니다.",response.body().toString())
+            response.code()
+        }
+    }
+
+    override suspend fun nickNameDoubleCheck(param: UserDTO): Int {
         val response = signUpApiService.registerCheckSignUpNickName(param)
 
         return if (response.isSuccessful) {

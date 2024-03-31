@@ -55,7 +55,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
     fun verifyEmail() {
         viewModelScope.launch {
-            when(signUpUseCase.authEmail(UserDTO(memberID = rememberId.value, memberPassword = rememberPw.value, nickname = nickName.value, email = email.value))){
+            when(signUpUseCase.reAuthEmail(UserDTO(memberID = rememberId.value, memberPassword = rememberPw.value, nickname = nickName.value, email = email.value))){
                 in (200..300) -> _authEmailState.value = true
                 !in (200..300) -> _dialogAuthEmailState.value = true
             }
@@ -64,7 +64,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
     fun checkVerifyEmail() {
         viewModelScope.launch {
-            when(signUpUseCase.checkAuthEmail(UserDTO(email = email.value))){
+            when(signUpUseCase.checkDoubleEmail(UserDTO(email = email.value))){
                 in (200..300) -> _checkAuthEmailState.value = true
                 !in (200..300) -> _dialogCheckAuthEmailState.value = true
             }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = viewModel(), navControlle
     SignUpEmailBtn()
     RequestEmail{signUpViewModel.verifyEmail()}
     SignUpExitBtn{navController.popBackStack()}
+    CompleteSignUp {}
 
     if (signUpViewModel.authEmailState.value){
         navController.navigate(Screen.SignInScreen.route)
@@ -76,7 +78,6 @@ fun SignUpEmail(
     email: State<String>,
     onValueEmail: (String) -> Unit
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -113,10 +114,9 @@ fun SignUpEmailBtn(){
 
 @Composable
 fun RequestEmail(onPress: () -> Unit){
-
     Row(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(
                 top = 286.dp
             )
@@ -137,6 +137,32 @@ fun RequestEmail(onPress: () -> Unit){
     }
 }
 
+@Composable
+fun CompleteSignUp(onPress: () -> Unit){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 360.dp
+            )
+    ){
+        Spacer(modifier = Modifier.weight(0.1f))
+        CustomButton(
+            text = "회원가입 완료",
+            enable = true,
+            content = Color.White,
+            back = Color.Black,
+            modifier = Modifier
+                .weight(1f)
+                .height(56.dp)
+        ) {
+            onPress()
+        }
+        Spacer(modifier = Modifier.weight(0.1f))
+    }
+}
+
+
 
 
 @SuppressLint("UnrememberedMutableState")
@@ -148,6 +174,9 @@ fun EmailAuthScreenPreview(){
     SignUpEmailBtn()
     RequestEmail{}
     SignUpExitBtn{}
+    CompleteSignUp {
+
+    }
 }
 
 

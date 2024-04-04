@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usw_random_chat.data.dto.MessageDTO
 import com.example.usw_random_chat.data.dto.ProfileDTO
+import com.example.usw_random_chat.data.local.TokenSharedPreference
 import com.example.usw_random_chat.domain.repository.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +15,10 @@ import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor( private val chatRepository: ChatRepository) : ViewModel() {
+class ChatViewModel @Inject constructor(
+    private val chatRepository: ChatRepository,
+    private val tokenSharedPreference: TokenSharedPreference
+) : ViewModel() {
     private val _msg = mutableStateOf("")
     private val _profileDialog = mutableStateOf(false)
     private val _reportDialog = mutableStateOf(false)
@@ -32,6 +36,15 @@ class ChatViewModel @Inject constructor( private val chatRepository: ChatReposit
     }
     fun sendReport(){
 
+    }
+
+    fun startMatching(){
+        viewModelScope.launch {
+            when(chatRepository.matching(tokenSharedPreference.getToken("accessToken",""))){
+                in (200..300) -> connectStomp()
+
+            }
+        }
     }
     fun closeProfileDialog(){
         _profileDialog != _profileDialog

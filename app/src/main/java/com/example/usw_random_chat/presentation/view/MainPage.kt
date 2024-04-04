@@ -40,9 +40,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.presentation.ViewModel.ChatViewModel
 import com.example.usw_random_chat.ui.CopyRightByFlag
 import com.example.usw_random_chat.ui.DrawerBottom
 import com.example.usw_random_chat.ui.DrawerMenu
@@ -51,7 +53,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = viewModel()) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -78,7 +80,10 @@ fun MainScreen(navController: NavController) {
 
             content = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                    MainContents(navController)
+                    MainContents(){
+                        navController.navigate(Screen.MatchingScreen.route)
+                        chatViewModel.startMatching()
+                    }
                 }
             },
             drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
@@ -184,7 +189,7 @@ fun MyTopAppBar(onPress: () -> Unit) {
 }
 
 @Composable
-fun MainContents(navController: NavController) {
+fun MainContents(onPress: () -> Unit) {
     TalkBalloon()
     AdBanner()
     MainText()
@@ -193,7 +198,7 @@ fun MainContents(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        MatchingButton(navController)
+        MatchingButton(onPress)
         subText()
     }
     CopyRightByFlag(modifier = Modifier.padding(bottom = 30.dp))
@@ -260,9 +265,9 @@ fun TalkBalloon() {
 }
 
 @Composable
-fun MatchingButton(navController: NavController) {
+fun MatchingButton(onPress: () -> Unit) {
     Button(
-        onClick = { navController.navigate(Screen.MatchingScreen.route) },
+        onClick = { onPress() },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color(0xFF2D64D8),
             contentColor = Color.White

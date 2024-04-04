@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.di
 
+import com.example.usw_random_chat.data.api.ChatApiService
 import com.example.usw_random_chat.data.api.ProfileApiService
 import com.example.usw_random_chat.data.api.SignInApiService
 import com.example.usw_random_chat.data.api.SignUpApiService
@@ -36,5 +37,10 @@ object ApiModule {
     @Singleton
     fun provideUserModifyApiService(retrofit: Retrofit): UserModifyApiService =
         retrofit.create(UserModifyApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideChatApiService(retrofit: Retrofit): ChatApiService =
+        retrofit.create(ChatApiService::class.java)
 
 }

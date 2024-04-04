@@ -91,6 +91,22 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         }
     }
 
+    fun checkEmailAuth() {   // ??
+        viewModelScope.launch {
+            when(signUpUseCase.checkAuthEmail()){
+                in (200..300) -> _checkSignupNickNameState.value = true
+                !in (200..300) -> _dialogCheckSignUpNickNameState.value = true
+            }
+
+        }
+    }
+    fun completeSignUp() {   // 회원가입 완료
+        viewModelScope.launch {
+            signUpUseCase.completeSignUp()
+        }
+    }
+
+
     fun updateEmail(newValue: String){
         _email.value = newValue
     }

@@ -31,4 +31,8 @@ interface SignUpApiService {
     @POST("open/member/check-duplicate-nickname-signUp") // 닉네임 중복확인
     @Headers("content-type: application/json")
     suspend fun registerCheckSignUpNickName(@Body jsonpath: UserDTO): Response<UserDTO>
+
+    @GET("open/member/sign-up-finish?uuid={uuid}") // 이메일 인증확인
+    @Headers("content-type: application/json")
+    suspend fun completeSignUp(@Path("uuid") uuid : String): Response<UserDTO>
 }

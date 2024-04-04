@@ -32,7 +32,7 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = viewModel(), navControlle
     SignUpEmailBtn()
     RequestEmail{signUpViewModel.verifyEmail()}
     SignUpExitBtn{navController.popBackStack()}
-    CompleteSignUp {}
+    CompleteSignUp {signUpViewModel.completeSignUp()}
 
     if (signUpViewModel.authEmailState.value){
         navController.navigate(Screen.SignInScreen.route)

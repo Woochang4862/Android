@@ -17,8 +17,8 @@ class SignInRepositoryImpl @Inject constructor(
         val response = signInApiService.registerSignIn(param)
 
         return if (response.isSuccessful) {
-            val accessToken = response.body()?.token?.accessToken
-            val refreshToken = response.body()?.token?.refreshToken
+            val accessToken = response.body()?.data?.accessToken
+            val refreshToken = response.body()?.data?.refreshToken
             tokenSharedPreference.setToken("accessToken","$accessToken")
             tokenSharedPreference.setToken("refreshToken","$refreshToken")
             Log.d("Token","access: $accessToken, refresh: $refreshToken")
@@ -30,7 +30,7 @@ class SignInRepositoryImpl @Inject constructor(
     }
 
     override suspend fun autoSignIn(token: Token) : Int {
-        val response = signInApiService.autoSignIn(token)
+        val response = signInApiService.autoSignIn(token.accessToken)
 
         return if (response.isSuccessful){
             Log.d("AutoLogin",response.body().toString())

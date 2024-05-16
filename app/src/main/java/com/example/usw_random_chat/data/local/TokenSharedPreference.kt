@@ -7,7 +7,7 @@ import java.util.prefs.Preferences
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
+
 class TokenSharedPreference @Inject constructor(@ApplicationContext context: Context)  {
     private val prefs : SharedPreferences =
         context.getSharedPreferences("tokenRepo", Context.MODE_PRIVATE)

@@ -1,17 +1,22 @@
 package com.example.usw_random_chat.di
 
+import android.util.Log
 import com.example.usw_random_chat.MainApplication
+import com.example.usw_random_chat.data.TokenInterceptor
+import com.example.usw_random_chat.data.local.TokenSharedPreference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
+import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.net.CookieManager
 import javax.inject.Singleton
 
 @Module
@@ -21,9 +26,10 @@ object RetrofitModule {
     private const val BASE_URL = "http://43.202.91.160:8080/"
     @Provides
     @Singleton
-    fun provideOkHttpClient(interceptor: AppInterceptor): OkHttpClient {
+    fun provideOkHttpClient(tokenInterceptor: TokenInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(interceptor)
+            .cookieJar(JavaNetCookieJar(CookieManager()))
+            .addInterceptor(tokenInterceptor)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
@@ -39,23 +45,13 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideRetrofit(
-        gsonConverterFactory: GsonConverterFactory
+        gsonConverterFactory: GsonConverterFactory,
+        tokenSharedPreference: TokenSharedPreference
     ): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .client(provideOkHttpClient(AppInterceptor()))
+        .client(provideOkHttpClient(TokenInterceptor(tokenSharedPreference)))
         .addConverterFactory(gsonConverterFactory)
         .build()
 
-    class AppInterceptor : Interceptor {
-       @Throws(IOException::class)
-        override fun intercept(chain: Interceptor.Chain) : Response {
-            val accessToken = MainApplication.prefs.getToken("accessToken", "") // ViewModel에서 지정한 key로 JWT 토큰을 가져온다.
-            val newRequest = chain.request()
-                .newBuilder()
-                .addHeader("authorization", accessToken) // 헤더에 authorization라는 key로 JWT 를 넣어준다.
-                .build()
-            return chain.proceed(newRequest)
-        }
-    }
 
 }

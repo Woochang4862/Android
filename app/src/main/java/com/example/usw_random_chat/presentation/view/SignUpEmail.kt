@@ -1,6 +1,7 @@
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.usw_random_chat.R
@@ -27,7 +29,7 @@ import com.example.usw_random_chat.ui.CustomText
 import com.example.usw_random_chat.ui.TittleWithBackArrow
 
 @Composable
-fun EmailAuthScreen(signUpViewModel: SignUpViewModel = viewModel(), navController: NavController){
+fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navController: NavController){
     SignUpEmail(email = signUpViewModel.email){ signUpViewModel.updateEmail(it) }
     SignUpEmailBtn()
     RequestEmail{signUpViewModel.verifyEmail()}

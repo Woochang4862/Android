@@ -55,7 +55,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
     fun verifyEmail() {
         viewModelScope.launch {
-            when(signUpUseCase.reAuthEmail(UserDTO(memberID = rememberId.value, memberPassword = rememberPw.value, nickname = nickName.value, email = email.value))){
+            when(signUpUseCase.signUp(UserDTO(memberID = _rememberId.value, memberPassword = rememberPw.value, nickname = nickName.value, email = email.value))){
                 in (200..300) -> _authEmailState.value = true
                 !in (200..300) -> _dialogAuthEmailState.value = true
             }
@@ -73,7 +73,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
     fun checkSignUpId() {   //중복확인버튼에 사용할 함수
         viewModelScope.launch {
-            when(signUpUseCase.idDoubleCheck(UserDTO(memberID = rememberId.value))){
+            when(signUpUseCase.idDoubleCheck(UserDTO(memberID = _rememberId.value))){
                 in (200..300) -> _checkSignupIdState.value = true
                 !in (200..300) -> _dialogCheckSignUpIdState.value = true
             }

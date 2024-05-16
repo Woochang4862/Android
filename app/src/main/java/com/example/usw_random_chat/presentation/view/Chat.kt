@@ -106,8 +106,8 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
         )
     }
 
-    //chatViewModel.connectStomp()
-    //chatViewModel.subscribeStomp()
+    chatViewModel.connectStomp()
+    chatViewModel.subscribeStomp()
 
     Scaffold(
         topBar = {

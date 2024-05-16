@@ -9,9 +9,11 @@ import com.example.usw_random_chat.data.dto.ProfileDTO
 import com.example.usw_random_chat.data.local.TokenSharedPreference
 import com.example.usw_random_chat.domain.repository.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,8 +64,19 @@ class ChatViewModel @Inject constructor(
 
    fun sendMSG(){
        viewModelScope.launch {
-           chatRepository.sendMsg(Json.encodeToString(MessageDTO("1234","이경수",_msg.value)),"/pub/chat/message/1234")
+           val jsonObject = JSONObject().apply {
+               put("roomId", "ff576df6-9881-41a4-ac45-2fd48f155ced")
+               put("sender", "이경수")
+               put("contents", _msg.value)
+
        }
+           chatRepository.sendMsg(
+               jsonObject.toString(),
+               "/pub/chat/message/ff576df6-9881-41a4-ac45-2fd48f155ced"
+           )
+           _msg.value = ""
+       }
+
     }
     fun connectStomp(){
         viewModelScope.launch {
@@ -77,12 +90,12 @@ class ChatViewModel @Inject constructor(
     }
     fun subscribeStomp(){
         viewModelScope.launch {
-            chatRepository.subscribeStomp("/sub/chat/room/1234" )
+            chatRepository.subscribeStomp("/sub/chat/ff576df6-9881-41a4-ac45-2fd48f155ced" )
         }
     }
     fun unsubscribeStomp(){
         viewModelScope.launch {
-            chatRepository.unsubscribeStomp("/sub/chat/room/1234")
+            chatRepository.unsubscribeStomp("/sub/chat/ff576df6-9881-41a4-ac45-2fd48f155ced")
         }
     }
 }

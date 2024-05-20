@@ -15,14 +15,14 @@ import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
 fun Navigation () {
     val navController = rememberNavController()
     val signupViewModel = hiltViewModel<SignUpViewModel>()
+    val signinViewModel = hiltViewModel<SignInViewModel>()
     NavHost(
         navController = navController,
         startDestination = Screen.LoadingScreen.route
     )
     {
         composable(route = Screen.SignInScreen.route) {
-            val viewModel = hiltViewModel<SignInViewModel>()
-            SignInScreen(viewModel,navController)
+            SignInScreen(signinViewModel,navController)
         }
         composable(route = Screen.EmailAuthScreen.route) {
             EmailAuthScreen(signupViewModel,navController)
@@ -61,7 +61,7 @@ fun Navigation () {
         }
         composable(route = Screen.LoadingScreen.route) {
             val viewModel = hiltViewModel<SignInViewModel>()
-            LoadingScreen(navController)
+            LoadingScreen(navController,signinViewModel)
         }
         composable(route = Screen.ChatScreen.route) {
             val viewModel = hiltViewModel<ChatViewModel>()

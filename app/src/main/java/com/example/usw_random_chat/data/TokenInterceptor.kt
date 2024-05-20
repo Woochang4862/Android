@@ -3,13 +3,18 @@ package com.example.usw_random_chat.data
 import android.util.Log
 import com.example.usw_random_chat.MainApplication
 import com.example.usw_random_chat.data.local.TokenSharedPreference
+import com.example.usw_random_chat.data.repositoryimpl.SignInRepositoryImpl_Factory
+import com.example.usw_random_chat.domain.repository.SignInRepository
+import com.example.usw_random_chat.domain.usecase.SignInUseCase
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 import javax.inject.Inject
 
 
-class TokenInterceptor @Inject constructor(private val tokenSharedPreference: TokenSharedPreference) : Interceptor {
+class TokenInterceptor @Inject constructor(
+    private val tokenSharedPreference: TokenSharedPreference,
+) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain) : Response {
@@ -18,6 +23,12 @@ class TokenInterceptor @Inject constructor(private val tokenSharedPreference: To
             .newBuilder()
             .header("Authorization", "Bearer $accessToken") // 헤더에 authorization라는 key로 JWT 를 넣어준다.
             .build()
+
+        when(chain.proceed(newRequest).code){
+            401 ->{}
+            403 ->{}
+        }
+
         return chain.proceed(newRequest)
     }
 }

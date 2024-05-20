@@ -21,9 +21,10 @@ class SignUpRepositoryImpl @Inject constructor(
             if (uuid != null) {
                 tokenSharedPreference.setUUID("uuid",uuid)
             }
+            Log.d("이메일 전송 성공",response.body().toString())
             response.code()
         } else {
-            Log.d("회원 가입 실패",response.body().toString())
+            Log.d("이메일 전송 실패",response.body().toString())
             response.code()
         }
     }

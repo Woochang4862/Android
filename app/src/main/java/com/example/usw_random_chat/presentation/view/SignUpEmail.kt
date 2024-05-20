@@ -34,8 +34,8 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navContr
     SignUpEmailBtn()
     RequestEmail{signUpViewModel.verifyEmail()}
     SignUpExitBtn{navController.popBackStack()}
-    CompleteSignUp {signUpViewModel.completeSignUp()}
-
+    CompleteSignUp(signUpViewModel.checkAuthEmailState.value) {signUpViewModel.completeSignUp()}
+    signUpViewModel.checkEmailAuth()
     if (signUpViewModel.authEmailState.value){
         navController.navigate(Screen.SignInScreen.route)
         signUpViewModel.changeAuthEmailState()
@@ -140,7 +140,7 @@ fun RequestEmail(onPress: () -> Unit){
 }
 
 @Composable
-fun CompleteSignUp(onPress: () -> Unit){
+fun CompleteSignUp( boolean: Boolean,onPress: () -> Unit,){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -151,7 +151,7 @@ fun CompleteSignUp(onPress: () -> Unit){
         Spacer(modifier = Modifier.weight(0.1f))
         CustomButton(
             text = "회원가입 완료",
-            enable = true,
+            enable = boolean,
             content = Color.White,
             back = Color.Black,
             modifier = Modifier
@@ -176,9 +176,7 @@ fun EmailAuthScreenPreview(){
     SignUpEmailBtn()
     RequestEmail{}
     SignUpExitBtn{}
-    CompleteSignUp {
-
-    }
+    CompleteSignUp(false){}
 }
 
 

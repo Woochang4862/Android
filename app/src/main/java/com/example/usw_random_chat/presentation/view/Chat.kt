@@ -8,10 +8,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -52,29 +63,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
-    val arr = arrayListOf(
-        "awfdwf",
-        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
-        "waegaefawe",
-        "awfdwf",
-        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
-        "waegaefawe",
-        "awfdwf",
-        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
-        "waegaefawe",
-        "awfdwf",
-        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
-        "waegaefawe",
-        "awfdwf",
-        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
-        "waegaefawe",
-        "awfdwf",
-        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
-        "waegaefawe",
-        "awfdwf",
-        "가나다라마바사아자차카ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋzzzzzzzzz",
-        "waegaefawe"
-    )
     val systemUiController = rememberSystemUiController()//상태바 색상변경
     systemUiController.setSystemBarsColor(
         color = Color(0xFF4D76C8)
@@ -110,6 +98,7 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
     chatViewModel.subscribeStomp()
 
     Scaffold(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.ime),
         topBar = {
             ChatTopAppBar(chatViewModel.userProfile.nickName,
                 { chatViewModel.closeProfileDialog() },
@@ -117,19 +106,21 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
                 { chatViewModel.closeExitDialog() })
         },
         bottomBar = {
-            ChatBottomAppBar(chatViewModel.msg,
-                {  chatViewModel.updateMSG(it) })
+            ChatBottomAppBar(
+                chatViewModel.msg,
+                {  chatViewModel.updateMSG(it) }
+            )
                 { chatViewModel.sendMSG() }
         },
         content = {
             LazyColumn(
                 modifier = Modifier.padding(bottom = 58.dp),
                 content = {
-                    items(arr) {
-                        if (it.length > 10) {
-                            receiveMsg(text = it)
+                    items(chatViewModel.chatList) {
+                        if (it.sender != chatViewModel.userProfile.nickName) {
+                            receiveMsg(text = it.contents)
                         } else {
-                            sendMsg(text = it)
+                            sendMsg(text = it.contents)
                         }
                     }
                 },
@@ -147,7 +138,7 @@ fun ChatTopAppBar(
 ) {
     TopAppBar(
         title = {
-            IconButton(onClick = { onPressUserProfile }) {
+            IconButton(onClick = { onPressUserProfile() }) {
                 Row(
                     modifier = Modifier
                         .padding(start = 24.dp)
@@ -212,12 +203,12 @@ fun ChatTopAppBar(
 @Composable
 fun ChatBottomAppBar(text: State<String>, onChange: (String) -> Unit, onPress: () -> Unit) {
     BottomAppBar(
-        modifier = Modifier.height(58.dp),
-        backgroundColor = Color.White,
+        modifier = Modifier
+            .height(68.dp),
+        backgroundColor = Color.Black,
         content = {
             Box(
-                Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
                 Row(

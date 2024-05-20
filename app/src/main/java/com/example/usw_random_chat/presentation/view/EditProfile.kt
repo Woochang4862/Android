@@ -20,10 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -33,6 +35,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
+import com.example.usw_random_chat.ui.OneButtonDialog
 
 @Composable
 fun EditProfileScreen(navController: NavController, profileViewModel: ProfileViewModel = viewModel()) {
@@ -47,10 +50,14 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
         editGetMBTI(mbti = editMBTI)
         editGetSelfIntroduce(introduce = editSelfIntroduce)*/
         getNickName(profileViewModel.nickname,"") { profileViewModel.updateNickname(it) }
-        getMBTI(profileViewModel.mbti,"") { profileViewModel.updateMBTI(it) }
-        getSelfIntroduce(profileViewModel.selfintroduce,"") { profileViewModel.updateSelfIntroduce(it)}
+        getMBTI(profileViewModel.mbti,"",profileViewModel.checkMBTI.value) { profileViewModel.updateMBTI(it) }
+        getSelfIntroduce(profileViewModel.selfintroduce,"",profileViewModel.checkSelfIntroduce.value) { profileViewModel.updateSelfIntroduce(it)}
+        PasswordChange {
+
+        }
         SuChatImg()
     }
+
 }
 
 @Composable
@@ -235,6 +242,21 @@ fun editGetSelfIntroduce(introduce: MutableState<String>) {
 }
 
 @Composable
+fun PasswordChange(onPress: () -> Unit){
+    TextButton(
+        onClick = { onPress() } ,
+        modifier = Modifier.padding(top = 15.dp)
+    ) {
+        Text(
+            text = "비밀번호 변경하기",
+            style = TextStyle(textDecoration = TextDecoration.Underline),
+            color = Color.Gray,
+            fontSize = 14.sp
+        )
+    }
+}
+
+@Composable
 fun SuChatImg() {
     Column(
         Modifier.padding(top = 252.dp),
@@ -279,9 +301,12 @@ fun EditProfileScreenPreview() {
         /*editGetNickName(nickname = editNickName)
         editGetMBTI(mbti = editMBTI)
         editGetSelfIntroduce(introduce = editSelfIntroduce)*/
-        getNickName(nickname,"") {  }
-        getMBTI(mbti,"") { }
-        getSelfIntroduce(selfintroduce,"") {}
+        getNickName(nickname,"",) {  }
+        getMBTI(mbti,"",false) { }
+        getSelfIntroduce(selfintroduce,"",false) {}
+        PasswordChange {
+
+        }
         SuChatImg()
     }
 }

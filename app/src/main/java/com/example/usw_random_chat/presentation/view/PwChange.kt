@@ -32,7 +32,6 @@ fun PwChangeScreen(
     userModifyViewModel: UserModifyViewModel = viewModel(),
     navController: NavController
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()

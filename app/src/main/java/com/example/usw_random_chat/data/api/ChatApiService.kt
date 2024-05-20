@@ -9,7 +9,7 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface ChatApiService {
-    @POST("match/in") // 매칭하기
+    @POST("/secure/match/in") // 매칭하기
     suspend fun matching(@Header("Authorization") accessToken : String) : Response<ResponseDTO>
 
     @GET("profile/get-profile?targetAccount=") // 상대프로필 가져오기

@@ -13,6 +13,7 @@ interface SignUpApiService {
     @POST("open/member/sign-up") // 회원가입 인증 메일 전송
     @Headers("content-type: application/json")
     suspend fun registerSignUp(@Body jsonpath: UserDTO) : Response<ResponseDTO>
+
     @POST("open/member/check-duplicate-account") // 아이디 중복확인
     suspend fun registerIdDoubleCheck(@Body jsonpath: UserDTO) : Response<UserDTO>
 

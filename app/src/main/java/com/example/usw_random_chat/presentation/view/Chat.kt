@@ -98,7 +98,6 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
     chatViewModel.subscribeStomp()
 
     Scaffold(
-        modifier = Modifier.windowInsetsPadding(WindowInsets.ime),
         topBar = {
             ChatTopAppBar(chatViewModel.userProfile.nickName,
                 { chatViewModel.closeProfileDialog() },

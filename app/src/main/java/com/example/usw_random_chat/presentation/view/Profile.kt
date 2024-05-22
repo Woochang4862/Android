@@ -94,7 +94,7 @@ fun setTitle(onPress : () -> Unit) {
         Spacer(modifier = Modifier.weight(0.5f))
     }
 }
-
+/*
 @Composable
 fun getNickName(nickname: State<String>, text : String, onNicknameChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 40.dp, start = 32.dp)) {
@@ -246,7 +246,7 @@ fun getSelfIntroduce(introduce: State<String>, text: String, filter: Boolean ,on
 
     }
 }
-
+*/
 @Composable
 fun startButton(onPress: () -> Unit) {
     Box(modifier = Modifier.padding(top = 50.dp)) {

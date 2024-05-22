@@ -40,7 +40,7 @@ class ChatViewModel @Inject constructor(
     private val _profileDialog = mutableStateOf(false)
     private val _reportDialog = mutableStateOf(false)
     private val _exitDialog = mutableStateOf(false)
-    private val _userProfile : ProfileDTO = ProfileDTO()
+    private val _userProfile : ProfileDTO = ProfileDTO("홍길동")
 
     val chatList = _chatList
     val msg : State<String> = _msg
@@ -84,16 +84,16 @@ class ChatViewModel @Inject constructor(
        viewModelScope.launch {
            val jsonObject = JSONObject().apply {
                put("roomId", "ff576df6-9881-41a4-ac45-2fd48f155ced")
-               put("sender", "이경수")
+               put("sender", "홍길동")
                put("contents", _msg.value)
 
        }
            stomp.send("/pub/chat/message/ff576df6-9881-41a4-ac45-2fd48f155ced",jsonObject.toString()).subscribe{
                if (it){
-                   Log.d(tag,"send Success : $msg")
+                   Log.d(tag,"send Success : ${_msg.value}")
                }
                else{
-                   Log.d(tag,"send Fail : $msg")
+                   Log.d(tag,"send Fail : ${_msg.value}")
                }
            }
            _msg.value = ""
@@ -102,7 +102,7 @@ class ChatViewModel @Inject constructor(
     }
     fun connectStomp(){
         viewModelScope.launch {
-            stomp.connect().subscribe(){
+            stompConnection = stomp.connect().subscribe(){
                 when(it.type){
                     Event.Type.OPENED -> {
                         Log.d(tag,"stomp connect success")

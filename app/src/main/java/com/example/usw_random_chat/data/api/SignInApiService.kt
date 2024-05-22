@@ -14,7 +14,7 @@ interface SignInApiService {
     @Headers("content-type: application/json")
     suspend fun registerSignIn(@Body jsonpath: UserDTO) : Response<LoginResponse>
 
-    @POST("secure/jwt/reissue-token")
+    @POST("open/jwt/renew-token")
     @Headers("content-type: application/json")
     suspend fun autoSignIn(@Header("authorization") jsonpath: String ) : Response<LoginResponse>
 }

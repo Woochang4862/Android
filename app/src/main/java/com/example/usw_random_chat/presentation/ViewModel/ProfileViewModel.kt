@@ -19,6 +19,8 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
     private val _checkMBTI = mutableStateOf(true)
     private val _checkNickname = mutableStateOf(true)
     private val _checkSelfIntroduce = mutableStateOf(true)
+    private val _booleanList =
+        mutableListOf<Boolean>(_checkMBTI.value, _checkNickname.value, _checkSelfIntroduce.value)
 
     val nickname: State<String> = _nickname
     val mbti: State<String> = _mbti
@@ -26,7 +28,7 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
     val checkMBTI: State<Boolean> = _checkMBTI
     val checkNickname: State<Boolean> = _checkNickname
     val checkSelfIntroduce: State<Boolean> = _checkSelfIntroduce
-
+    val booleanList = _booleanList.all { it }
     fun updateNickname(newValue: String) {
         _nickname.value = newValue
     }
@@ -45,34 +47,36 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
         }
     }
 
-    fun filterMBTI() : Boolean {
+    fun checkProfile() {
+        viewModelScope.launch {
+            launch { filterMBTI() }
+            launch { filterNickName() }
+            launch { filterSelfIntroduce() }
+        }
+    }
+
+    private fun filterMBTI() {
         if (_mbti.value.length != 4) {
-            return false
+            _checkMBTI.value = false
         } else {
-            if (_mbti.value[0].code != 69 || _mbti.value[0].code != 73 || _mbti.value[0].code != 101 || _mbti.value[0].code != 105) {
-                return false
-            } else if (_mbti.value[1].code != 78 || _mbti.value[1].code != 83 || _mbti.value[1].code != 110 || _mbti.value[1].code != 115) {
-                return false
-            } else if (_mbti.value[2].code != 70 || _mbti.value[2].code != 84 || _mbti.value[2].code != 102 || _mbti.value[2].code != 116) {
-                return false
-            } else if (_mbti.value[3].code != 74 || _mbti.value[3].code != 80 || _mbti.value[3].code != 106 || _mbti.value[3].code != 112) {
-                return false
-            }
+            val validMBTI = _mbti.value[0].code in listOf(69, 73, 101, 105) &&
+                    _mbti.value[1].code in listOf(78, 83, 110, 115) &&
+                    _mbti.value[2].code in listOf(70, 84, 102, 116) &&
+                    _mbti.value[3].code in listOf(74, 80, 106, 112)
+
+            _checkMBTI.value = validMBTI
         }
-        return true
     }
 
-    fun filterNickName() : Boolean {
-        if (_nickname.value.length > 8){
-            return false
+    private fun filterNickName() {
+        if (_nickname.value.length > 8) {
+            _checkNickname.value = false
         }
-        return true
     }
 
-    fun filterSelfIntroduce() : Boolean {
-        if (_selfintroduce.value.length > 40){
-            return false
+    private fun filterSelfIntroduce() {
+        if (_selfintroduce.value.length > 40) {
+            _checkSelfIntroduce.value = false
         }
-        return true
     }
 }

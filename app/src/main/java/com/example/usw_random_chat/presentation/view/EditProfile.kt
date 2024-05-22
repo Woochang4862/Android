@@ -45,10 +45,7 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle(profileViewModel.postProfile()) { navController.popBackStack() }
-        /*editGetNickName(nickname = editNickName)
-        editGetMBTI(mbti = editMBTI)
-        editGetSelfIntroduce(introduce = editSelfIntroduce)*/
+        editSetTitle(profileViewModel.postProfile(),profileViewModel.booleanList) { navController.popBackStack() }
         getNickName(profileViewModel.nickname,"") { profileViewModel.updateNickname(it) }
         getMBTI(profileViewModel.mbti,"",profileViewModel.checkMBTI.value) { profileViewModel.updateMBTI(it) }
         getSelfIntroduce(profileViewModel.selfintroduce,"",profileViewModel.checkSelfIntroduce.value) { profileViewModel.updateSelfIntroduce(it)}
@@ -61,7 +58,7 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
 }
 
 @Composable
-fun editSetTitle(onCheckPress : Unit, onBackPress : () -> Unit) {
+fun editSetTitle(onCheckPress : Unit, enableCheck :Boolean ,onBackPress : () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -84,6 +81,7 @@ fun editSetTitle(onCheckPress : Unit, onBackPress : () -> Unit) {
         )
         Spacer(modifier = Modifier.weight(0.1f))
         IconButton(
+            enabled = enableCheck,
             onClick = {
                 onCheckPress
                 onBackPress
@@ -95,18 +93,22 @@ fun editSetTitle(onCheckPress : Unit, onBackPress : () -> Unit) {
 }
 
 @Composable
-fun editGetNickName(nickname: MutableState<String>) {
-    Column(Modifier.padding(top = 40.dp)) {
-        Text(
-            text = "닉네임",
-            fontSize = 16.sp,
-            modifier = Modifier.padding(start = 38.dp, bottom = 5.dp)
-        )
+fun getNickName(nickname: State<String>, text : String, onNicknameChanged: (String) -> Unit) {
+    Column(Modifier.padding(top = 40.dp, start = 32.dp)) {
+        Row() {
+            Text(text = "닉네임", fontSize = 16.sp, modifier = Modifier.padding(start = 5.dp))
+            Text(
+                text = text,
+                color = Color.Red,
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                modifier = Modifier.padding(start = 3.dp, top = 2.dp)
+            )
+        }
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 5.dp, start = 32.dp, end = 32.dp)
+                .padding(top = 5.dp, end = 32.dp)
                 .border(
                     width = 1.dp, color = Color(0xFFBFBFBF),
                     shape = RoundedCornerShape(8.dp)
@@ -114,10 +116,8 @@ fun editGetNickName(nickname: MutableState<String>) {
         ) {
             TextField(
                 value = nickname.value,
-                onValueChange = { newText ->
-                    nickname.value = newText
-                },
-                placeholder = { Text(text = "#NICKNAME", color = Color.Gray) },
+                onValueChange = onNicknameChanged,
+                placeholder = { Text(text = "#NICKNAME", color = Color.Gray, fontSize = 13.sp) },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.White,
                     focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
@@ -155,89 +155,92 @@ fun editGetNickName(nickname: MutableState<String>) {
                 )
             }
         }
-        Text(
-            text = "* 닉네임은 8자 이내로 작성해 주세요",
-            color = Color(0xFFFF6565),
-            fontSize = 12.sp,
-            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-            modifier = Modifier.padding(start = 36.dp, top = 5.dp)
-        )
+        Text(text = "* 닉네임은 8자 이내로 작성해 주세요", color = Color(0xFFFF6565), fontSize = 12.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),modifier = Modifier.padding(start = 5.dp))
     }
 }
 
 @Composable
-fun editGetMBTI(mbti: MutableState<String>) {
-    Column(Modifier.padding(top = 5.dp)) {
-        Row {
-            Text(
-                text = "MBTI",
-                fontSize = 16.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                modifier = Modifier.padding(start = 5.dp, bottom = 5.dp)
-            )
-        }
-        TextField(
-            value = mbti.value,
-            onValueChange = { nicknameValue -> mbti.value = nicknameValue },
-            placeholder = {
-                Text(
-                    text = "#MBTI",
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                )
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Color.Black,
-                backgroundColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledLabelColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .border(width = 1.dp, color = Color(0xFFBFBFBF), shape = RoundedCornerShape(8.dp))
-                .height(50.dp)
-                .width(326.dp)
-
-        )
-    }
-}
-
-@Composable
-fun editGetSelfIntroduce(introduce: MutableState<String>) {
+fun getMBTI(mbti: State<String>, text: String, filter : Boolean ,onMBTIChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 10.dp)) {
-        Row{
+        Row() {
+            Text(text = "MBTI", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),modifier = Modifier.padding(start = 5.dp))
             Text(
-                text = "자기소개",
-                fontSize = 16.sp,
+                text = text,
                 fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                modifier = Modifier.padding(start = 5.dp, bottom = 5.dp)
+                color = Color.Gray,
+                fontSize = 10.sp,
+                modifier = Modifier.padding(top = 5.dp, start = 3.dp)
             )
         }
-        TextField(
-            value = introduce.value,
-            onValueChange = { nicknameValue -> introduce.value = nicknameValue },
-            placeholder = {
-                Text(
-                    text = "학과, 학번 등 소개를 자유롭게 입력하세요(40자 이내)",
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                    fontSize = 14.sp
-                )
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Color.Black,
-                backgroundColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledLabelColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .border(width = 1.dp, color = Color(0xFFBFBFBF), shape = RoundedCornerShape(8.dp))
-                .height(90.dp)
-                .width(326.dp)
-        )
+        Column {
+            TextField(
+                value = mbti.value,
+                onValueChange = onMBTIChanged,
+                placeholder = { Text(text = "#MBTI",fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 13.sp) },
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = Color.Black,
+                    backgroundColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledLabelColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .border(
+                        width = 1.dp,
+                        color = Color(0xFFBFBFBF),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .height(50.dp)
+                    .width(326.dp)
+            )
+            if (!filter){
+                Text(text = "처음보는 MBTI에요! 올바른 MBTI를 입력해주세요! ", color = Color(0xFFFF6565), fontSize = 12.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),modifier = Modifier.padding(start = 5.dp))
+            }
+
+        }
+
+    }
+}
+
+@Composable
+fun getSelfIntroduce(introduce: State<String>, text: String, filter: Boolean ,onSelfIntroduceChanged: (String) -> Unit) {
+    Column(Modifier.padding(top = 10.dp)) {
+        Row() {
+            Text(text = "자기소개", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),modifier = Modifier.padding(start = 5.dp))
+            Text(
+                text = text,
+                color = Color.Gray,
+                fontSize = 10.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                modifier = Modifier.padding(start = 3.dp, top = 5.dp)
+            )
+        }
+        Column {
+            TextField(
+                value = introduce.value,
+                onValueChange = onSelfIntroduceChanged,
+                placeholder = { Text(text = "학과, 학번 등 소개를 자유롭게 입력하세요(40자 이내)",fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 13.sp) },
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = Color.Black,
+                    backgroundColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledLabelColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .border(width = 1.dp, color = Color(0xFFBFBFBF), shape = RoundedCornerShape(8.dp))
+                    .height(90.dp)
+                    .width(326.dp)
+            )
+            if (!filter){
+                Text(text = "자기소개는 최대 40자에요!", color = Color(0xFFFF6565), fontSize = 12.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),modifier = Modifier.padding(start = 5.dp))
+            }
+        }
+
     }
 }
 
@@ -297,7 +300,7 @@ fun EditProfileScreenPreview() {
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle(Unit){}
+        editSetTitle(Unit,true){}
         /*editGetNickName(nickname = editNickName)
         editGetMBTI(mbti = editMBTI)
         editGetSelfIntroduce(introduce = editSelfIntroduce)*/

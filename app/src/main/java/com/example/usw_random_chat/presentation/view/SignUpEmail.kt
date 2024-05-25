@@ -32,7 +32,7 @@ import com.example.usw_random_chat.ui.TittleWithBackArrow
 fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navController: NavController){
     SignUpEmail(email = signUpViewModel.email){ signUpViewModel.updateEmail(it) }
     SignUpEmailBtn()
-    RequestEmail{signUpViewModel.verifyEmail()}
+    RequestEmail(signUpViewModel.checkAuthEmailState.value){signUpViewModel.verifyEmail()}
     SignUpExitBtn{navController.popBackStack()}
     CompleteSignUp(signUpViewModel.checkAuthEmailState.value) {signUpViewModel.completeSignUp()}
     signUpViewModel.checkEmailAuth()
@@ -115,7 +115,7 @@ fun SignUpEmailBtn(){
 }
 
 @Composable
-fun RequestEmail(onPress: () -> Unit){
+fun RequestEmail(enable : Boolean,onPress: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,7 +125,7 @@ fun RequestEmail(onPress: () -> Unit){
     ){
         Spacer(modifier = Modifier.weight(0.1f))
         CustomButton(
-            text = "인증메일 전송",
+            text = if (enable) "인증메일 재전송" else "인증메일 전송",
             enable = true,
             content = Color.White,
             back = Color(0xFF2D64D8),
@@ -174,9 +174,9 @@ fun EmailAuthScreenPreview(){
     val asd : State<String> = mutableStateOf("")
     SignUpEmail(email = asd){}
     SignUpEmailBtn()
-    RequestEmail{}
+    RequestEmail(false){}
     SignUpExitBtn{}
-    CompleteSignUp(false){}
+    CompleteSignUp(true){}
 }
 
 

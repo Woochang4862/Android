@@ -91,11 +91,10 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         }
     }
 
-    fun checkEmailAuth() {   // ??
+    fun checkEmailAuth() {   // 이메일 인증 확인
         viewModelScope.launch {
             when(signUpUseCase.checkAuthEmail()){
                 in (200..300) -> _checkAuthEmailState.value = true
-                //!in (200..300) -> _dialogCheckAuthEmailState.value = true
             }
 
         }

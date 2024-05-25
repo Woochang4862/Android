@@ -395,46 +395,46 @@ fun TextFieldSearchBtn(
     trigger: Boolean,
     onPress: () -> Unit
 ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .height(55.dp)
-                .width(330.dp)
-                .padding(top = 3.dp)
-                .border(
-                    width = 1.dp, color = Color(0xFFBFBFBF),
-                    shape = RoundedCornerShape(8.dp)
-                )
-        ) {
-            TextField(
-                value = textFieldIdValue,
-                onValueChange = { idValue -> onValueChange(idValue) },
-                placeholder = { Text(text = graytext, color = Color.Gray, fontSize = 14.sp) },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.White,
-                    focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
-                    unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
-                    disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
-                ),
-                modifier = Modifier.weight(0.8f)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .height(55.dp)
+            .width(330.dp)
+            .padding(top = 3.dp)
+            .border(
+                width = 1.dp, color = Color(0xFFBFBFBF),
+                shape = RoundedCornerShape(8.dp)
             )
-            Button(
-                enabled = !trigger,
-                onClick = onPress,
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .width(100.dp)
-                    .height(40.dp),
-                shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    backgroundColor = Color(0xFF2D64D8)
-                ),
-            ) {
-                Text(text = "중복 확인")
-            }
-            Spacer(Modifier.weight(0.02f))
+    ) {
+        TextField(
+            value = textFieldIdValue,
+            onValueChange = { idValue -> onValueChange(idValue) },
+            placeholder = { Text(text = graytext, color = Color.Gray, fontSize = 14.sp) },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.White,
+                focusedIndicatorColor = Color.Transparent, // 포커스되었을 때의 밑줄 색상
+                unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
+                disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
+            ),
+            modifier = Modifier.weight(0.8f)
+        )
+        Button(
+            enabled = !trigger,
+            onClick = onPress,
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .width(100.dp)
+                .height(40.dp),
+            shape = RoundedCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                backgroundColor = Color(0xFF2D64D8)
+            ),
+        ) {
+            Text(text = "중복 확인")
         }
+        Spacer(Modifier.weight(0.02f))
+    }
 }
 
 @Composable
@@ -727,7 +727,7 @@ fun DrawerBottom() {
 
 
 @Composable
-fun DrawerProfile() {
+fun DrawerProfile(name: String, mbti: String) {
     Column() {
         Image(
             painter = painterResource(id = R.drawable.profile_img),
@@ -736,8 +736,9 @@ fun DrawerProfile() {
                 .width(49.dp)
                 .height(49.dp)
         )
+
         Text(
-            text = "AnSungMin",
+            text = name,
             fontSize = 22.sp,
             lineHeight = 24.sp,
             fontFamily = FontFamily(Font(R.font.kcc_chassam)),
@@ -747,8 +748,9 @@ fun DrawerProfile() {
             modifier = Modifier
                 .padding(top = 10.dp)
         )
+
         Text(
-            text = "# ISTP",
+            text = "# $mbti",
             fontSize = 14.sp,
             lineHeight = 24.sp,
             fontFamily = FontFamily(Font(R.font.kcc_chassam)),
@@ -869,7 +871,7 @@ fun TextFiledTitle(
 }
 
 @Composable
-fun VisibleText(textValue: State<String>, onValueChange : (String)-> Unit,placeholder:String){
+fun VisibleText(textValue: State<String>, onValueChange: (String) -> Unit, placeholder: String) {
     val passwordVisible = remember { mutableStateOf(false) }
 
     Row() {

@@ -56,6 +56,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = viewModel()) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    chatViewModel.getProfile()
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Scaffold(
             scaffoldState = scaffoldState,
@@ -70,7 +71,10 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
             },
             drawerContent = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-                    DrawerScreen(navController) {
+                    DrawerScreen(
+                        navController,
+                        chatViewModel.userProfile.value?.nickName!!,
+                        chatViewModel.userProfile.value?.mbti!!) {
                         scope.launch {
                             scaffoldState.drawerState.close()
                         }
@@ -92,7 +96,7 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
 }
 
 @Composable
-fun DrawerScreen(navController: NavController, onPress: () -> Unit) {
+fun DrawerScreen(navController: NavController, name : String, mbti : String, onPress: () -> Unit) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         Column(modifier = Modifier.fillMaxSize()) {
             IconButton(
@@ -111,7 +115,7 @@ fun DrawerScreen(navController: NavController, onPress: () -> Unit) {
             }
             Row(){
                 Spacer(modifier = Modifier.weight(0.1f))
-                DrawerProfile()
+                DrawerProfile(name,mbti)
                 Spacer(modifier = Modifier.weight(0.5f))
             }
             Box(
@@ -123,7 +127,7 @@ fun DrawerScreen(navController: NavController, onPress: () -> Unit) {
             )
             Column(modifier = Modifier.weight(1f)){
                 Spacer(modifier = Modifier.height(30.dp))
-                DrawerMenu(image = R.drawable.profile_img, menuName = "프로필 설정") {
+                DrawerMenu(image = R.drawable.profile_img, menuName = "내 정보 수정") {
                     navController.navigate(Screen.ProfileScreen.route)
                 }
                 Spacer(modifier = Modifier.height(25.dp))

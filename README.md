@@ -1,5 +1,5 @@
 # USW-Random-Chat-Anroid
-<img width="500" alt="iPhone 14 Pro Max - 2" src="https://github.com/USW-Random-Chat/Android/assets/64278039/21e358ec-7e61-4359-b0ef-1aa0f65b3ed7">
+<img width="400" alt="iPhone 14 Pro Max - 2" src="https://github.com/USW-Random-Chat/Android/assets/64278039/21e358ec-7e61-4359-b0ef-1aa0f65b3ed7">
 
 수원대학교 학생들의 친목도모를 위한 수원대학교 학생들의 전용 랜덤채팅 어플입니다.
 
@@ -10,13 +10,13 @@
 
 
 # 🔎Tech
-|<span style="color:brown">Language</span>|Kotlin|
-|--|---|---|
-|<span style="color:blue">Architecture</span>|MVVM|Clean Architecture|
-|<span style="color:green">Jetpack</span>|Compose|Hilt|
-|<span style="color:red">Network</span>|Retrofit|WebSocket(stomp)|
-|<span style="color:orange">Local Data</span>|SharedPreference|
-|<span style="color:yellow">Communicate</span>|Git|Github|Figma|
+|${\textsf{\color{brown}Language}}$|Kotlin|
+|:---:|:---:|:---:|
+|${\textsf{\color{blue}Architecture}}$|MVVM|Clean Architecture|
+|${\textsf{\color{green}Jetpack}}$|Compose|Hilt|
+|${\textsf{\color{red}Network}}$|Retrofit|WebSocket(stomp)|
+|${\textsf{\color{orange}Local Data}}$|SharedPreference|
+|${\textsf{\color{yellow}Communicate}}$|Git|Github|Figma|
 
 # 🔎Feature
 

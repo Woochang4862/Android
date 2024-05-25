@@ -2,15 +2,19 @@ package com.example.usw_random_chat.presentation.ViewModel
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usw_random_chat.data.dto.MessageDTO
 import com.example.usw_random_chat.data.dto.ProfileDTO
 import com.example.usw_random_chat.data.local.TokenSharedPreference
 import com.example.usw_random_chat.domain.repository.ChatRepository
+import com.example.usw_random_chat.domain.repository.ProfileRepository
 import com.gmail.bishoybasily.stomp.lib.Event
 import com.gmail.bishoybasily.stomp.lib.StompClient
 import com.google.gson.Gson
@@ -27,7 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
-    private val tokenSharedPreference: TokenSharedPreference
+    private val tokenSharedPreference: TokenSharedPreference,
+    private val profileRepository: ProfileRepository
 ) : ViewModel() {
     private lateinit var stompConnection : Disposable
     private val client = OkHttpClient.Builder().build()
@@ -40,14 +45,14 @@ class ChatViewModel @Inject constructor(
     private val _profileDialog = mutableStateOf(false)
     private val _reportDialog = mutableStateOf(false)
     private val _exitDialog = mutableStateOf(false)
-    private val _userProfile : ProfileDTO = ProfileDTO("홍길동")
+    private val _userProfile = mutableStateOf(ProfileDTO("","",""))
 
     val chatList = _chatList
     val msg : State<String> = _msg
     val profileDialog : State<Boolean> = _profileDialog
     val exitDialog : State<Boolean> = _exitDialog
     val reportDialog : State<Boolean> = _reportDialog
-    val userProfile : ProfileDTO = _userProfile
+    val userProfile : State<ProfileDTO?> = _userProfile
 
     fun exitChattingRoom(){
 
@@ -77,6 +82,17 @@ class ChatViewModel @Inject constructor(
 
     fun updateMSG(newValue : String){
         _msg.value = newValue
+    }
+
+    fun getProfile(){
+        viewModelScope.launch(Dispatchers.IO){
+            val response = profileRepository.getProfile()
+            response.let {
+                _userProfile.value.mbti = response.data.mbti
+                _userProfile.value?.nickName = response.data.nickName
+                _userProfile.value?.selfIntroduce = response.data.selfIntroduce
+            }
+        }
     }
 
    @SuppressLint("CheckResult")

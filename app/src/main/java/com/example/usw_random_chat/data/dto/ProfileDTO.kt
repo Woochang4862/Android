@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class ProfileDTO(
     @SerializedName("nickName")
-    val nickName : String = "",
+    var nickName : String? = "",
     @SerializedName("mbti")
-    val mbti : String? = "",
+    var mbti : String? = "",
     @SerializedName("selfIntroduce")
-    val selfIntroduce : String? = ""
+    var selfIntroduce : String? = ""
 )

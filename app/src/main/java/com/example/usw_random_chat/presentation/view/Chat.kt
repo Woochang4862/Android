@@ -69,7 +69,7 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
     )
 
     if (chatViewModel.profileDialog.value) {
-        CustomDialog(name = chatViewModel.userProfile.nickName) {
+        CustomDialog(name = chatViewModel.userProfile.value.nickName!!) {
             chatViewModel.closeProfileDialog()
         }
     }
@@ -94,12 +94,12 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
         )
     }
 
-    chatViewModel.connectStomp()
-    chatViewModel.subscribeStomp()
+    //chatViewModel.connectStomp()
+    //chatViewModel.subscribeStomp()
 
     Scaffold(
         topBar = {
-            ChatTopAppBar(chatViewModel.userProfile.nickName,
+            ChatTopAppBar(chatViewModel.userProfile.value.nickName!!,
                 { chatViewModel.closeProfileDialog() },
                 { chatViewModel.closeReportDialog() },
                 { chatViewModel.closeExitDialog() })
@@ -116,7 +116,7 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
                 modifier = Modifier.padding(bottom = 58.dp),
                 content = {
                     items(chatViewModel.chatList) {
-                        if (it.sender != chatViewModel.userProfile.nickName) {
+                        if (it.sender != chatViewModel.userProfile.value.nickName) {
                             receiveMsg(text = it.contents)
                         } else {
                             sendMsg(text = it.contents)

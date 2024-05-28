@@ -15,15 +15,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
+import com.example.usw_random_chat.presentation.ViewModel.ChatViewModel
 import com.example.usw_random_chat.ui.MatchingAnimationText
 import com.example.usw_random_chat.ui.CustomButton
 import kotlinx.coroutines.delay
 
 @Composable
-fun MatchingScreen(navController: NavController) {
+fun MatchingScreen(navController: NavController, chatViewModel: ChatViewModel = viewModel()) {
     val matchingBlank = remember {
         mutableStateOf(false)
     }
@@ -61,7 +64,10 @@ fun MatchingScreen(navController: NavController) {
     }
     TextBlue()
     TextBlack()
-    MatchingStopBtn{navController.popBackStack()}
+    MatchingStopBtn{
+        navController.popBackStack()
+        chatViewModel.exitChattingRoom()
+    }
     MatchingAnimation(
         screen1 = matchingBlank.value,
         screen2 = matchingDot1.value,

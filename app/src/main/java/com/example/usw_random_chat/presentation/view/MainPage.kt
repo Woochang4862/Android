@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,7 +57,10 @@ import kotlinx.coroutines.launch
 fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = viewModel()) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    chatViewModel.getProfile()
+
+    LaunchedEffect(Unit){
+        chatViewModel.getProfile()
+    }
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Scaffold(
             scaffoldState = scaffoldState,
@@ -71,6 +75,7 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
             },
             drawerContent = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+
                     DrawerScreen(
                         navController,
                         chatViewModel.userProfile.value?.nickName!!,
@@ -128,7 +133,7 @@ fun DrawerScreen(navController: NavController, name : String, mbti : String, onP
             Column(modifier = Modifier.weight(1f)){
                 Spacer(modifier = Modifier.height(30.dp))
                 DrawerMenu(image = R.drawable.profile_img, menuName = "내 정보 수정") {
-                    navController.navigate(Screen.ProfileScreen.route)
+                    navController.navigate(Screen.EditProfileScreen.route)
                 }
                 Spacer(modifier = Modifier.height(25.dp))
                 DrawerMenu(image = R.drawable.privacy_policy, menuName = "이용 약관") {

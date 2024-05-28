@@ -45,7 +45,7 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle(profileViewModel.postProfile(),profileViewModel.booleanList) { navController.popBackStack() }
+        editSetTitle({profileViewModel.postProfile()},profileViewModel.booleanList) { navController.popBackStack() }
         getNickName(profileViewModel.nickname,"") { profileViewModel.updateNickname(it) }
         getMBTI(profileViewModel.mbti,"",profileViewModel.checkMBTI.value) { profileViewModel.updateMBTI(it) }
         getSelfIntroduce(profileViewModel.selfintroduce,"",profileViewModel.checkSelfIntroduce.value) { profileViewModel.updateSelfIntroduce(it)}
@@ -58,7 +58,7 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
 }
 
 @Composable
-fun editSetTitle(onCheckPress : Unit, enableCheck :Boolean ,onBackPress : () -> Unit) {
+fun editSetTitle(onCheckPress : () -> Unit, enableCheck : Boolean ,onBackPress : () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -83,8 +83,8 @@ fun editSetTitle(onCheckPress : Unit, enableCheck :Boolean ,onBackPress : () -> 
         IconButton(
             enabled = enableCheck,
             onClick = {
-                onCheckPress
-                onBackPress
+                onCheckPress()
+                onBackPress()
                       },
         ) {
             Icon(imageVector = Icons.Filled.Check, contentDescription = "check", tint = Color.Gray)
@@ -300,7 +300,7 @@ fun EditProfileScreenPreview() {
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle(Unit,true){}
+        editSetTitle({},true){}
         /*editGetNickName(nickname = editNickName)
         editGetMBTI(mbti = editMBTI)
         editGetSelfIntroduce(introduce = editSelfIntroduce)*/

@@ -18,17 +18,17 @@ class ProfileRepositoryImpl @Inject constructor(
         if (response.isSuccessful) {
             return response.body()!!
         } else {
-            throw Exception("Fail!!")
+            throw Exception("${response.body()}")
         }
     }
 
-    override suspend fun getProfile(): ProfileResponseDTO {
+    override suspend fun getProfile(): ProfileResponseDTO? {
         val response = profileApiService.getProfile(tokenSharedPreference.getToken("accessToken",""))
 
-        if (response.isSuccessful) {
-            return response.body()!!
+        return if (response.isSuccessful) {
+            response.body()!!
         } else {
-            throw Exception("Fail!!")
+            return ProfileResponseDTO("",ProfileDTO("","",""))
         }
     }
 

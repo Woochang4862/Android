@@ -1,5 +1,7 @@
 package com.example.usw_random_chat.presentation.ViewModel
 
+import android.text.BoringLayout
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -22,7 +24,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     private val _authEmailState = mutableStateOf(false)
     private val _checkAuthEmailState = mutableStateOf(false)
     private val _dialogSignupState = mutableStateOf(false)
-    private val _dialogAuthEmailState = mutableStateOf(false)
+    private val _dialogAuthEmailState = mutableStateOf<Boolean?>(null)
     private val _dialogCheckAuthEmailState = mutableStateOf(false)
     private val _rememberPwEqualOrNot = mutableStateOf(false)
     private val _rememberTrigger = mutableStateOf(false)
@@ -46,7 +48,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     val authEmailState : State<Boolean> = _authEmailState
     val checkAuthEmailState : State<Boolean> = _checkAuthEmailState
     val dialogSignupState : State<Boolean> = _dialogSignupState
-    val dialogAuthEmailState : State<Boolean> = _dialogAuthEmailState
+    val dialogAuthEmailState : MutableState<Boolean?> = _dialogAuthEmailState
     val dialogCheckAuthEmailState : State<Boolean> = _dialogCheckAuthEmailState
     val checkSignupIdState : State<Boolean> = _checkSignupIdState
     val dialogCheckSignUpIdState : State<Boolean> = _dialogCheckSignUpIdState
@@ -156,7 +158,8 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         _dialogSignupState.value = !_dialogSignupState.value
     }
     fun changeDialogAuthEmailState(){
-        _dialogAuthEmailState.value = !_dialogAuthEmailState.value
+        //_dialogAuthEmailState.value = !_dialogAuthEmailState.value!!
+        _dialogAuthEmailState.value = null
     }
     fun changeDialogCheckAuthEmailState(){
         _dialogCheckAuthEmailState.value = !_dialogCheckAuthEmailState.value

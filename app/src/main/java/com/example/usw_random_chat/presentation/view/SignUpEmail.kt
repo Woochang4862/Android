@@ -32,7 +32,10 @@ import com.example.usw_random_chat.ui.TittleWithBackArrow
 fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navController: NavController){
     SignUpEmail(email = signUpViewModel.email){ signUpViewModel.updateEmail(it) }
     SignUpEmailBtn()
-    RequestEmail(signUpViewModel.checkAuthEmailState.value){signUpViewModel.verifyEmail()}
+    RequestEmail(signUpViewModel.checkAuthEmailState.value){
+        signUpViewModel.verifyEmail()
+
+    }
     SignUpExitBtn{navController.popBackStack()}
     CompleteSignUp(signUpViewModel.checkAuthEmailState.value) {signUpViewModel.completeSignUp()}
     signUpViewModel.checkEmailAuth()
@@ -40,12 +43,20 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navContr
         navController.navigate(Screen.SignInScreen.route)
         signUpViewModel.changeAuthEmailState()
     }
-    if(signUpViewModel.dialogAuthEmailState.value){
+    if(signUpViewModel.dialogAuthEmailState.value == false){
         OneButtonDialog(
             contentText = "이메일 전송을\n실패했습니다.",
             text = "확인",
             onPress = { signUpViewModel.changeDialogAuthEmailState() },
             image = R.drawable.baseline_error_24
+        )
+    }
+    if(signUpViewModel.dialogAuthEmailState.value == true){
+        OneButtonDialog(
+            contentText = "인증메일이 전송되었습니다.\n전송된 인증 URL을 클릭해주세요",
+            text = "확인",
+            onPress = { signUpViewModel.changeDialogAuthEmailState() },
+            image = R.drawable.baseline_check_circle_24
         )
     }
 }

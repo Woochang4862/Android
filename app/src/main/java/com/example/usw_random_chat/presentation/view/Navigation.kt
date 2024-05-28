@@ -16,6 +16,7 @@ fun Navigation () {
     val navController = rememberNavController()
     val signupViewModel = hiltViewModel<SignUpViewModel>()
     val signinViewModel = hiltViewModel<SignInViewModel>()
+    val chatViewModel = hiltViewModel<ChatViewModel>()
     NavHost(
         navController = navController,
         startDestination = Screen.LoadingScreen.route
@@ -64,18 +65,15 @@ fun Navigation () {
             LoadingScreen(navController,signinViewModel)
         }
         composable(route = Screen.ChatScreen.route) {
-            val viewModel = hiltViewModel<ChatViewModel>()
-            ChattingScreen(viewModel)
+            ChattingScreen(chatViewModel)
         }
         composable(route = Screen.MainPageScreen.route) {
             val viewModel = hiltViewModel<ChatViewModel>()
-            MainScreen(navController,viewModel)
+            MainScreen(navController,chatViewModel)
         }
         composable(route = Screen.MatchingScreen.route) {
-            MatchingScreen(navController = navController)
+            MatchingScreen(navController = navController,chatViewModel)
         }
-
-
 
     }
 }

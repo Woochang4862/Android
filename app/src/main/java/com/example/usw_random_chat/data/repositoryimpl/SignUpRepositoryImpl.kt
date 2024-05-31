@@ -10,7 +10,7 @@ import javax.inject.Inject
 class SignUpRepositoryImpl @Inject constructor(
     private val signUpApiService: SignUpApiService,
     private val tokenSharedPreference: TokenSharedPreference
-)  : SignUpRepository {
+) : SignUpRepository {
 
 
     override suspend fun signup(param: UserDTO): Int {
@@ -19,23 +19,23 @@ class SignUpRepositoryImpl @Inject constructor(
         return if (response.isSuccessful) {
             val uuid = response.body()?.message
             if (uuid != null) {
-                tokenSharedPreference.setUUID("uuid",uuid)
+                tokenSharedPreference.setUUID("uuid", uuid)
             }
-            Log.d("이메일 전송 성공",response.body().toString())
+            Log.d("이메일 전송 성공", response.body().toString())
             response.code()
         } else {
-            Log.d("이메일 전송 실패",response.body().toString())
+            Log.d("이메일 전송 실패", response.body().toString())
             response.code()
         }
     }
 
-    override suspend fun idDoubleCheck(param: UserDTO) : Int{
+    override suspend fun idDoubleCheck(param: UserDTO): Int {
         val response = signUpApiService.registerIdDoubleCheck(param)
 
         return if (response.isSuccessful) {
             response.code()
         } else {
-            Log.d("아이디 중복 확인 실패",response.body().toString())
+            Log.d("아이디 중복 확인 실패", response.body().toString())
             response.code()
         }
     }
@@ -46,17 +46,20 @@ class SignUpRepositoryImpl @Inject constructor(
         return if (response.isSuccessful) {
             response.code()
         } else {
-            Log.d("이메일 전송 실패",response.body().toString())
+            Log.d("이메일 전송 실패", response.body().toString())
             response.code()
         }
     }
 
     override suspend fun checkAuthEmail(): Int {
-        val response = signUpApiService.checkAuthEmail(tokenSharedPreference.getUUID("uuid",""))
+        if(tokenSharedPreference.getUUID("uuid", "") == ""){
+            return 400
+        }
+        val response = signUpApiService.checkAuthEmail(tokenSharedPreference.getUUID("uuid", ""))
         return if (response.isSuccessful) {
             response.code()
         } else {
-            Log.d("이메일 인증 실패",response.body().toString())
+            Log.d("이메일 인증 실패", response.body().toString())
             response.code()
         }
     }
@@ -67,7 +70,7 @@ class SignUpRepositoryImpl @Inject constructor(
         return if (response.isSuccessful) {
             response.code()
         } else {
-            Log.d("이메일이 중복됩니다.",response.body().toString())
+            Log.d("이메일이 중복됩니다.", response.body().toString())
             response.code()
         }
     }
@@ -78,18 +81,18 @@ class SignUpRepositoryImpl @Inject constructor(
         return if (response.isSuccessful) {
             response.code()
         } else {
-            Log.d("닉네임 중복 확인 실패.",response.body().toString())
+            Log.d("닉네임 중복 확인 실패.", response.body().toString())
             response.code()
         }
     }
 
     override suspend fun completeSignUp(): Int {
-        val response = signUpApiService.completeSignUp(tokenSharedPreference.getUUID("uuid",""))
+        val response = signUpApiService.completeSignUp(tokenSharedPreference.getUUID("uuid", ""))
 
         return if (response.isSuccessful) {
             response.code()
         } else {
-            Log.d("회원 가입 실패",response.body().toString())
+            Log.d("회원 가입 실패", response.body().toString())
             response.code()
         }
 

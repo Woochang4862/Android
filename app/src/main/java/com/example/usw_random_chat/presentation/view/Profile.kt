@@ -51,7 +51,7 @@ fun ProfileScreen(profileViewModel : ProfileViewModel = viewModel(),navControlle
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         setTitle{ navController.popBackStack() }
-        getNickName(profileViewModel.nickname,"(필수)") { profileViewModel.updateNickname(it) }
+        getNickName(profileViewModel.nickname,"(필수)",{}) { profileViewModel.updateNickname(it) }
         getMBTI(profileViewModel.mbti,"(선택)",false) { profileViewModel.updateMBTI(it) }
         getSelfIntroduce(profileViewModel.selfintroduce,"(선택)",false) { profileViewModel.updateSelfIntroduce(it)}
         startButton{profileViewModel.postProfile()}
@@ -289,7 +289,7 @@ fun ProfilePreview() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         setTitle{}
-        getNickName(nickname,"(필수)") {  }
+        getNickName(nickname,"(필수)",{}) {  }
         getMBTI(mbti,"(선택)",false) {  }
         getSelfIntroduce(selfintroduce,"(선택)",false) { }
         startButton{}

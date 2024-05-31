@@ -6,5 +6,5 @@ import com.example.usw_random_chat.data.dto.response.ProfileResponseDTO
 interface ProfileRepository {
     suspend fun setProfile(param : ProfileDTO) : ProfileDTO
 
-    suspend fun getProfile() : ProfileResponseDTO?
+    suspend fun getProfile() : ProfileResponseDTO
 }

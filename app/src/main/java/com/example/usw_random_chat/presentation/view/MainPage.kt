@@ -1,6 +1,7 @@
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -78,12 +79,13 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
 
                     DrawerScreen(
                         navController,
-                        chatViewModel.userProfile.value?.nickName!!,
-                        chatViewModel.userProfile.value?.mbti!!) {
+                        chatViewModel.userProfile.value.nickName,
+                        chatViewModel.userProfile.value.mbti) {
                         scope.launch {
                             scaffoldState.drawerState.close()
                         }
                     }
+                    Log.d("닉네임",chatViewModel.userProfile.value.nickName!!)
                 }
             },
 

@@ -22,13 +22,13 @@ class ProfileRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getProfile(): ProfileResponseDTO? {
+    override suspend fun getProfile(): ProfileResponseDTO {
         val response = profileApiService.getProfile(tokenSharedPreference.getToken("accessToken",""))
 
         return if (response.isSuccessful) {
             response.body()!!
         } else {
-            return ProfileResponseDTO("",ProfileDTO("","",""))
+            return ProfileResponseDTO("",ProfileDTO("닉네임을 작성해주세요","MBTI를 작성해주세요!","자기소개를 작성해주세요!"))
         }
     }
 

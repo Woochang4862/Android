@@ -111,12 +111,23 @@ class ChatViewModel @Inject constructor(
     fun getProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = profileRepository.getProfile()
-            Log.d("프로파일 불러오기","프로파일 횟수 체크")
-            response.let {
-                _userProfile.value.mbti = response?.data?.mbti
-                _userProfile.value?.nickName = response?.data?.nickName
-                _userProfile.value?.selfIntroduce = response?.data?.selfIntroduce
+            Log.d("프로파일 불러오기", "프로파일 횟수 체크")
+            if (response.data.mbti == null) {
+                _userProfile.value.mbti = "MBTI를 작성해주세요!"
+            } else {
+                _userProfile.value.mbti = response.data.mbti
             }
+            _userProfile.value.nickName = response.data.nickName
+
+            if (response.data.selfIntroduce == null) {
+                _userProfile.value.selfIntroduce = "자기소개를 작성해주세요!"
+            } else {
+                _userProfile.value.selfIntroduce = response.data?.selfIntroduce
+            }
+            Log.d("프로필 mb", response.data?.mbti.toString())
+            Log.d("프로필 nick", response.data.nickName)
+            Log.d("프로필 self", response.data?.selfIntroduce.toString())
+
         }
     }
 

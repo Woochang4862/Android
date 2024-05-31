@@ -11,13 +11,18 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.usw_random_chat.R
@@ -30,6 +35,25 @@ import com.example.usw_random_chat.ui.TittleWithBackArrow
 
 @Composable
 fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navController: NavController){
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val onResumeAction = rememberUpdatedState {
+        // 앱이 다시 활성화될 때 실행할 함수 호출
+        signUpViewModel.checkEmailAuth()
+        // 여기에 실행하고 싶은 로직을 추가합니다.
+    }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                onResumeAction.value()
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
     SignUpEmail(email = signUpViewModel.email){ signUpViewModel.updateEmail(it) }
     SignUpEmailBtn()
     RequestEmail(signUpViewModel.checkAuthEmailState.value){
@@ -38,7 +62,7 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navContr
     }
     SignUpExitBtn{navController.popBackStack()}
     CompleteSignUp(signUpViewModel.checkAuthEmailState.value) {signUpViewModel.completeSignUp()}
-    signUpViewModel.checkEmailAuth()
+
     if (signUpViewModel.authEmailState.value){
         navController.navigate(Screen.SignInScreen.route)
         signUpViewModel.changeAuthEmailState()

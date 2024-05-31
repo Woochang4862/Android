@@ -46,13 +46,31 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         editSetTitle({profileViewModel.postProfile()},profileViewModel.booleanList) { navController.popBackStack() }
-        getNickName(profileViewModel.nickname,"") { profileViewModel.updateNickname(it) }
+        getNickName(profileViewModel.nickname,"",{profileViewModel.doubleCheckNickname()}) { profileViewModel.updateNickname(it) }
         getMBTI(profileViewModel.mbti,"",profileViewModel.checkMBTI.value) { profileViewModel.updateMBTI(it) }
         getSelfIntroduce(profileViewModel.selfintroduce,"",profileViewModel.checkSelfIntroduce.value) { profileViewModel.updateSelfIntroduce(it)}
         PasswordChange {
 
         }
         SuChatImg()
+    }
+
+    if (profileViewModel.checkSignupNickNameState.value) {
+        //중복확인 성공했을때 이벤트
+        OneButtonDialog(
+            contentText = "닉네임 사용이 \n가능합니다.",
+            text = "확인",
+            onPress = { profileViewModel.changeCheckSignUpNickNameState() },
+            image = R.drawable.baseline_error_24
+        )
+    }
+    if (profileViewModel.dialogCheckSignUpNickNameState.value) {
+        OneButtonDialog(
+            contentText = "닉네임익 \n중복입니다.",
+            text = "확인",
+            onPress = { profileViewModel.changeDialogCheckSignUpNickNameState() },
+            image = R.drawable.baseline_error_24
+        )
     }
 
 }
@@ -93,7 +111,7 @@ fun editSetTitle(onCheckPress : () -> Unit, enableCheck : Boolean ,onBackPress :
 }
 
 @Composable
-fun getNickName(nickname: State<String>, text : String, onNicknameChanged: (String) -> Unit) {
+fun getNickName(nickname: State<String>, text : String, onPress: () -> Unit ,onNicknameChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 40.dp, start = 32.dp)) {
         Row() {
             Text(text = "닉네임", fontSize = 16.sp, modifier = Modifier.padding(start = 5.dp))
@@ -132,7 +150,7 @@ fun getNickName(nickname: State<String>, text : String, onNicknameChanged: (Stri
                     .height(50.dp)
             )
             Button(
-                onClick = { /* Do something when the button is clicked */ },
+                onClick = { onPress() },
                 modifier = Modifier
                     .padding(6.dp)
                     .align(Alignment.CenterVertically)
@@ -304,7 +322,7 @@ fun EditProfileScreenPreview() {
         /*editGetNickName(nickname = editNickName)
         editGetMBTI(mbti = editMBTI)
         editGetSelfIntroduce(introduce = editSelfIntroduce)*/
-        getNickName(nickname,"",) {  }
+        getNickName(nickname,"",{}) {  }
         getMBTI(mbti,"",false) { }
         getSelfIntroduce(selfintroduce,"",false) {}
         PasswordChange {

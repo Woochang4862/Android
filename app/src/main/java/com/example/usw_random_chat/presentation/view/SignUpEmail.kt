@@ -1,7 +1,6 @@
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,15 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
-import com.example.usw_random_chat.ui.OneButtonDialog
-import com.example.usw_random_chat.ui.CustomButton
-import com.example.usw_random_chat.ui.PortalEmail
-import com.example.usw_random_chat.ui.CustomText
-import com.example.usw_random_chat.ui.TittleWithBackArrow
 
 @Composable
 fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navController: NavController){
@@ -41,7 +34,6 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navContr
         signUpViewModel.checkEmailAuth()
         // 여기에 실행하고 싶은 로직을 추가합니다.
     }
-
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -57,17 +49,18 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navContr
     SignUpEmail(email = signUpViewModel.email){ signUpViewModel.updateEmail(it) }
     SignUpEmailBtn()
     RequestEmail(signUpViewModel.checkAuthEmailState.value){
-        signUpViewModel.verifyEmail()
-
+        signUpViewModel.postEmail()
     }
     SignUpExitBtn{navController.popBackStack()}
-    CompleteSignUp(signUpViewModel.checkAuthEmailState.value) {signUpViewModel.completeSignUp()}
+    CompleteSignUp(signUpViewModel.checkAuthEmailState.value) {navController.navigate(Screen.SignInScreen.route){
+        popUpTo(Screen.SignInScreen.route){inclusive=true}
+    } }
 
-    if (signUpViewModel.authEmailState.value){
+    /*if (signUpViewModel.authEmailState.value){
         navController.navigate(Screen.SignInScreen.route)
         signUpViewModel.changeAuthEmailState()
-    }
-    if(signUpViewModel.dialogAuthEmailState.value == false){
+    }*/
+    if(signUpViewModel.dialogAuthEmailState.value == 0){
         OneButtonDialog(
             contentText = "이메일 전송을\n실패했습니다.",
             text = "확인",
@@ -75,7 +68,7 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navContr
             image = R.drawable.baseline_error_24
         )
     }
-    if(signUpViewModel.dialogAuthEmailState.value == true){
+    if(signUpViewModel.dialogAuthEmailState.value == 1){
         OneButtonDialog(
             contentText = "인증메일이 전송되었습니다.\n전송된 인증 URL을 클릭해주세요",
             text = "확인",

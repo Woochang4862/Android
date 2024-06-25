@@ -23,7 +23,8 @@ class TokenInterceptor @Inject constructor(
             .header("Authorization", "Bearer $accessToken") // 헤더에 authorization라는 key로 JWT 를 넣어준다.
             .build()
 
-        when(chain.proceed(newRequest).code){
+        val response = chain.proceed(newRequest)
+        when(response.code){
             //리프레시 토큰을 이용해 새로운 액세스 토큰을 발급 받아야함
             401 ->{
 
@@ -34,6 +35,6 @@ class TokenInterceptor @Inject constructor(
             }
         }
 
-        return chain.proceed(newRequest)
+        return response
     }
 }

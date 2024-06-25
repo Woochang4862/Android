@@ -17,6 +17,7 @@ fun Navigation () {
     val signupViewModel = hiltViewModel<SignUpViewModel>()
     val signinViewModel = hiltViewModel<SignInViewModel>()
     val chatViewModel = hiltViewModel<ChatViewModel>()
+    val userModifyViewModel = hiltViewModel<UserModifyViewModel>()
     NavHost(
         navController = navController,
         startDestination = Screen.LoadingScreen.route
@@ -35,16 +36,13 @@ fun Navigation () {
             SignUpDoneScreen(navController)
         }
         composable(route = Screen.PwChangeScreen.route) {
-            val viewModel = hiltViewModel<UserModifyViewModel>()
-            PwChangeScreen(viewModel,navController)
+            PwChangeScreen(userModifyViewModel,navController)
         }
         composable(route = Screen.PwSearchScreen.route) {
-            val viewModel = hiltViewModel<UserModifyViewModel>()
-            PwSearchScreen(viewModel)
+            PwSearchScreen(userModifyViewModel)
         }
         composable(route = Screen.IdSearchScreen.route) {
-            val viewModel = hiltViewModel<UserModifyViewModel>()
-            IdSearch(viewModel,navController)
+            IdSearch(userModifyViewModel,navController)
         }
         composable(route = Screen.ProfileScreen.route) {
             val viewModel = hiltViewModel<ProfileViewModel>()
@@ -61,14 +59,12 @@ fun Navigation () {
             EditProfileScreen(navController, viewModel)
         }
         composable(route = Screen.LoadingScreen.route) {
-            val viewModel = hiltViewModel<SignInViewModel>()
             LoadingScreen(navController,signinViewModel)
         }
         composable(route = Screen.ChatScreen.route) {
             ChattingScreen(chatViewModel)
         }
         composable(route = Screen.MainPageScreen.route) {
-            val viewModel = hiltViewModel<ChatViewModel>()
             MainScreen(navController,chatViewModel)
         }
         composable(route = Screen.MatchingScreen.route) {

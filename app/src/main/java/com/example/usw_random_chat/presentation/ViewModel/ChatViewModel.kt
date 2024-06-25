@@ -65,7 +65,7 @@ class ChatViewModel @Inject constructor(
             .dispose()
 
         stomp.join("/queue/match/cancel/account").subscribe {
-            Log.d("receive", it)
+           Log.d("receive", it)
         }
 
         stomp.send("/pub/queue/match/cancel/account", "").subscribe {
@@ -86,6 +86,7 @@ class ChatViewModel @Inject constructor(
         connectStomp()
         stomp.join("/queue/match/in/account").subscribe {
             Log.d("receive", it)
+            val msg = Gson().fromJson(it, MessageDTO::class.java)
         }
         stomp.send("/pub/queue/match/in/account", "").subscribe {
         }
@@ -111,7 +112,6 @@ class ChatViewModel @Inject constructor(
     fun getProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = profileRepository.getProfile()
-            Log.d("프로파일 불러오기", "프로파일 횟수 체크")
             if (response.data.mbti == null) {
                 _userProfile.value.mbti = "MBTI를 작성해주세요!"
             } else {
@@ -135,13 +135,13 @@ class ChatViewModel @Inject constructor(
     fun sendMSG() {
         viewModelScope.launch {
             val jsonObject = JSONObject().apply {
-                put("roomId", "ff576df6-9881-41a4-ac45-2fd48f155ced")
+                put("roomId", roodID)
                 put("sender", "이경수")
                 put("contents", _msg.value)
 
             }
             stomp.send(
-                "/pub/chat/message/ff576df6-9881-41a4-ac45-2fd48f155ced",
+                "/pub/chat/message/f$roodID",
                 jsonObject.toString()
             ).subscribe {
                 if (it) {
@@ -179,13 +179,13 @@ class ChatViewModel @Inject constructor(
 
     fun disconnectStomp() {
         viewModelScope.launch {
-            stompConnection.isDisposed
+            stompConnection.dispose()
         }
     }
 
     fun subscribeStomp() {
         viewModelScope.launch {
-            stomp.join("/sub/chat/ff576df6-9881-41a4-ac45-2fd48f155ced").subscribe { message ->
+            stomp.join("/sub/chat/$roodID").subscribe { message ->
                 Log.d("receive", message)
                 val data = Gson().fromJson(message, MessageDTO::class.java)
                 _chatList.add(data)
@@ -195,7 +195,7 @@ class ChatViewModel @Inject constructor(
 
     fun unsubscribeStomp() {
         viewModelScope.launch {
-            //stomp.join(wss).subscribe{ Log.d(tag,"Unsubscribe Success") }.isDisposed
+           // stomp.join(wss).subscribe{ Log.d(tag,"Unsubscribe Success") }.dispose()
         }
     }
 }

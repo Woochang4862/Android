@@ -86,15 +86,4 @@ class SignUpRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun completeSignUp(): Int {
-        val response = signUpApiService.completeSignUp(tokenSharedPreference.getUUID("uuid", ""))
-
-        return if (response.isSuccessful) {
-            response.code()
-        } else {
-            Log.d("회원 가입 실패", response.body().toString())
-            response.code()
-        }
-
-    }
 }

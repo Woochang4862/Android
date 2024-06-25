@@ -15,6 +15,4 @@ interface SignUpRepository {
     suspend fun emailDoubleCheck(param : UserDTO) : Int
 
     suspend fun nickNameDoubleCheck(param : UserDTO) : Int
-
-    suspend fun completeSignUp() : Int
 }

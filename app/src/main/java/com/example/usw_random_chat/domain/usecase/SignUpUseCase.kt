@@ -29,7 +29,4 @@ class SignUpUseCase(private val signUpRepository: SignUpRepository) {
         return signUpRepository.nickNameDoubleCheck(param)
     }
 
-    suspend fun completeSignUp() : Int {
-        return signUpRepository.completeSignUp()
-    }
 }

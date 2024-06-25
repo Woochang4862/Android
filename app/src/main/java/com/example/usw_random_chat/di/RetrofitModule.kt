@@ -28,7 +28,6 @@ object RetrofitModule {
     @Singleton
     fun provideOkHttpClient(tokenInterceptor: TokenInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .cookieJar(JavaNetCookieJar(CookieManager()))
             .addInterceptor(tokenInterceptor)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY

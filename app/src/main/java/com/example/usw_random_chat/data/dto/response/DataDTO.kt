@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class DataDTO(
     @SerializedName("uuid")
     val uuid : String = "",
-    @SerializedName("nickName")
+    @SerializedName("nickname")
     val nickName : String = "",
     @SerializedName("mbti")
     val mbti : String? = "",

@@ -1,4 +1,4 @@
-package com.example.usw_random_chat.ui
+package com.example.usw_random_chat.presentation.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -56,7 +56,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.usw_random_chat.R
-import com.example.usw_random_chat.presentation.view.Screen
 import java.text.SimpleDateFormat
 
 

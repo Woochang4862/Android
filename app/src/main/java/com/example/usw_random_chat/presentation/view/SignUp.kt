@@ -1,6 +1,5 @@
 package com.example.usw_random_chat.presentation.view
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,18 +28,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
-import com.example.usw_random_chat.ui.CustomButton
-import com.example.usw_random_chat.ui.OneButtonDialog
-import com.example.usw_random_chat.ui.RedWarning
-import com.example.usw_random_chat.ui.TextFieldSearchBtn
-import com.example.usw_random_chat.ui.TextFiledTitle
-import com.example.usw_random_chat.ui.TittleWithBackArrow
-import com.example.usw_random_chat.ui.VisibleText
 
 @Composable
 fun SignUpScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navController: NavController)  {

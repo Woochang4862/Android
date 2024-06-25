@@ -20,11 +20,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
-import com.example.usw_random_chat.ui.TextFiledTitle
-import com.example.usw_random_chat.ui.VisibleText
-import com.example.usw_random_chat.ui.CustomButton
-import com.example.usw_random_chat.ui.OneButtonDialog
-import com.example.usw_random_chat.ui.TittleWithBackArrow
 
 
 @Composable

@@ -41,9 +41,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
-import com.example.usw_random_chat.ui.CustomButton
-import com.example.usw_random_chat.ui.OneButtonDialog
-import com.example.usw_random_chat.ui.PortalEmail
 
 @Composable
 fun PwSearchScreen(userModifyViewModel: UserModifyViewModel = viewModel()) {

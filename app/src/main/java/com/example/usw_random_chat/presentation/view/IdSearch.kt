@@ -21,11 +21,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
-import com.example.usw_random_chat.ui.OneButtonDialog
-import com.example.usw_random_chat.ui.CustomButton
-import com.example.usw_random_chat.ui.PortalEmail
-import com.example.usw_random_chat.ui.CustomText
-import com.example.usw_random_chat.ui.TittleWithBackArrow
 
 @Composable
 fun IdSearch(userModifyViewModel: UserModifyViewModel = viewModel(), navController: NavController){

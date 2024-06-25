@@ -11,10 +11,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,14 +26,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
-import com.example.usw_random_chat.ui.OneButtonDialog
 
 @Composable
 fun EditProfileScreen(navController: NavController, profileViewModel: ProfileViewModel = viewModel()) {
@@ -45,7 +40,7 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle({profileViewModel.postProfile()},profileViewModel.booleanList) { navController.popBackStack() }
+        editSetTitle({profileViewModel.postProfile()},profileViewModel.booleanList.value) { navController.popBackStack() }
         getNickName(profileViewModel.nickname,"",{profileViewModel.doubleCheckNickname()}) { profileViewModel.updateNickname(it) }
         getMBTI(profileViewModel.mbti,"",profileViewModel.checkMBTI.value) { profileViewModel.updateMBTI(it) }
         getSelfIntroduce(profileViewModel.selfintroduce,"",profileViewModel.checkSelfIntroduce.value) { profileViewModel.updateSelfIntroduce(it)}
@@ -99,7 +94,7 @@ fun editSetTitle(onCheckPress : () -> Unit, enableCheck : Boolean ,onBackPress :
         )
         Spacer(modifier = Modifier.weight(0.1f))
         IconButton(
-            enabled = enableCheck,
+            enabled = true,
             onClick = {
                 onCheckPress()
                 onBackPress()

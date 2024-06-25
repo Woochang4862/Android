@@ -47,10 +47,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.ChatViewModel
-import com.example.usw_random_chat.ui.CopyRightByFlag
-import com.example.usw_random_chat.ui.DrawerBottom
-import com.example.usw_random_chat.ui.DrawerMenu
-import com.example.usw_random_chat.ui.DrawerProfile
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

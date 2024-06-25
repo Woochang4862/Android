@@ -14,7 +14,7 @@ import retrofit2.http.Path
 interface ProfileApiService {
     @PATCH("secure/profile/update-my-profile") // 세부 주소
     @Headers("content-type: application/json")
-    suspend fun setProfile(@Body jsonpath: ProfileDTO) : Response<ProfileDTO>
+    suspend fun setProfile(@Body jsonpath: ProfileDTO) : Response<ProfileResponseDTO>
 
     @GET("secure/profile/get-my-profile") // 세부 주소
     @Headers("content-type: application/json")

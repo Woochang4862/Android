@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.data.repositoryimpl
 
+import android.util.Log
 import com.example.usw_random_chat.data.api.ProfileApiService
 import com.example.usw_random_chat.data.dto.ProfileDTO
 import com.example.usw_random_chat.data.dto.response.ProfileResponseDTO
@@ -12,13 +13,14 @@ class ProfileRepositoryImpl @Inject constructor(
     private val tokenSharedPreference: TokenSharedPreference
 ) : ProfileRepository {
 
-    override suspend fun setProfile(param: ProfileDTO): ProfileDTO {
+    override suspend fun setProfile(param: ProfileDTO) {
         val response = profileApiService.setProfile(param)
 
         if (response.isSuccessful) {
-            return response.body()!!
+            Log.d("프로필 전송 성공",response.body().toString())
         } else {
-            throw Exception("${response.body()}")
+            Log.d("프로필 전송 실패",response.body().toString())
+
         }
     }
 

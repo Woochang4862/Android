@@ -1,7 +1,6 @@
 package com.example.usw_random_chat.presentation.ViewModel
 
-import android.text.BoringLayout
-import androidx.compose.runtime.MutableState
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -20,15 +19,15 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     private val _rememberPw = mutableStateOf("")
     private val _rememberPwCheck = mutableStateOf("")
     private val _email = mutableStateOf("")
-    private val _signupState = mutableStateOf(false)
+
     private val _authEmailState = mutableStateOf(false)
     private val _checkAuthEmailState = mutableStateOf(false)
-    private val _dialogSignupState = mutableStateOf(false)
-    private val _dialogAuthEmailState = mutableStateOf<Boolean?>(null)
-    private val _dialogCheckAuthEmailState = mutableStateOf(false)
+    private val _dialogAuthEmailState = mutableStateOf<Int>(2)
+
     private val _rememberPwEqualOrNot = mutableStateOf(false)
     private val _rememberTrigger = mutableStateOf(false)
     private val _rememberIdLength = mutableStateOf(false)
+
     private val _checkSignupIdState = mutableStateOf(false)
     private val _dialogCheckSignUpIdState = mutableStateOf(false)
     private val _checkSignupNickNameState = mutableStateOf(false)
@@ -44,31 +43,19 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     val rememberPwEqualOrNot : State<Boolean> = _rememberPwEqualOrNot
     val rememberTrigger : State<Boolean> = _rememberTrigger
     val rememberIdLength : State<Boolean> = _rememberIdLength
-    val signupState : State<Boolean> = _signupState
     val authEmailState : State<Boolean> = _authEmailState
     val checkAuthEmailState : State<Boolean> = _checkAuthEmailState
-    val dialogSignupState : State<Boolean> = _dialogSignupState
-    val dialogAuthEmailState : MutableState<Boolean?> = _dialogAuthEmailState
-    val dialogCheckAuthEmailState : State<Boolean> = _dialogCheckAuthEmailState
+    val dialogAuthEmailState : State<Int> = _dialogAuthEmailState
     val checkSignupIdState : State<Boolean> = _checkSignupIdState
     val dialogCheckSignUpIdState : State<Boolean> = _dialogCheckSignUpIdState
     val checkSignupNickNameState : State<Boolean> = _checkSignupNickNameState
     val dialogCheckSignUpNickNameState : State<Boolean> = _dialogCheckSignUpNickNameState
 
-    fun verifyEmail() {
+    fun postEmail() {
         viewModelScope.launch {
             when(signUpUseCase.signUp(UserDTO(memberID = _rememberId.value, memberPassword = rememberPw.value, nickname = nickName.value, email = email.value))){
-                in (200..300) -> _authEmailState.value = true
-                !in (200..300) -> _dialogAuthEmailState.value = true
-            }
-        }
-    }
-
-    fun checkVerifyEmail() {
-        viewModelScope.launch {
-            when(signUpUseCase.checkDoubleEmail(UserDTO(email = email.value))){
-                in (200..300) -> _checkAuthEmailState.value = true
-                !in (200..300) -> _dialogCheckAuthEmailState.value = true
+                in (200..300) -> _dialogAuthEmailState.value = 1 // 성공
+                !in (200..300) -> _dialogAuthEmailState.value = 0 //실패
             }
         }
     }
@@ -97,16 +84,11 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         viewModelScope.launch {
             when(signUpUseCase.checkAuthEmail()){
                 in (200..300) -> _checkAuthEmailState.value = true
+                !in (200..300) -> Log.d("이메일 인증 실패","이메일 인증이 안돼요")
             }
 
         }
     }
-    fun completeSignUp() {   // 회원가입 완료
-        viewModelScope.launch {
-            signUpUseCase.completeSignUp()
-        }
-    }
-
 
     fun updateEmail(newValue: String){
         _email.value = newValue
@@ -154,28 +136,16 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     fun changeAuthEmailState(){
         _authEmailState.value = !_authEmailState.value
     }
-    fun changeDialogSignupState(){
-        _dialogSignupState.value = !_dialogSignupState.value
-    }
+
     fun changeDialogAuthEmailState(){
-        //_dialogAuthEmailState.value = !_dialogAuthEmailState.value!!
-        _dialogAuthEmailState.value = null
+        _dialogAuthEmailState.value = 2
     }
-    fun changeDialogCheckAuthEmailState(){
-        _dialogCheckAuthEmailState.value = !_dialogCheckAuthEmailState.value
-    }
-    fun changeCheckAuthEmailState(){
-        _checkAuthEmailState.value = !_checkAuthEmailState.value
-    }
-    fun changeSignupState(){
-        _signupState.value = !_signupState.value
-    }
+
 
     private fun updateRememberTrigger() {
         checkIdLength()
         _rememberTrigger.value = _signUpIdState.value && _rememberPwEqualOrNot.value && _signUpNickNameState.value
-    }//_rememberPw.value == _rememberPwCheck.value 이건 지웠어요 이게 _rememberPwEqualOrNot랑 같아서
-    //그리고 _signUpIdState랑 _signUpNickNameState로 새로 만들었어요 생각해보니까 change함수로 다시 false만들면 버튼활성화가 안되서요 이 boolean값은 if문 안에 넣었습니다
+    }
 
     private fun checkIdLength() {
         _rememberIdLength.value = !(_rememberId.value.length < 4 || _rememberId.value.length > 16)

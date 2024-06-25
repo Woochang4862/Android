@@ -22,9 +22,9 @@ class ProfileViewModel @Inject constructor(
     private val _nickname = mutableStateOf("")
     private val _mbti = mutableStateOf("")
     private val _selfintroduce = mutableStateOf("")
-    private val _checkMBTI = mutableStateOf(true)
-    private val _checkNickname = mutableStateOf(true)
-    private val _checkSelfIntroduce = mutableStateOf(true)
+    private val _checkMBTI = mutableStateOf(false)
+    private val _checkNickname = mutableStateOf(false)
+    private val _checkSelfIntroduce = mutableStateOf(false)
     private val _dialogCheckSignUpNickNameState = mutableStateOf(false)
     private val _checkSignupNickNameState = mutableStateOf(false)
     private val _booleanList =
@@ -34,11 +34,10 @@ class ProfileViewModel @Inject constructor(
     val mbti: State<String> = _mbti
     val selfintroduce: State<String> = _selfintroduce
     val checkMBTI: State<Boolean> = _checkMBTI
-    val checkNickname: State<Boolean> = _checkNickname
     val checkSelfIntroduce: State<Boolean> = _checkSelfIntroduce
-    val checkSignupNickNameState : State<Boolean> = _checkSignupNickNameState
-    val dialogCheckSignUpNickNameState : State<Boolean> = _dialogCheckSignUpNickNameState
-    val booleanList = _booleanList.all { it }
+    val checkSignupNickNameState: State<Boolean> = _checkSignupNickNameState
+    val dialogCheckSignUpNickNameState: State<Boolean> = _dialogCheckSignUpNickNameState
+    val booleanList: State<Boolean> = mutableStateOf(_booleanList.all { it })
     fun updateNickname(newValue: String) {
         _nickname.value = newValue
         filterNickName()
@@ -69,50 +68,33 @@ class ProfileViewModel @Inject constructor(
 
     fun doubleCheckNickname() {
         viewModelScope.launch {
-            when(signUpUseCase.checkSignUpNickName(UserDTO(nickname = _nickname.value))){
+            when (signUpUseCase.checkSignUpNickName(UserDTO(nickname = _nickname.value))) {
                 in (200..300) -> _checkSignupNickNameState.value = true
                 !in (200..300) -> _dialogCheckSignUpNickNameState.value = true
             }
         }
     }
 
-    fun checkProfile() {
-        viewModelScope.launch {
-            launch { filterMBTI() }
-            launch { filterNickName() }
-            launch { filterSelfIntroduce() }
-        }
-    }
-
     private fun filterMBTI() {
-        if (_mbti.value.length != 4) {
-            _checkMBTI.value = false
-        } else {
-            val validMBTI = _mbti.value[0].code in listOf(69, 73, 101, 105) &&
-                    _mbti.value[1].code in listOf(78, 83, 110, 115) &&
-                    _mbti.value[2].code in listOf(70, 84, 102, 116) &&
-                    _mbti.value[3].code in listOf(74, 80, 106, 112)
-
-            _checkMBTI.value = validMBTI
-        }
+        _checkMBTI.value = _mbti.value.length == 4 && _mbti.value[0].code in listOf(69, 73, 101, 105) &&
+                _mbti.value[1].code in listOf(78, 83, 110, 115) &&
+                _mbti.value[2].code in listOf(70, 84, 102, 116) &&
+                _mbti.value[3].code in listOf(74, 80, 106, 112)
     }
 
     private fun filterNickName() {
-        if (_nickname.value.length > 8) {
-            _checkNickname.value = false
-        }
+        _checkNickname.value = _nickname.value.length <= 8
     }
 
     private fun filterSelfIntroduce() {
-        if (_selfintroduce.value.length > 40) {
-            _checkSelfIntroduce.value = false
-        }
+        _checkSelfIntroduce.value = _selfintroduce.value.length <= 40
     }
 
-    fun changeCheckSignUpNickNameState(){
+    fun changeCheckSignUpNickNameState() {
         _checkSignupNickNameState.value = !_checkSignupNickNameState.value
     }
-    fun changeDialogCheckSignUpNickNameState(){
+
+    fun changeDialogCheckSignUpNickNameState() {
         _dialogCheckSignUpNickNameState.value = !_dialogCheckSignUpNickNameState.value
     }
 }

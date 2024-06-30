@@ -10,6 +10,7 @@ import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ProfileApiService {
     @PATCH("secure/profile/update-my-profile") // 세부 주소
@@ -19,6 +20,10 @@ interface ProfileApiService {
     @GET("secure/profile/get-my-profile") // 세부 주소
     @Headers("content-type: application/json")
     suspend fun getProfile(@Header("authorization") jsonpath: String ) : Response<ProfileResponseDTO>
+
+    @GET("secure/profile/get-other-profile") // 세부 주소
+    @Headers("content-type: application/json")
+    suspend fun getYourProfile(@Query("targetAccount") param : String) : Response<ProfileResponseDTO>
 
 
 }

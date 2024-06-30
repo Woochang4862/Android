@@ -7,4 +7,6 @@ interface ProfileRepository {
     suspend fun setProfile(param : ProfileDTO)
 
     suspend fun getProfile() : ProfileResponseDTO
+
+    suspend fun getYourProfile() : ProfileResponseDTO
 }

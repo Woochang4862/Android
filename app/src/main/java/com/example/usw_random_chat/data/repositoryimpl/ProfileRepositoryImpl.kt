@@ -34,4 +34,15 @@ class ProfileRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getYourProfile(): ProfileResponseDTO {
+        val response = profileApiService.getYourProfile("asd")
+
+        return if (response.isSuccessful) {
+            response.body()!!
+        } else {
+            return ProfileResponseDTO("",ProfileDTO("잘못된 닉네임입니다.","잘못된 MBTI입니다.","잘못된 자기소개입니다."))
+        }
+
+    }
+
 }

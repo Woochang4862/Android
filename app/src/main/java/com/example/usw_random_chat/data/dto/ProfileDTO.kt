@@ -8,5 +8,5 @@ data class ProfileDTO(
     @SerializedName("mbti")
     var mbti : String = "",
     @SerializedName("intro")
-    var selfIntroduce : String? = ""
+    var selfIntroduce : String = ""
 )

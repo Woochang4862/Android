@@ -52,10 +52,12 @@ class ChatViewModel @Inject constructor(
     private val _reportDialog = mutableStateOf(false)
     private val _exitDialog = mutableStateOf(false)
     private val _userProfile = mutableStateOf(ProfileDTO("", "", ""))
+    private val _opponentUserProfile = mutableStateOf(ProfileDTO("", "", ""))
 
     val chatList = _chatList
     val msg: State<String> = _msg
     val profileDialog: State<Boolean> = _profileDialog
+    val opponentUserProfile : State<ProfileDTO> = _opponentUserProfile
     val exitDialog: State<Boolean> = _exitDialog
     val reportDialog: State<Boolean> = _reportDialog
     val userProfile: State<ProfileDTO> = _userProfile
@@ -122,8 +124,24 @@ class ChatViewModel @Inject constructor(
             if (response.data.selfIntroduce == null) {
                 _userProfile.value.selfIntroduce = "자기소개를 작성해주세요!"
             } else {
-                _userProfile.value.selfIntroduce = response.data?.selfIntroduce
+                _userProfile.value.selfIntroduce = response.data.selfIntroduce
             }
+            Log.d("프로필 mb", response.data?.mbti.toString())
+            Log.d("프로필 nick", response.data.nickName)
+            Log.d("프로필 self", response.data?.selfIntroduce.toString())
+
+        }
+    }
+
+    fun getYourProfile() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = profileRepository.getYourProfile()
+            _opponentUserProfile.value.mbti = response.data.mbti
+
+            _opponentUserProfile.value.nickName = response.data.nickName
+
+            _opponentUserProfile.value.selfIntroduce = response.data.selfIntroduce
+
             Log.d("프로필 mb", response.data?.mbti.toString())
             Log.d("프로필 nick", response.data.nickName)
             Log.d("프로필 self", response.data?.selfIntroduce.toString())

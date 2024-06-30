@@ -54,7 +54,11 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
     )
 
     if (chatViewModel.profileDialog.value) {
-        CustomDialog(name = chatViewModel.userProfile.value.nickName!!) {
+        CustomDialog(
+            name = chatViewModel.opponentUserProfile.value.nickName,
+            mbti = chatViewModel.opponentUserProfile.value.mbti,
+            selfIntro = chatViewModel.opponentUserProfile.value.selfIntroduce
+        ) {
             chatViewModel.closeProfileDialog()
         }
     }
@@ -79,13 +83,13 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
         )
     }
 
-    //chatViewModel.connectStomp()
-    //chatViewModel.subscribeStomp()
-
     Scaffold(
         topBar = {
             ChatTopAppBar(chatViewModel.userProfile.value.nickName!!,
-                { chatViewModel.closeProfileDialog() },
+                {
+                    chatViewModel.getYourProfile()
+                    chatViewModel.closeProfileDialog()
+                },
                 { chatViewModel.closeReportDialog() },
                 { chatViewModel.closeExitDialog() })
         },
@@ -255,15 +259,11 @@ fun ChatBottomAppBar(text: State<String>, onChange: (String) -> Unit, onPress: (
 }
 
 @Composable
-fun CustomDialog(name: String, onChange: () -> Unit) {
+fun CustomDialog(name: String, mbti : String, selfIntro : String, onChange: () -> Unit) {
     Dialog(onDismissRequest = { onChange() }) {
         Column(
             modifier = Modifier
-                .shadow(
-                    elevation = 40.dp,
-                    spotColor = Color(0x26000000),
-                    ambientColor = Color(0x26000000)
-                )
+//                .shadow(elevation = 40.dp,)
                 .width(280.dp)
                 .height(326.dp)
                 .background(color = Color(0xCCFFFFFF), shape = RoundedCornerShape(size = 25.dp)),
@@ -298,7 +298,7 @@ fun CustomDialog(name: String, onChange: () -> Unit) {
                 modifier = Modifier.padding(top = 18.dp)
             )
             Text(
-                text = "#ISTP",
+                text = "#$mbti",
                 fontSize = 16.sp,
                 lineHeight = 18.sp,
                 fontFamily = FontFamily(Font(R.font.kcc_chassam)),
@@ -307,7 +307,7 @@ fun CustomDialog(name: String, onChange: () -> Unit) {
                 modifier = Modifier.padding(top = 10.dp)
             )
             TextField(
-                value = "자기소개 어쩌고 저쩌고",
+                value = selfIntro,
                 onValueChange = {},
                 modifier = Modifier
                     .padding(top = 18.dp)
@@ -376,13 +376,13 @@ fun sendMsgPreView() {
 @Preview(showBackground = true)
 @Composable
 fun DialogPreview() {
-    CustomDialog("lelelel") {
+    CustomDialog("lelelel","#estj","자기소개 어쩌구") {
 
     }
 }
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun ChattingScreenPreview() {
     ChattingScreen()
-}
+}*/

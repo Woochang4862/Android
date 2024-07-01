@@ -32,9 +32,6 @@ fun Navigation () {
         composable(route = Screen.SignUpScreen.route) {
             SignUpScreen(signupViewModel,navController)
         }
-        composable(route = Screen.SignUpDoneScreen.route) {
-            SignUpDoneScreen(navController)
-        }
         composable(route = Screen.PwChangeScreen.route) {
             PwChangeScreen(userModifyViewModel,navController)
         }

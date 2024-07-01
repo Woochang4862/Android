@@ -32,19 +32,17 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
-    private val tokenSharedPreference: TokenSharedPreference,
     private val profileRepository: ProfileRepository,
-    private val tokenInterceptor: TokenInterceptor
+    private val tokenInterceptor: TokenInterceptor,
+    private val client: OkHttpClient
 ) : ViewModel() {
 
     private lateinit var stompConnection: Disposable
-    private lateinit var roodID: String
-    private val token = tokenSharedPreference.getToken("accessToken", "")
+    private  var roodID: String = "1234"
 
-    private val client = OkHttpClient.Builder().build()
     private val tag = "STOMP"
     private val serverUrl: String = "ws://43.202.91.160:8080/stomp"
-    private val stomp = StompClient(client, 5000L, token).apply { this@apply.url = serverUrl }
+    private val stomp = StompClient(client, 5000L).apply { this@apply.url = serverUrl }
 
     private val _chatList = mutableStateListOf<MessageDTO>()
     private val _msg = mutableStateOf("")
@@ -63,20 +61,19 @@ class ChatViewModel @Inject constructor(
     val userProfile: State<ProfileDTO> = _userProfile
 
     fun exitChattingRoom() {
-        stomp.join("/queue/match/in/account").subscribe { Log.d(tag, "Unsubscribe Success") }
+        stomp.join("/queue/match/in/admin").subscribe { Log.d(tag, "Unsubscribe Success") }
             .dispose()
 
-        stomp.join("/queue/match/cancel/account").subscribe {
+        stomp.join("/queue/match/cancel/admin").subscribe {
            Log.d("receive", it)
         }
 
-        stomp.send("/pub/queue/match/cancel/account", "").subscribe {
+        stomp.send("/pub/queue/match/cancel/admin", "").subscribe {
         }
 
-        stomp.join("/queue/match/cancel/account").subscribe {
+        stomp.join("/queue/match/cancel/admin").subscribe {
             Log.d("receive", it)
         }.dispose()
-
 
     }
 
@@ -86,11 +83,14 @@ class ChatViewModel @Inject constructor(
 
     fun startMatching() {
         connectStomp()
-        stomp.join("/queue/match/in/account").subscribe {
+        stomp.join("/queue/match/in/admin").subscribe {
             Log.d("receive", it)
             val msg = Gson().fromJson(it, MessageDTO::class.java)
         }
-        stomp.send("/pub/queue/match/in/account", "").subscribe {
+        stomp.send("/pub/queue/match/in/admin", "").subscribe {
+            if (it){
+                Log.d("asdf","2323")
+            }
         }
 
     }
@@ -159,7 +159,7 @@ class ChatViewModel @Inject constructor(
 
             }
             stomp.send(
-                "/pub/chat/message/f$roodID",
+                "/pub/chat/message/$roodID",
                 jsonObject.toString()
             ).subscribe {
                 if (it) {

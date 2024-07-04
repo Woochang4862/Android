@@ -51,10 +51,9 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
     fun autoSignIn(){
         viewModelScope.launch{
-            val accessToken = pref.getToken("accessToken","")
             val refreshToken = pref.getToken("refreshToken","")
 
-            when(signInUseCase.autoSignIn(Token(accessToken,refreshToken))){
+            when(signInUseCase.autoSignIn(refreshToken)){
                 in 200..300 -> _loginState.value = true
             }
         }

@@ -9,7 +9,7 @@ class SignInUseCase(private val signInRepository: SignInRepository) {
         return signInRepository.signIn(param)
     }
 
-    suspend fun autoSignIn(token: Token) : Int {
+    suspend fun autoSignIn(token: String) : Int {
         return signInRepository.autoSignIn(token)
     }
 }

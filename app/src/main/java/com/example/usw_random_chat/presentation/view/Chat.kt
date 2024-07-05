@@ -35,6 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -298,7 +299,7 @@ fun CustomDialog(name: String, mbti : String, selfIntro : String, onChange: () -
                 modifier = Modifier.padding(top = 18.dp)
             )
             Text(
-                text = "#$mbti",
+                text = "$mbti",
                 fontSize = 16.sp,
                 lineHeight = 18.sp,
                 fontFamily = FontFamily(Font(R.font.kcc_chassam)),
@@ -306,9 +307,7 @@ fun CustomDialog(name: String, mbti : String, selfIntro : String, onChange: () -
                 color = Color(0xFF767676),
                 modifier = Modifier.padding(top = 10.dp)
             )
-            TextField(
-                value = selfIntro,
-                onValueChange = {},
+            Box(
                 modifier = Modifier
                     .padding(top = 18.dp)
                     .border(
@@ -319,20 +318,21 @@ fun CustomDialog(name: String, mbti : String, selfIntro : String, onChange: () -
                     .width(232.dp)
                     .height(78.dp)
                     .background(color = Color.White, shape = RoundedCornerShape(size = 25.dp)),
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                ),
-                textStyle = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.kcc_chassam)),
-                    fontWeight = FontWeight(400),
-                    color = Color(0xFF191919),
+                contentAlignment = Alignment.Center
+            ){
+                Text(
+                    text = selfIntro,
+                    modifier = Modifier.padding(10.dp),
+                    color = Color.Black,
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        lineHeight = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.kcc_chassam)),
+                        fontWeight = FontWeight(400),
+                        color = Color(0xFF191919),
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -376,7 +376,7 @@ fun sendMsgPreView() {
 @Preview(showBackground = true)
 @Composable
 fun DialogPreview() {
-    CustomDialog("lelelel","#estj","자기소개 어쩌구") {
+    CustomDialog("lelelel","#estj","자기소개어쩌구라라라라라라라라라라ㅏ라라라라라ㅏ라라라라라라라라라라라라라라라라라") {
 
     }
 }

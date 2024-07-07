@@ -55,13 +55,16 @@ class ProfileViewModel @Inject constructor(
 
     fun postProfile() {
         viewModelScope.launch {
-            profileRepository.setProfile(
+            val comment = profileRepository.setProfile(
                 ProfileDTO(
                     nickname.value,
                     mbti.value,
                     selfintroduce.value
                 )
             )
+            if (comment == "닉네임 변경 후 30일이 지나야 변경이 가능합니다."){
+                // 프로필 변경에 실패하고 실패했단 다이얼로그를 띄워야함
+            }
 
         }
     }

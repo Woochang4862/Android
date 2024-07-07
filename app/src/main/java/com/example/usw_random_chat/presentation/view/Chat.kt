@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,8 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -213,17 +216,45 @@ fun ChatBottomAppBar(text: State<String>, onChange: (String) -> Unit, onPress: (
                             shape = RoundedCornerShape(size = 25.dp)
                         ),
                 ) {
+                    /*TextField(
+                        value = text.value,
+                        onValueChange = { onChange(it) },
+
+                        modifier = Modifier
+                            .width(300.dp)
+                            //.height(42.dp)
+                            //.padding(top = 12.dp, start = 17.dp)
+                            .background(
+                                color = Color.Transparent,
+                                shape = RoundedCornerShape(size = 25.dp)
+                            ),
+                        colors = TextFieldDefaults.textFieldColors(
+                            backgroundColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            textColor = Color.Black
+                        ),
+                        textStyle = TextStyle(
+                            fontSize = 16.sp,
+                            lineHeight = 5.sp,
+                            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF737373),
+                        )
+                    )*/
                     BasicTextField(
                         //커스텀 텍스트 필드를 사용해야해서 BasicTextField 이용
                         modifier = Modifier
                             .width(300.dp)
-                            .height(42.dp)
+                            //.height(42.dp)
+                            .wrapContentHeight()
                             .padding(top = 12.dp, start = 17.dp)
                             .background(
                                 color = Color.Transparent,
                                 shape = RoundedCornerShape(size = 25.dp)
                             ),
                         value = text.value,
+                        singleLine = true,
                         onValueChange = { onChange(it) },
                         decorationBox = { innerTextField ->
                             if (text.value.isEmpty()) {
@@ -378,6 +409,17 @@ fun sendMsgPreView() {
 fun DialogPreview() {
     CustomDialog("lelelel","#estj","자기소개어쩌구라라라라라라라라라라ㅏ라라라라라ㅏ라라라라라라라라라라라라라라라라라") {
 
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Dialog1Preview() {
+    val a = remember {
+        mutableStateOf("sdasdawdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    }
+    ChatBottomAppBar(text = a, onChange = {}) {
+        
     }
 }
 /*

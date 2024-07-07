@@ -1,4 +1,3 @@
-
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
@@ -30,27 +29,27 @@ import com.example.usw_random_chat.presentation.ViewModel.SignInViewModel
 
 
 @Composable // 제가 만들어 놓은 viewmodel 함수를 적용해서 완벽한 signin 화면을 만들어주세요, 어려우면 profile 화면 참고!!
-fun SignInScreen(signInViewModel: SignInViewModel = viewModel(),navController: NavController) {
+fun SignInScreen(signInViewModel: SignInViewModel = viewModel(), navController: NavController) {
 
     LoginImage()
     LoginTextFieldId(
-        id = signInViewModel.id)
-        { newId -> signInViewModel.updateID(newId) }
+        id = signInViewModel.id
+    ) { newId -> signInViewModel.updateID(newId) }
     LoginTextFieldPw(
         password = signInViewModel.password
     ) { signInViewModel.updatePassWord(it) }
-    LoginBtn(){signInViewModel.postSignIn()}
+    LoginBtn() { signInViewModel.postSignIn() }
     OnLoginFindIdAndPassword(navController)
     MadeAccountText()
     SignUpBtn(navController)
 
-    if (signInViewModel.loginState.value){
-        navController.navigate(Screen.MainPageScreen.route){
+    if (signInViewModel.loginState.value) {
+        navController.navigate(Screen.MainPageScreen.route) {
             navController.popBackStack()
         }
         signInViewModel.changeLoginState()
     }
-    if(signInViewModel.dialogState.value){
+    if (signInViewModel.dialogState.value) {
         OneButtonDialog(
             contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
             text = "확인",
@@ -106,12 +105,13 @@ fun LoginTextFieldPw(  // textfield를 하나만 만들고 이름만 바꿔서 �
         onValueChange = onValuePw
     )
 }
+
 @Composable
 fun LoginBtn(onPress: () -> Unit) { //onPress란 람다 함수를 추가시키세요
     Column(
         modifier = Modifier
             .fillMaxHeight()
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(4.9f))
         Row(
             modifier = Modifier
@@ -141,7 +141,7 @@ fun OnLoginFindIdAndPassword(navController: NavController) { //textbutton 이름
     Column(
         modifier = Modifier
             .fillMaxHeight()
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(5.2f))
         Row(
             modifier = Modifier
@@ -196,14 +196,14 @@ fun SignUpBtn(navController: NavController) { // asdasd변수 이름 적절하�
 @Preview(showBackground = true)
 @Composable
 fun SignInPreview(navController: NavController = rememberNavController()) {
-    val id : State<String> = mutableStateOf("")
-    val password : State<String>  = mutableStateOf("")
+    val id: State<String> = mutableStateOf("미ㅑ녀휵ㅇ리ㅑㅛ뮾ㄴㄷ겨라ㅣㅛㅁㅍㅈ")
+    val password: State<String> = mutableStateOf("")
 
     LoginImage()
     LoginTextFieldId(id)
-    {  }
-    LoginTextFieldPw(password) {  }
-    LoginBtn(){}
+    { }
+    LoginTextFieldPw(password) { }
+    LoginBtn() {}
     OnLoginFindIdAndPassword(navController)
     MadeAccountText()
     SignUpBtn(navController)

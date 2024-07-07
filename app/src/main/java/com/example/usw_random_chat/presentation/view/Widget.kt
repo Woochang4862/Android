@@ -3,6 +3,8 @@ package com.example.usw_random_chat.presentation.view
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,11 +18,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -28,6 +33,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TextFieldDefaults.indicatorLine
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -49,6 +55,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -169,6 +176,7 @@ fun LoginFindIdAndPassword(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LoginTextFieldID(
     text: State<String>,
@@ -186,10 +194,67 @@ fun LoginTextFieldID(
                 .fillMaxWidth()
         ) {
             Spacer(modifier = Modifier.weight(0.1f))
-            OutlinedTextField(
+            BasicTextField(
+                value = text.value,
+                onValueChange = onValueChange,
+                singleLine = true,
+                modifier = Modifier
+                    .border(1.dp, Color.Gray, RoundedCornerShape(10.dp))
+                    .weight(1f)
+                    .height(48.dp)
+                    //.wrapContentHeight()
+                    .background(
+                        color = Color.Transparent,
+                        shape = RoundedCornerShape(10.dp)
+                    ).indicatorLine(
+                        enabled = false,
+                        isError = false,
+                        interactionSource = MutableInteractionSource(),
+                        colors = TextFieldDefaults.textFieldColors(
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                        )
+                    ),
+                textStyle = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                    textDecoration = null
+                ),
+                decorationBox = {
+                    TextFieldDefaults.TextFieldDecorationBox(
+                        value = text.value,
+                        innerTextField = it,
+                        enabled = true,
+                        singleLine = true,
+                        interactionSource = MutableInteractionSource(),
+                        contentPadding = TextFieldDefaults.textFieldWithoutLabelPadding(
+                            bottom = 5.dp
+                        ),
+                        visualTransformation = VisualTransformation.None,
+                        placeholder = {
+                            Text(
+                                text = text2,
+                                color = Color(0xFF989898),
+                                style = TextStyle(
+                                    fontSize = 14.sp,
+                                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                                ),
+                            )
+                        },
+                        colors = TextFieldDefaults.textFieldColors(
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                        )
+                    )
+                }
+            )
+            /*OutlinedTextField(
                 value = text.value,
                 onValueChange = onValueChange,
                 shape = RoundedCornerShape(10.dp),
+                singleLine = true,
                 placeholder = {
                     Text(
                         text = text2,
@@ -205,16 +270,18 @@ fun LoginTextFieldID(
                 modifier = Modifier
                     .weight(1f)
                     .height(48.dp)
+                    //.wrapContentHeight()
                     .background(color = Color.White),
                 visualTransformation = if (text2 == "PASSWORD") PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = if (text2 == "PASSWORD") KeyboardOptions(keyboardType = KeyboardType.Password) else KeyboardOptions.Default,
-            )
+            )*/
             Spacer(modifier = Modifier.weight(0.1f))
         }
         Spacer(modifier = Modifier.weight(8.2f))
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LoginTextFieldPW(
     text: State<String>,
@@ -232,29 +299,49 @@ fun LoginTextFieldPW(
                 .fillMaxWidth()
         ) {
             Spacer(modifier = Modifier.weight(0.1f))
-            OutlinedTextField(
+            BasicTextField(
                 value = text.value,
                 onValueChange = onValueChange,
-                shape = RoundedCornerShape(10.dp),
-                placeholder = {
-                    Text(
-                        text = text2,
-                        color = Color(0xFF989898),
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            fontFamily = FontFamily(Font(R.font.pretendard_regular))
-                        ),
-                        modifier = Modifier
-                            .height(IntrinsicSize.Min)
-                    )
-                },
+                singleLine = true,
                 modifier = Modifier
+                    .border(1.dp, Color.Gray, RoundedCornerShape(10.dp))
                     .weight(1f)
                     .height(48.dp)
-                    .background(color = Color.White),
-                visualTransformation = if (text2 == "PASSWORD") PasswordVisualTransformation() else VisualTransformation.None,
+                    //.wrapContentHeight()
+                    .background(
+                        color = Color.Transparent,
+                        shape = RoundedCornerShape(10.dp)
+                    ),
+                textStyle = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                ),
                 keyboardOptions = if (text2 == "PASSWORD") KeyboardOptions(keyboardType = KeyboardType.Password) else KeyboardOptions.Default,
-            )
+                visualTransformation = if (text2 == "PASSWORD") PasswordVisualTransformation() else VisualTransformation.None,
+            ) {
+                TextFieldDefaults.TextFieldDecorationBox(
+                    value = text.value,
+                    innerTextField = it,
+                    enabled = true,
+                    singleLine = true,
+                    visualTransformation = VisualTransformation.None,
+                    interactionSource = MutableInteractionSource(),
+                    contentPadding = TextFieldDefaults.textFieldWithoutLabelPadding(
+                        bottom = 5.dp
+                    ),
+                    placeholder = {
+                        Text(
+                            text = text2,
+                            color = Color(0xFF989898),
+                            style = TextStyle(
+                                fontSize = 14.sp,
+                                fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                            ),
+                            modifier = Modifier
+                        )
+                    }
+                )
+            }
             Spacer(modifier = Modifier.weight(0.1f))
         }
         Spacer(modifier = Modifier.weight(1.6f))
@@ -921,4 +1008,13 @@ fun VisibleTextPreview() {
         onValueChange = {},
         placeholder = "안녕하세요",
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun VisibleTextPreview1() {
+    val sad: State<String> = remember {
+        mutableStateOf("가나다라마바사자ㅇㄹ")
+    }
+    LoginTextFieldID(text = sad, text2 = "ID", onValueChange = {})
 }

@@ -16,5 +16,5 @@ interface SignInApiService {
 
     @POST("open/jwt/renew-token")
     @Headers("content-type: application/json")
-    suspend fun autoSignIn(@Header("authorization") jsonpath: String ) : Response<LoginResponse>
+    suspend fun autoSignIn(@Header("refreshToken") jsonpath: String ) : Response<LoginResponse>
 }

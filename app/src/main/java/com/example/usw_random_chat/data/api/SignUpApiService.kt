@@ -3,6 +3,7 @@ package com.example.usw_random_chat.data.api
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.data.dto.response.ResponseDTO
 import com.example.usw_random_chat.data.dto.response.ResponseUUID
+import com.example.usw_random_chat.data.dto.response.SignUpFinish
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,9 +20,9 @@ interface SignUpApiService {
     @POST("open/member/check-duplicate-account") // 아이디 중복확인
     suspend fun registerIdDoubleCheck(@Body jsonpath: UserDTO) : Response<UserDTO>
 
-    @GET("open/member/confirm-email") // 이메일 인증확인
+    @POST("open/member/sign-up-finish") // 이메일 인증확인
     @Headers("content-type: application/json")
-    suspend fun checkAuthEmail(@Query("uuid") uuid : String): Response<UserDTO>
+    suspend fun checkAuthEmail(@Body account : SignUpFinish): Response<UserDTO>
 
     @POST("open/member/reconfirm-email") // 이메일 재인증
     @Headers("content-type: application/json")
@@ -34,5 +35,6 @@ interface SignUpApiService {
     @POST("open/member/check-duplicate-nickname-signUp") // 닉네임 중복확인
     @Headers("content-type: application/json")
     suspend fun registerCheckSignUpNickName(@Body jsonpath: UserDTO): Response<UserDTO>
+
 
 }

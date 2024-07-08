@@ -3,7 +3,11 @@ package com.example.usw_random_chat.di
 import android.util.Log
 import com.example.usw_random_chat.MainApplication
 import com.example.usw_random_chat.data.TokenInterceptor
+import com.example.usw_random_chat.data.api.SignInApiService
 import com.example.usw_random_chat.data.local.TokenSharedPreference
+import com.example.usw_random_chat.data.repositoryimpl.SignInRepositoryImpl
+import com.example.usw_random_chat.domain.repository.SignInRepository
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +21,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.net.CookieManager
+import javax.inject.Provider
 import javax.inject.Singleton
 
 @Module
@@ -42,13 +47,22 @@ object RetrofitModule {
     }
 
     @Provides
+    fun provideTokenInterceptor(
+        tokenSharedPreference: TokenSharedPreference,
+        signInRepository: Lazy<SignInRepository>
+    ): TokenInterceptor {
+        return TokenInterceptor(tokenSharedPreference, signInRepository)
+    }
+
+
+    @Provides
     @Singleton
     fun provideRetrofit(
         gsonConverterFactory: GsonConverterFactory,
-        tokenSharedPreference: TokenSharedPreference
+        tokenInterceptor: TokenInterceptor
     ): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .client(provideOkHttpClient(TokenInterceptor(tokenSharedPreference)))
+        .client(provideOkHttpClient(tokenInterceptor))
         .addConverterFactory(gsonConverterFactory)
         .build()
 

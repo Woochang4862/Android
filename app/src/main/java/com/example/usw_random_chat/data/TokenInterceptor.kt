@@ -2,10 +2,13 @@ package com.example.usw_random_chat.data
 
 import android.util.Log
 import com.example.usw_random_chat.MainApplication
+import com.example.usw_random_chat.data.api.SignInApiService
 import com.example.usw_random_chat.data.local.TokenSharedPreference
+import com.example.usw_random_chat.data.repositoryimpl.SignInRepositoryImpl
 import com.example.usw_random_chat.domain.repository.SignInRepository
 import com.example.usw_random_chat.domain.usecase.ProfileUseCase
 import com.example.usw_random_chat.domain.usecase.SignInUseCase
+import dagger.Lazy
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,11 +20,12 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 import javax.inject.Inject
+import javax.inject.Provider
 
 
 class TokenInterceptor @Inject constructor(
     private val tokenSharedPreference: TokenSharedPreference,
-    //private val signInRepository: SignInRepository
+    private val signInRepository: Lazy<SignInRepository>
 ) : Interceptor {
 
     private val mutex = Mutex()
@@ -38,7 +42,7 @@ class TokenInterceptor @Inject constructor(
             //리프레시 토큰을 이용해 새로운 액세스 토큰을 발급 받아야함
             401 ->{
                 CoroutineScope(Dispatchers.Default).launch {
-                    //signInRepository.autoSignIn(tokenSharedPreference.getToken("refreshToken",""))
+                    signInRepository.get().autoSignIn(tokenSharedPreference.getToken("refreshToken",""))
                 }
             }
             //새로 로그인을 시도해야함

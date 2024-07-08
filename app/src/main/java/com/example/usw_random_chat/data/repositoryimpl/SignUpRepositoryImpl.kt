@@ -3,6 +3,7 @@ package com.example.usw_random_chat.data.repositoryimpl
 import android.util.Log
 import com.example.usw_random_chat.data.api.SignUpApiService
 import com.example.usw_random_chat.data.dto.UserDTO
+import com.example.usw_random_chat.data.dto.response.SignUpFinish
 import com.example.usw_random_chat.data.local.TokenSharedPreference
 import com.example.usw_random_chat.domain.repository.SignUpRepository
 import javax.inject.Inject
@@ -17,9 +18,11 @@ class SignUpRepositoryImpl @Inject constructor(
         val response = signUpApiService.registerSignUp(param)
 
         return if (response.isSuccessful) {
-            val uuid = response.body()?.message
-            if (uuid != null) {
+            val uuid = response.body()?.data?.uuid
+            val account = response.body()?.data?.account
+            if (uuid != null && account != null) {
                 tokenSharedPreference.setUUID("uuid", uuid)
+                tokenSharedPreference.setAccount("account", account)
             }
             Log.d("이메일 전송 성공", response.body().toString())
             response.code()
@@ -55,7 +58,7 @@ class SignUpRepositoryImpl @Inject constructor(
         if(tokenSharedPreference.getUUID("uuid", "") == ""){
             return 400
         }
-        val response = signUpApiService.checkAuthEmail(tokenSharedPreference.getUUID("uuid", ""))
+        val response = signUpApiService.checkAuthEmail(SignUpFinish(account = tokenSharedPreference.getAccount("account","")))
         return if (response.isSuccessful) {
             response.code()
         } else {

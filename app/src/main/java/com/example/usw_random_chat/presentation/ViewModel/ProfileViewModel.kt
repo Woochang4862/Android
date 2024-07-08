@@ -1,7 +1,9 @@
 package com.example.usw_random_chat.presentation.ViewModel
 
+import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,9 +29,9 @@ class ProfileViewModel @Inject constructor(
     private val _checkSelfIntroduce = mutableStateOf(false)
     private val _dialogCheckSignUpNickNameState = mutableStateOf(false)
     private val _checkSignupNickNameState = mutableStateOf(false)
-    private val _booleanList =
-        mutableListOf<Boolean>(_checkMBTI.value, _checkNickname.value, _checkSelfIntroduce.value)
+    private val _toast = mutableStateOf(false)
 
+    val toast = _toast
     val nickname: State<String> = _nickname
     val mbti: State<String> = _mbti
     val selfintroduce: State<String> = _selfintroduce
@@ -37,7 +39,6 @@ class ProfileViewModel @Inject constructor(
     val checkSelfIntroduce: State<Boolean> = _checkSelfIntroduce
     val checkSignupNickNameState: State<Boolean> = _checkSignupNickNameState
     val dialogCheckSignUpNickNameState: State<Boolean> = _dialogCheckSignUpNickNameState
-    val booleanList: State<Boolean> = mutableStateOf(_booleanList.all { it })
     fun updateNickname(newValue: String) {
         _nickname.value = newValue
         filterNickName()
@@ -55,15 +56,36 @@ class ProfileViewModel @Inject constructor(
 
     fun postProfile() {
         viewModelScope.launch {
-            val comment = profileRepository.setProfile(
-                ProfileDTO(
-                    nickname.value,
-                    mbti.value,
-                    selfintroduce.value
+            if(_checkSignupNickNameState.value){ //중복확인 한 경우
+                val comment = profileRepository.setProfile(
+                    ProfileDTO(
+                        _nickname.value,
+                        _mbti.value,
+                        _selfintroduce.value
+                    )
                 )
-            )
-            if (comment == "닉네임 변경 후 30일이 지나야 변경이 가능합니다."){
-                // 프로필 변경에 실패하고 실패했단 다이얼로그를 띄워야함
+                if (comment == "닉네임 변경 후 30일이 지나야 변경이 가능합니다."){
+                    // 프로필 변경에 실패하고 실패했단 다이얼로그를 띄워야함
+                }
+            } else if (_nickname.value.length > 1 && !_checkSignupNickNameState.value ) {
+                // 중복확인은 안했지만 닉네임칸에 텍스트를 남긴경우 토스트를 띄움
+                profileRepository.setProfile(
+                    ProfileDTO(
+                        "",
+                        mbti.value,
+                        selfintroduce.value
+                    )
+                )
+                _toast.value = true
+                _toast.value = false
+            }else{
+                profileRepository.setProfile(
+                    ProfileDTO(
+                        _nickname.value,
+                        _mbti.value,
+                        _selfintroduce.value
+                    )
+                )
             }
 
         }
@@ -76,6 +98,9 @@ class ProfileViewModel @Inject constructor(
                 !in (200..300) -> _dialogCheckSignUpNickNameState.value = true
             }
         }
+    }
+
+    private fun tmp(){
     }
 
     private fun filterMBTI() {

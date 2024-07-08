@@ -1,6 +1,7 @@
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -40,7 +42,7 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle({profileViewModel.postProfile()},profileViewModel.booleanList.value) { navController.popBackStack() }
+        editSetTitle({profileViewModel.postProfile()},true) { navController.popBackStack() }
         getNickName(profileViewModel.nickname,"",{profileViewModel.doubleCheckNickname()}) { profileViewModel.updateNickname(it) }
         getMBTI(profileViewModel.mbti,"",profileViewModel.checkMBTI.value) { profileViewModel.updateMBTI(it) }
         getSelfIntroduce(profileViewModel.selfintroduce,"",profileViewModel.checkSelfIntroduce.value) { profileViewModel.updateSelfIntroduce(it)}
@@ -50,10 +52,14 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
         SuChatImg()
     }
 
+    if(profileViewModel.toast.value){
+        Toast.makeText(LocalContext.current,"닉네임 변경은 중복확인 후 가능해요!",Toast.LENGTH_SHORT).show()
+    }
+
     if (profileViewModel.checkSignupNickNameState.value) {
         //중복확인 성공했을때 이벤트
         OneButtonDialog(
-            contentText = "닉네임 사용이 \n가능합니다.",
+            contentText = "닉네임 사용이\n가능합니다.",
             text = "확인",
             onPress = { profileViewModel.changeCheckSignUpNickNameState() },
             image = R.drawable.baseline_error_24
@@ -61,7 +67,7 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
     }
     if (profileViewModel.dialogCheckSignUpNickNameState.value) {
         OneButtonDialog(
-            contentText = "닉네임익 \n중복입니다.",
+            contentText = "닉네임\n중복입니다.",
             text = "확인",
             onPress = { profileViewModel.changeDialogCheckSignUpNickNameState() },
             image = R.drawable.baseline_error_24

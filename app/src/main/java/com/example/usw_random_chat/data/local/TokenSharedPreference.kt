@@ -26,4 +26,12 @@ class TokenSharedPreference @Inject constructor(@ApplicationContext context: Con
     fun setUUID(key: String, str: String) {
         prefs.edit().putString(key, str).apply()
     }
+
+    fun getAccount(key: String, defValue: String): String {
+        return prefs.getString(key, defValue).toString()
+    }
+
+    fun setAccount(key: String, str: String) {
+        prefs.edit().putString(key, str).apply()
+    }
 }

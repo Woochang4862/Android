@@ -22,7 +22,7 @@ interface SignUpApiService {
 
     @POST("open/member/sign-up-finish") // 이메일 인증확인
     @Headers("content-type: application/json")
-    suspend fun checkAuthEmail(@Body account : SignUpFinish): Response<UserDTO>
+    suspend fun checkAuthEmail(@Body account : SignUpFinish): Response<SignUpFinish>
 
     @POST("open/member/reconfirm-email") // 이메일 재인증
     @Headers("content-type: application/json")

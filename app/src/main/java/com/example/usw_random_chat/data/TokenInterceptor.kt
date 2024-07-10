@@ -16,6 +16,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
@@ -31,18 +32,28 @@ class TokenInterceptor @Inject constructor(
     private val mutex = Mutex()
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain) : Response {
-        val accessToken = tokenSharedPreference.getToken("accessToken", "")
+        val accessToken = CoroutineScope(Dispatchers.Default).launch {
+            tokenSharedPreference.getToken("accessToken", "")
+        }
+
         val newRequest = chain.request()
             .newBuilder()
             .header("Authorization", "Bearer $accessToken") // 헤더에 authorization라는 key로 JWT 를 넣어준다.
             .build()
 
-        val response = chain.proceed(newRequest)
+        var response = chain.proceed(newRequest)
         when(response.code){
             //리프레시 토큰을 이용해 새로운 액세스 토큰을 발급 받아야함
             401 ->{
-                CoroutineScope(Dispatchers.Default).launch {
-                    signInRepository.get().autoSignIn(tokenSharedPreference.getToken("refreshToken",""))
+                CoroutineScope(Dispatchers.IO).launch {
+                    mutex.withLock {
+                        signInRepository.get().autoSignIn(tokenSharedPreference.getToken("refreshToken",""))
+                    }
+                    val retriedRequest = chain.request()
+                        .newBuilder()
+                        .header("Authorization", "Bearer ${tokenSharedPreference.getToken("accessToken","")}") // 헤더에 authorization라는 key로 JWT 를 넣어준다.
+                        .build()
+                    response = chain.proceed(retriedRequest)
                 }
             }
             //새로 로그인을 시도해야함

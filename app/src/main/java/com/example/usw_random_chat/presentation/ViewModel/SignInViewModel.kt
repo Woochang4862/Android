@@ -43,7 +43,10 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     fun postSignIn(){
         viewModelScope.launch {//viewModelScope 공부하기
             when(signInUseCase.execute(UserDTO(memberID = id.value, memberPassword = password.value))){
-                in (200..300) -> _loginState.value = id.value.isNotEmpty() && password.value.isNotEmpty()
+                in (200..300) -> {
+                    _loginState.value = id.value.isNotEmpty() && password.value.isNotEmpty()
+                    pref.setID("ID",_id.value)
+                }
                 !in (200..300) -> _dialogState.value = true
             }
         }

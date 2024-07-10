@@ -1,6 +1,7 @@
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,7 +29,10 @@ import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.SignUpViewModel
 
 @Composable
-fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navController: NavController){
+fun EmailAuthScreen(
+    signUpViewModel: SignUpViewModel = hiltViewModel(),
+    navController: NavController
+) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val onResumeAction = rememberUpdatedState {
         // 앱이 다시 활성화될 때 실행할 함수 호출
@@ -46,21 +51,25 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navContr
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-    SignUpEmail(email = signUpViewModel.email){ signUpViewModel.updateEmail(it) }
+    SignUpEmail(email = signUpViewModel.email) { signUpViewModel.updateEmail(it) }
     SignUpEmailBtn()
-    RequestEmail(signUpViewModel.checkAuthEmailState.value){
+    RequestEmail(signUpViewModel.checkAuthEmailState.value) {
         signUpViewModel.postEmail()
     }
-    SignUpExitBtn{navController.popBackStack()}
-    CompleteSignUp(signUpViewModel.checkAuthEmailState.value) {navController.navigate(Screen.SignInScreen.route){
-        popUpTo(Screen.SignInScreen.route){inclusive=true}
-    } }
+    SignUpExitBtn { navController.popBackStack() }
+    CompleteSignUp(signUpViewModel.checkAuthEmailState.value) {
+        navController.navigate(Screen.SignInScreen.route) {
+            popUpTo(Screen.SignInScreen.route) { inclusive = true }
+        }
+    }
+
+    //Toast.makeText(LocalContext.current,"회원가입이 완료됐습니다 로그인을 진행해주세요",Toast.LENGTH_SHORT).show()
 
     /*if (signUpViewModel.authEmailState.value){
         navController.navigate(Screen.SignInScreen.route)
         signUpViewModel.changeAuthEmailState()
     }*/
-    if(signUpViewModel.dialogAuthEmailState.value == 0){
+    if (signUpViewModel.dialogAuthEmailState.value == 0) {
         OneButtonDialog(
             contentText = "이메일 전송을\n실패했습니다.",
             text = "확인",
@@ -68,7 +77,7 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navContr
             image = R.drawable.baseline_error_24
         )
     }
-    if(signUpViewModel.dialogAuthEmailState.value == 1){
+    if (signUpViewModel.dialogAuthEmailState.value == 1) {
         OneButtonDialog(
             contentText = "인증메일이 전송되었습니다.\n전송된 인증 URL을 클릭해주세요",
             text = "확인",
@@ -80,14 +89,14 @@ fun EmailAuthScreen(signUpViewModel: SignUpViewModel = hiltViewModel(), navContr
 
 
 @Composable
-fun SignUpExitBtn(onPress: () -> Unit){
+fun SignUpExitBtn(onPress: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 top = 60.dp
             )
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(0.1f))
         TittleWithBackArrow(
             "회원가입",
@@ -122,7 +131,7 @@ fun SignUpEmail(
 }
 
 @Composable
-fun SignUpEmailBtn(){
+fun SignUpEmailBtn() {
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -137,20 +146,21 @@ fun SignUpEmailBtn(){
             text3 = "을 전송합니다",
             modifier = Modifier
                 .height(18.dp)
-                .weight(1f))
+                .weight(1f)
+        )
         Spacer(modifier = Modifier.weight(0.3f))
     }
 }
 
 @Composable
-fun RequestEmail(enable : Boolean,onPress: () -> Unit){
+fun RequestEmail(enable: Boolean, onPress: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 top = 286.dp
             )
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(0.1f))
         CustomButton(
             text = if (enable) "인증메일 재전송" else "인증메일 전송",
@@ -168,14 +178,14 @@ fun RequestEmail(enable : Boolean,onPress: () -> Unit){
 }
 
 @Composable
-fun CompleteSignUp( boolean: Boolean,onPress: () -> Unit,){
+fun CompleteSignUp(boolean: Boolean, onPress: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 top = 360.dp
             )
-    ){
+    ) {
         Spacer(modifier = Modifier.weight(0.1f))
         CustomButton(
             text = "회원가입 완료",
@@ -193,18 +203,16 @@ fun CompleteSignUp( boolean: Boolean,onPress: () -> Unit,){
 }
 
 
-
-
 @SuppressLint("UnrememberedMutableState")
-@Preview (showBackground = true)
+@Preview(showBackground = true)
 @Composable
-fun EmailAuthScreenPreview(){
-    val asd : State<String> = mutableStateOf("")
-    SignUpEmail(email = asd){}
+fun EmailAuthScreenPreview() {
+    val asd: State<String> = mutableStateOf("")
+    SignUpEmail(email = asd) {}
     SignUpEmailBtn()
-    RequestEmail(false){}
-    SignUpExitBtn{}
-    CompleteSignUp(true){}
+    RequestEmail(false) {}
+    SignUpExitBtn {}
+    CompleteSignUp(true) {}
 }
 
 

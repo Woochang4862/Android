@@ -206,15 +206,6 @@ fun LoginTextFieldID(
                     .background(
                         color = Color.Transparent,
                         shape = RoundedCornerShape(10.dp)
-                    ).indicatorLine(
-                        enabled = false,
-                        isError = false,
-                        interactionSource = MutableInteractionSource(),
-                        colors = TextFieldDefaults.textFieldColors(
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            disabledIndicatorColor = Color.Transparent,
-                        )
                     ),
                 textStyle = TextStyle(
                     fontSize = 14.sp,
@@ -229,7 +220,7 @@ fun LoginTextFieldID(
                         singleLine = true,
                         interactionSource = MutableInteractionSource(),
                         contentPadding = TextFieldDefaults.textFieldWithoutLabelPadding(
-                            bottom = 5.dp
+                            bottom = 10.dp,
                         ),
                         visualTransformation = VisualTransformation.None,
                         placeholder = {
@@ -242,11 +233,6 @@ fun LoginTextFieldID(
                                 ),
                             )
                         },
-                        colors = TextFieldDefaults.textFieldColors(
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            disabledIndicatorColor = Color.Transparent,
-                        )
                     )
                 }
             )

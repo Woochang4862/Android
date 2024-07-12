@@ -661,6 +661,7 @@ fun MSG(text: String, color: Color) {
             fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             fontWeight = FontWeight(400),
             color = Color(0xFF191919),
+            maxLines = 5
         )
     }
 

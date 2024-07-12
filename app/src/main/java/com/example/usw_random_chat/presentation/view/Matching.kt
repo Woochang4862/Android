@@ -71,6 +71,11 @@ fun MatchingScreen(navController: NavController, chatViewModel: ChatViewModel = 
         screen4 = matchingDot3.value,
         screen5 = matchingDot4.value
     )
+    if (chatViewModel.matchingPresence.value){
+        navController.navigate(Screen.ChatScreen.route) {
+            navController.popBackStack()
+        }
+    }
 }
 
 @Composable

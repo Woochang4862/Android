@@ -239,7 +239,7 @@ fun getSelfIntroduce(introduce: State<String>, text: String, filter: Boolean ,on
         Column {
             TextField(
                 value = introduce.value,
-                onValueChange = onSelfIntroduceChanged,
+                onValueChange = {if(introduce.value.length<=40){onSelfIntroduceChanged(it)}},
                 placeholder = { Text(text = "학과, 학번 등 소개를 자유롭게 입력하세요(40자 이내)",fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 13.sp) },
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = Color.Black,

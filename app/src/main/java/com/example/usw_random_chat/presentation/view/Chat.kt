@@ -57,6 +57,8 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
         color = Color(0xFF4D76C8)
     )
 
+    chatViewModel.getYourProfile()
+
     if (chatViewModel.profileDialog.value) {
         CustomDialog(
             name = chatViewModel.opponentUserProfile.value.nickName,

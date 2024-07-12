@@ -13,17 +13,12 @@ import javax.inject.Singleton
 class TokenSharedPreference @Inject constructor(@ApplicationContext context: Context)  {
     private val prefs : SharedPreferences =
         context.getSharedPreferences("tokenRepo", Context.MODE_PRIVATE)
-    private val mutex = Mutex()
-    suspend fun getToken(key: String, defValue: String): String {
-        return mutex.withLock {
-            prefs.getString(key, defValue).toString()
-        }
+    fun getToken(key: String, defValue: String): String {
+        return prefs.getString(key, defValue).toString()
     }
 
-    suspend fun setToken(key: String, str: String) {
-        mutex.withLock {
-            prefs.edit().putString(key, str).apply()
-        }
+    fun setToken(key: String, str: String) {
+        prefs.edit().putString(key, str).apply()
     }
     fun getUUID(key: String, defValue: String): String {
         return prefs.getString(key, defValue).toString()

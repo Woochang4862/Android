@@ -34,7 +34,8 @@ class ChatViewModel @Inject constructor(
 ) : ViewModel() {
 
     private lateinit var stompConnection: Disposable
-    private  var roodID: String = "1234"
+    private lateinit var roodID: String
+    private lateinit var targetAccount : String
     private val userID = tokenSharedPreference.getID("ID","")
     private val tag = "STOMP"
     private val serverUrl: String = "ws://43.202.91.160:8080/stomp"
@@ -47,7 +48,9 @@ class ChatViewModel @Inject constructor(
     private val _exitDialog = mutableStateOf(false)
     private val _userProfile = mutableStateOf(ProfileDTO("", "", ""))
     private val _opponentUserProfile = mutableStateOf(ProfileDTO("", "", ""))
+    private val _matchingPresence = mutableStateOf(false)
 
+    val matchingPresence = _matchingPresence
     val chatList = _chatList
     val msg: State<String> = _msg
     val profileDialog: State<Boolean> = _profileDialog
@@ -76,11 +79,19 @@ class ChatViewModel @Inject constructor(
 
     }
 
+    @SuppressLint("CheckResult")
     fun startMatching() {
         connectStomp()
         stomp.join("/queue/match/in/$userID").subscribe {
             Log.d("receive", it)
-            //val msg = Gson().fromJson(it, MessageDTO::class.java)
+            if(it.slice(0..3) == "매칭완료"){
+                roodID = it.slice(5..41)
+                targetAccount = it.substring(42)
+                stomp.join("/queue/match/in/$userID").subscribe { Log.d(tag, "Unsubscribe Success") }.dispose()
+                _matchingPresence.value = true
+                subscribeStomp()
+                _matchingPresence.value = false
+            }
         }
         stomp.send("/pub/queue/match/in/$userID", "").subscribe {
             if (it){
@@ -130,7 +141,7 @@ class ChatViewModel @Inject constructor(
 
     fun getYourProfile() {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = profileRepository.getYourProfile()
+            val response = profileRepository.getYourProfile(targetAccount)
             _opponentUserProfile.value.mbti = response.data.mbti
 
             _opponentUserProfile.value.nickName = response.data.nickName
@@ -149,7 +160,7 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             val jsonObject = JSONObject().apply {
                 put("roomId", roodID)
-                put("sender", "이경수")
+                put("sender", _userProfile.value.nickName)
                 put("contents", _msg.value)
 
             }
@@ -168,7 +179,7 @@ class ChatViewModel @Inject constructor(
 
     }
 
-    fun connectStomp() {
+    private fun connectStomp() {
         viewModelScope.launch {
             stompConnection = stomp.connect().subscribe() {
                 when (it.type) {
@@ -196,7 +207,7 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun subscribeStomp() {
+    private fun subscribeStomp() {
         viewModelScope.launch {
             stomp.join("/sub/chat/$roodID").subscribe { message ->
                 Log.d("receive", message)

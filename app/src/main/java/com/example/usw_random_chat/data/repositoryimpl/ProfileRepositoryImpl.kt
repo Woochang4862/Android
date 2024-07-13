@@ -35,8 +35,8 @@ class ProfileRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getYourProfile(): ProfileResponseDTO {
-        val response = profileApiService.getYourProfile("asd")
+    override suspend fun getYourProfile(targetAccount : String): ProfileResponseDTO {
+        val response = profileApiService.getYourProfile(targetAccount)
 
         return if (response.isSuccessful) {
             response.body()!!

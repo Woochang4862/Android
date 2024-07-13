@@ -45,15 +45,6 @@ object RetrofitModule {
     fun provideGsonConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create()
     }
-/*
-    @Provides
-    fun provideTokenInterceptor(
-        tokenSharedPreference: TokenSharedPreference,
-        signInRepository: Lazy<SignInRepository>
-    ): TokenInterceptor {
-        return TokenInterceptor(tokenSharedPreference, signInRepository)
-    }*/
-
 
     @Provides
     @Singleton

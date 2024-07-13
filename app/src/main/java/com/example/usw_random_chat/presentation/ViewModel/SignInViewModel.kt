@@ -4,8 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import com.example.usw_random_chat.data.dto.Token
 import com.example.usw_random_chat.data.dto.UserDTO
 import com.example.usw_random_chat.data.local.TokenSharedPreference
 import com.example.usw_random_chat.domain.usecase.SignInUseCase
@@ -14,7 +12,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCase, private val pref : TokenSharedPreference) : ViewModel() {
+class SignInViewModel @Inject constructor(
+    private val signInUseCase: SignInUseCase,
+    private val tokenSharedPreference : TokenSharedPreference,
+    ) : ViewModel() {
 
     private val _id = mutableStateOf("")
     private val _password = mutableStateOf("")
@@ -26,6 +27,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     val id : State<String> = _id
     val password : State<String>  = _password
     val dialogState : State<Boolean> = _dialogState
+
 
     fun updateID(newValue : String){
         _id.value = newValue
@@ -45,7 +47,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
             when(signInUseCase.execute(UserDTO(memberID = id.value, memberPassword = password.value))){
                 in (200..300) -> {
                     _loginState.value = id.value.isNotEmpty() && password.value.isNotEmpty()
-                    pref.setID("ID",_id.value)
+                    tokenSharedPreference.setID("ID",_id.value)
                 }
                 !in (200..300) -> _dialogState.value = true
             }
@@ -54,12 +56,13 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
     fun autoSignIn(){
         viewModelScope.launch{
-            val refreshToken = pref.getToken("refreshToken","")
+            val refreshToken = tokenSharedPreference.getToken("refreshToken","")
 
             when(signInUseCase.autoSignIn(refreshToken)){
                 in 200..300 -> _loginState.value = true
             }
         }
     }
+
 
 }

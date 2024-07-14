@@ -43,7 +43,7 @@ fun Navigation () {
         }
         composable(route = Screen.ProfileScreen.route) {
             val viewModel = hiltViewModel<ProfileViewModel>()
-            ProfileScreen(viewModel,navController)
+            //ProfileScreen(viewModel,navController)
         }
         composable(route = Screen.FeedBackScreen.route) {
             FeedbackShow(navController)

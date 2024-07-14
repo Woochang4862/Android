@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.presentation.ViewModel
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,7 @@ import com.example.usw_random_chat.domain.repository.ProfileRepository
 import com.example.usw_random_chat.domain.usecase.ProfileUseCase
 import com.example.usw_random_chat.domain.usecase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,6 +33,7 @@ class ProfileViewModel @Inject constructor(
     private val _checkSignupNickNameState = mutableStateOf(false)
     private val _toast = mutableStateOf(false)
 
+
     val toast = _toast
     val nickname: State<String> = _nickname
     val mbti: State<String> = _mbti
@@ -39,6 +42,10 @@ class ProfileViewModel @Inject constructor(
     val checkSelfIntroduce: State<Boolean> = _checkSelfIntroduce
     val checkSignupNickNameState: State<Boolean> = _checkSignupNickNameState
     val dialogCheckSignUpNickNameState: State<Boolean> = _dialogCheckSignUpNickNameState
+
+    init {
+        getProfile()
+    }
     fun updateNickname(newValue: String) {
         _nickname.value = newValue
         filterNickName()
@@ -91,6 +98,25 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    private fun getProfile() {
+        viewModelScope.launch(Dispatchers.Main) {
+            val response = profileRepository.getProfile()
+            if (response.data.mbti == null) {
+                _mbti.value = ""
+            } else {
+                _mbti.value = response.data.mbti
+            }
+            _nickname.value = response.data.nickName
+
+            if (response.data.selfIntroduce == null) {
+                _selfintroduce.value = ""
+            } else {
+                _selfintroduce.value = response.data.selfIntroduce
+            }
+
+        }
+    }
+
     fun doubleCheckNickname() {
         viewModelScope.launch {
             when (signUpUseCase.checkSignUpNickName(UserDTO(nickname = _nickname.value))) {
@@ -98,9 +124,6 @@ class ProfileViewModel @Inject constructor(
                 !in (200..300) -> _dialogCheckSignUpNickNameState.value = true
             }
         }
-    }
-
-    private fun tmp(){
     }
 
     private fun filterMBTI() {

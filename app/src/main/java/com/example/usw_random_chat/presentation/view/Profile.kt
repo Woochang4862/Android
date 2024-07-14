@@ -41,7 +41,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
-
+/*
 @Composable
 fun ProfileScreen(profileViewModel : ProfileViewModel = viewModel(),navController: NavController) {
     Column(
@@ -333,3 +333,4 @@ fun setTitlePreview() {
     setTitle(){}
 }
 
+*/

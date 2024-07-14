@@ -135,7 +135,7 @@ fun getNickName(nickname: State<String>, text : String, onPress: () -> Unit ,onN
         ) {
             TextField(
                 value = nickname.value,
-                onValueChange = onNicknameChanged,
+                onValueChange = {if(it.length <=8 )onNicknameChanged(it)},
                 placeholder = { Text(text = "#NICKNAME", color = Color.Gray, fontSize = 13.sp) },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.White,
@@ -194,7 +194,7 @@ fun getMBTI(mbti: State<String>, text: String, filter : Boolean ,onMBTIChanged: 
         Column {
             TextField(
                 value = mbti.value,
-                onValueChange = onMBTIChanged,
+                onValueChange = {if(it.length <=4 ) onMBTIChanged(it)},
                 placeholder = { Text(text = "#MBTI",fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 13.sp) },
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = Color.Black,
@@ -239,8 +239,8 @@ fun getSelfIntroduce(introduce: State<String>, text: String, filter: Boolean ,on
         Column {
             TextField(
                 value = introduce.value,
-                onValueChange = {if(introduce.value.length<=40){onSelfIntroduceChanged(it)}},
-                placeholder = { Text(text = "학과, 학번 등 소개를 자유롭게 입력하세요(40자 이내)",fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 13.sp) },
+                onValueChange = {if(it.length<=40){onSelfIntroduceChanged(it)}},
+                placeholder = { Text(text = if (introduce.value == "") "학과, 학번 등 소개를 자유롭게 입력하세요(40자 이내)" else introduce.value,fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 13.sp) },
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = Color.Black,
                     backgroundColor = Color.Transparent,

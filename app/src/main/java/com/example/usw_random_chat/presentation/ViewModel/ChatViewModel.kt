@@ -117,6 +117,12 @@ class ChatViewModel @Inject constructor(
         _msg.value = newValue
     }
 
+    fun logout(){
+        viewModelScope.launch {
+            tokenSharedPreference.setToken("accessToken","")
+            tokenSharedPreference.setToken("refreshToken","")
+        }
+    }
     fun getProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = profileRepository.getProfile()

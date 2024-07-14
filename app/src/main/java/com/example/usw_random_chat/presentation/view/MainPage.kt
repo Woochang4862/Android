@@ -76,7 +76,8 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
                     DrawerScreen(
                         navController,
                         chatViewModel.userProfile.value.nickName,
-                        chatViewModel.userProfile.value.mbti) {
+                        chatViewModel.userProfile.value.mbti,
+                        {chatViewModel.logout()}) {
                         scope.launch {
                             scaffoldState.drawerState.close()
                         }
@@ -99,7 +100,7 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
 }
 
 @Composable
-fun DrawerScreen(navController: NavController, name : String, mbti : String, onPress: () -> Unit) {
+fun DrawerScreen(navController: NavController, name : String, mbti : String, onPressLogout: () -> Unit ,onPress: () -> Unit) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         Column(modifier = Modifier.fillMaxSize()) {
             IconButton(
@@ -143,7 +144,10 @@ fun DrawerScreen(navController: NavController, name : String, mbti : String, onP
                 }
                 Spacer(modifier = Modifier.height(25.dp))
                 DrawerMenu(image = R.drawable.logout, menuName = "로그아웃") {
-
+                    onPressLogout
+                    navController.navigate(Screen.SignInScreen.route) {
+                        popUpTo(Screen.SignInScreen.route) { inclusive = true }
+                    }
                 }
             }
             Box(

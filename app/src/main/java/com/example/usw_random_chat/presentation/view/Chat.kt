@@ -26,6 +26,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,8 +57,8 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
     systemUiController.setSystemBarsColor(
         color = Color(0xFF4D76C8)
     )
-
     chatViewModel.getYourProfile()
+
 
     if (chatViewModel.profileDialog.value) {
         CustomDialog(
@@ -91,7 +92,7 @@ fun ChattingScreen(chatViewModel: ChatViewModel = viewModel()) {
 
     Scaffold(
         topBar = {
-            ChatTopAppBar(chatViewModel.userProfile.value.nickName!!,
+            ChatTopAppBar(chatViewModel.opponentUserProfile.value.nickName,
                 {
                     chatViewModel.getYourProfile()
                     chatViewModel.closeProfileDialog()

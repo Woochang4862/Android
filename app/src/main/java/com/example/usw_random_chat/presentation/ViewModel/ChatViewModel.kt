@@ -79,18 +79,23 @@ class ChatViewModel @Inject constructor(
 
     }
 
+    private fun changeMatchingPresence(){
+        _matchingPresence.value = !_matchingPresence.value
+    }
+
     @SuppressLint("CheckResult")
     fun startMatching() {
         connectStomp()
         stomp.join("/queue/match/in/$userID").subscribe {
             Log.d("receive", it)
-            if(it.slice(0..3) == "매칭완료"){
-                roodID = it.slice(5..41)
-                targetAccount = it.substring(42)
+            if(it.slice(1..4) == "매칭완료"){
+                roodID = it.slice(6..41)
+                targetAccount = it.substring(43)
+                Log.d("RoomID",roodID)
+                Log.d("targetAccount",targetAccount)
                 stomp.join("/queue/match/in/$userID").subscribe { Log.d(tag, "Unsubscribe Success") }.dispose()
-                _matchingPresence.value = true
                 subscribeStomp()
-                _matchingPresence.value = false
+                changeMatchingPresence()
             }
         }
         stomp.send("/pub/queue/match/in/$userID", "").subscribe {
@@ -126,38 +131,24 @@ class ChatViewModel @Inject constructor(
     fun getProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = profileRepository.getProfile()
-            if (response.data.mbti == null) {
-                _userProfile.value.mbti = "MBTI를 작성해주세요!"
-            } else {
-                _userProfile.value.mbti = response.data.mbti
+            _userProfile.value.apply {
+                mbti = response.data.mbti ?: "MBTI를 작성해주세요!"
+                nickName = response.data.nickName
+                selfIntroduce = response.data.selfIntroduce ?:"자기소개를 작성해주세요!"
             }
-            _userProfile.value.nickName = response.data.nickName
-
-            if (response.data.selfIntroduce == null) {
-                _userProfile.value.selfIntroduce = "자기소개를 작성해주세요!"
-            } else {
-                _userProfile.value.selfIntroduce = response.data.selfIntroduce
-            }
-            Log.d("프로필 mb", response.data?.mbti.toString())
-            Log.d("프로필 nick", response.data.nickName)
-            Log.d("프로필 self", response.data?.selfIntroduce.toString())
-
         }
     }
 
     fun getYourProfile() {
         viewModelScope.launch(Dispatchers.IO) {
+            changeMatchingPresence()
             val response = profileRepository.getYourProfile(targetAccount)
-            _opponentUserProfile.value.mbti = response.data.mbti
 
-            _opponentUserProfile.value.nickName = response.data.nickName
-
-            _opponentUserProfile.value.selfIntroduce = response.data.selfIntroduce
-
-            Log.d("프로필 mb", response.data?.mbti.toString())
-            Log.d("프로필 nick", response.data.nickName)
-            Log.d("프로필 self", response.data?.selfIntroduce.toString())
-
+            _opponentUserProfile.value?.apply {
+                mbti = response.data.mbti ?: "값을 넣어주세요"
+                nickName = response.data.nickName ?: "값을 넣어주세요"
+                selfIntroduce = response.data.selfIntroduce ?: "값을 넣어주세요"
+            }
         }
     }
 

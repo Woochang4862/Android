@@ -59,7 +59,7 @@ fun Navigation () {
             LoadingScreen(navController,signinViewModel)
         }
         composable(route = Screen.ChatScreen.route) {
-            ChattingScreen(chatViewModel)
+            ChattingScreen(navController,chatViewModel)
         }
         composable(route = Screen.MainPageScreen.route) {
             MainScreen(navController,chatViewModel)

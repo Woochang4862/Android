@@ -62,7 +62,7 @@ fun MatchingScreen(navController: NavController, chatViewModel: ChatViewModel = 
     TextBlack()
     MatchingStopBtn{
         navController.popBackStack()
-        chatViewModel.exitChattingRoom()
+        chatViewModel.stopMatching()
     }
     MatchingAnimation(
         screen1 = matchingBlank.value,

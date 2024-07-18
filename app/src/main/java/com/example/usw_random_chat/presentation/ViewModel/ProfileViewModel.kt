@@ -74,7 +74,7 @@ class ProfileViewModel @Inject constructor(
                 if (comment == "닉네임 변경 후 30일이 지나야 변경이 가능합니다."){
                     // 프로필 변경에 실패하고 실패했단 다이얼로그를 띄워야함
                 }
-            } else if (_nickname.value.length > 1 && !_checkSignupNickNameState.value ) {
+            } else if (_nickname.value.length > 1 && !_checkSignupNickNameState.value) {
                 // 중복확인은 안했지만 닉네임칸에 텍스트를 남긴경우 토스트를 띄움
                 profileRepository.setProfile(
                     ProfileDTO(
@@ -84,7 +84,7 @@ class ProfileViewModel @Inject constructor(
                     )
                 )
                 _toast.value = true
-                _toast.value = false
+                //_toast.value = false
             }else{
                 profileRepository.setProfile(
                     ProfileDTO(
@@ -99,21 +99,15 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getProfile() {
-        viewModelScope.launch(Dispatchers.Main) {
-            val response = profileRepository.getProfile()
-            if (response.data.mbti == null) {
-                _mbti.value = ""
-            } else {
-                _mbti.value = response.data.mbti
+        viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(Dispatchers.Main) {
+                val response = profileRepository.getProfile()
+                response.apply {
+                    _mbti.value = response.data.mbti ?: "MBTI를 작성해주세요!"
+                    _nickname.value = response.data.nickName
+                    _selfintroduce.value = response.data.selfIntroduce ?:"자기소개를 작성해주세요!"
+                }
             }
-            _nickname.value = response.data.nickName
-
-            if (response.data.selfIntroduce == null) {
-                _selfintroduce.value = ""
-            } else {
-                _selfintroduce.value = response.data.selfIntroduce
-            }
-
         }
     }
 

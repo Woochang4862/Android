@@ -47,17 +47,23 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.ChatViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = viewModel()) {
+    val systemUiController = rememberSystemUiController()//상태바 색상변경
+    systemUiController.setSystemBarsColor(color = Color.White)
+
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(chatViewModel.userProfile.value){
         chatViewModel.getProfile()
     }
+
+
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Scaffold(
             scaffoldState = scaffoldState,
@@ -72,7 +78,6 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
             },
             drawerContent = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-
                     DrawerScreen(
                         navController,
                         chatViewModel.userProfile.value.nickName,
@@ -82,7 +87,7 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
                             scaffoldState.drawerState.close()
                         }
                     }
-                    Log.d("닉네임",chatViewModel.userProfile.value.nickName!!)
+                    //Log.d("닉네임",chatViewModel.userProfile.value.nickName!!)
                 }
             },
 

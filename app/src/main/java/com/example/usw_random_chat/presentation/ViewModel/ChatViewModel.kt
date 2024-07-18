@@ -60,10 +60,15 @@ class ChatViewModel @Inject constructor(
     val userProfile: State<ProfileDTO> = _userProfile
 
     fun exitChattingRoom() {
+        stomp.join("/sub/chat/$roodID").subscribe{}.dispose()
+        disconnectStomp()
+    }
+
+    fun stopMatching(){
         stomp.join("/queue/match/in/$userID").subscribe { Log.d(tag, "Unsubscribe Success") }.dispose()
 
         stomp.join("/queue/match/cancel/$userID").subscribe {
-           Log.d("receive", it)
+            Log.d("receive", it)
         }
 
         stomp.send("/pub/queue/match/cancel/$userID", "").subscribe {
@@ -73,6 +78,7 @@ class ChatViewModel @Inject constructor(
             Log.d("receive", it)
         }.dispose()
 
+        disconnectStomp()
     }
 
     fun sendReport() {
@@ -107,15 +113,15 @@ class ChatViewModel @Inject constructor(
     }
 
     fun closeProfileDialog() {
-        _profileDialog != _profileDialog
+        _profileDialog.value = !_profileDialog.value
     }
 
     fun closeExitDialog() {
-        _exitDialog != _exitDialog
+        _exitDialog.value = !_exitDialog.value
     }
 
     fun closeReportDialog() {
-        _reportDialog != _reportDialog
+        _reportDialog.value = !_reportDialog.value
     }
 
     fun updateMSG(newValue: String) {
@@ -129,7 +135,8 @@ class ChatViewModel @Inject constructor(
         }
     }
     fun getProfile() {
-        viewModelScope.launch(Dispatchers.IO) {
+        Log.d("실행됨","프로필 가져오기")
+        viewModelScope.launch(Dispatchers.Main) {
             val response = profileRepository.getProfile()
             _userProfile.value.apply {
                 mbti = response.data.mbti ?: "MBTI를 작성해주세요!"
@@ -198,7 +205,7 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun disconnectStomp() {
+    private fun disconnectStomp() {
         viewModelScope.launch {
             stompConnection.dispose()
         }

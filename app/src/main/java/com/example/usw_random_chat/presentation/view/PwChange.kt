@@ -1,5 +1,6 @@
 package com.example.usw_random_chat.presentation.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -158,8 +161,45 @@ fun PwChangeButton(trigger: Boolean, navController: NavController, onPress: () -
 }
 
 
+@SuppressLint("UnrememberedMutableState")
 @Preview(showBackground = true)
 @Composable
 fun PwChangeScreenPreview() {
-    PwChangeScreen(navController = rememberNavController())
+    val navController = rememberNavController()
+    val pw : State<String> = mutableStateOf("451")
+    val pw1 : State<String> = mutableStateOf("451")
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFFFFFFFF))
+    ) {
+
+        Spacer(Modifier.padding(20.dp))
+
+        TittleWithBackArrow(
+            "비밀번호 변경",
+            modifier = Modifier
+                .height(48.dp)
+                .width(100.dp)
+                .offset(y = 10.dp)
+                .weight(0.6f),
+            onBackClick = { navController.popBackStack() }
+        )
+
+        Spacer(Modifier.padding(15.dp))
+
+        TextFieldOfPwChange( pw ) {
+            //userModifyViewModel.updateRememberPW(it)
+        }
+        Spacer(Modifier.padding(10.dp))
+        TextFieldOfPwCheck(pw1, true
+        ) {
+           // userModifyViewModel.updateRememberPWCheck(it)
+        }
+
+        Spacer(Modifier.padding(20.dp))
+        PwChangeButton(false, navController = navController) {
+           //userModifyViewModel.changePW()
+        }
+    }
 }

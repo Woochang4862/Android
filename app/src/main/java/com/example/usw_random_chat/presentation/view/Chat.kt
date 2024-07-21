@@ -75,7 +75,7 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
     systemUiController.setSystemBarsColor(color = Color(0xFF4D76C8))
 
 
-    // chatViewModel.getYourProfile()
+    chatViewModel.getYourProfile()
 
     BackHandler {
         chatViewModel.closeExitDialog()

@@ -185,13 +185,11 @@ fun inputCode(code: State<String>, onChange: (String) -> Unit, onPress: () -> Un
                 unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
                 disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
             ),
-            // shape 속성 주석 처리
-            // shape = RoundedCornerShape(8.dp),
             modifier = Modifier
                 .weight(1f)
         )
         Button(
-            onClick = { onPress },
+            onClick = { onPress() },
             modifier = Modifier
                 .padding(end = 6.dp)
                 .align(Alignment.CenterVertically)
@@ -202,6 +200,7 @@ fun inputCode(code: State<String>, onChange: (String) -> Unit, onPress: () -> Un
                 contentColor = Color.White,
                 backgroundColor = Color(0xFF2D64D8)
             ),
+            enabled = code.value.length == 4
         ) {
             Text(
                 "확인",

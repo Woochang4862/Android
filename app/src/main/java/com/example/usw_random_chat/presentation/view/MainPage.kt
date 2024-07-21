@@ -149,9 +149,9 @@ fun DrawerScreen(navController: NavController, name : String, mbti : String, onP
                 }
                 Spacer(modifier = Modifier.height(25.dp))
                 DrawerMenu(image = R.drawable.logout, menuName = "로그아웃") {
-                    onPressLogout
+                    onPressLogout()
                     navController.navigate(Screen.SignInScreen.route) {
-                        popUpTo(Screen.SignInScreen.route) { inclusive = true }
+                        popUpTo(navController.graph.id) { inclusive = true }
                     }
                 }
             }

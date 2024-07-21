@@ -130,6 +130,7 @@ class ChatViewModel @Inject constructor(
 
     fun logout(){
         viewModelScope.launch {
+            profileRepository.logout(tokenSharedPreference.getToken("refreshToken",""))
             tokenSharedPreference.setToken("accessToken","")
             tokenSharedPreference.setToken("refreshToken","")
         }

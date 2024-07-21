@@ -2,6 +2,7 @@ package com.example.usw_random_chat.data.api
 
 import com.example.usw_random_chat.data.dto.ProfileDTO
 import com.example.usw_random_chat.data.dto.response.ProfileResponseDTO
+import com.example.usw_random_chat.data.dto.response.ResponseDTO
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -24,6 +25,9 @@ interface ProfileApiService {
     @GET("secure/profile/get-other-profile") // 세부 주소
     @Headers("content-type: application/json")
     suspend fun getYourProfile(@Query("targetAccount") param : String) : Response<ProfileResponseDTO>
+
+    @POST("/secure/member/sign-out") // 매칭하기
+    suspend fun logout(@Header("Authorization") refreshToken : String) : Response<ResponseDTO>
 
 
 }

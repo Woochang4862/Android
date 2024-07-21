@@ -9,4 +9,6 @@ interface ProfileRepository {
     suspend fun getProfile() : ProfileResponseDTO
 
     suspend fun getYourProfile(targetAccount : String) : ProfileResponseDTO
+
+    suspend fun logout(refreshToken : String)
 }

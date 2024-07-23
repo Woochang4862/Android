@@ -5,14 +5,12 @@ import com.example.usw_random_chat.data.dto.UserDTO
 
 interface UserModifyRepository {
 
-    suspend fun searchPW(param : UserDTO) : Int
+    suspend fun createPWChangeCode(param : UserDTO) : Int
 
-    suspend fun postAuthCode(param : UserDTO) : Int
-
-    suspend fun checkAuthCode(param : UserDTO) : UserDTO
+    suspend fun checkAuthCode(param : String) : UserDTO
 
     suspend fun changePW(param : PassWordDTO) : Int
 
-    suspend fun postCheckEmail(param : UserDTO) : Int
+    suspend fun findUserID(param : String) : Int
 
 }

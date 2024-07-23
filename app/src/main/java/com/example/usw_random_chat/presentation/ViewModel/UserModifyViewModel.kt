@@ -7,14 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usw_random_chat.data.dto.PassWordDTO
 import com.example.usw_random_chat.data.dto.UserDTO
-import com.example.usw_random_chat.domain.usecase.UserModifyUseCase
+import com.example.usw_random_chat.domain.repository.UserModifyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class UserModifyViewModel @Inject constructor(
-    private val userModifyUseCase: UserModifyUseCase
+    //private val userModifyUseCase: UserModifyUseCase
+    private val userModifyRepository: UserModifyRepository
 ) : ViewModel() {
 
     private val _rememberPW = mutableStateOf("")
@@ -28,6 +29,10 @@ class UserModifyViewModel @Inject constructor(
     private val _checkIdSearchAuthEmail = mutableStateOf(false)
     private val _dialogCheckIdSearchAuthEmail = mutableStateOf(false)
 
+    private val _checkPWCode = mutableStateOf(0)
+    private val _changePWValue = mutableStateOf(0)
+    //private val _dialogCheckIdSearchAuthEmail = mutableStateOf(false)
+
     val rememberPW: State<String> = _rememberPW
     val rememberPWCheck: State<String> = _rememberPWCheck
     val rememberPwEqualOrNot: State<Boolean> = _rememberPwEqualOrNot
@@ -38,6 +43,8 @@ class UserModifyViewModel @Inject constructor(
     val dialogCheckIdSearchAuthEmail: State<Boolean> = _dialogCheckIdSearchAuthEmail
     val rememberCode: State<String> = _rememberCode
     val rememberID: State<String> = _rememberId
+    val checkPWCode = _checkPWCode
+    val changePWValue = _changePWValue
 
 
     fun updateCode(newValue: String) {
@@ -58,6 +65,14 @@ class UserModifyViewModel @Inject constructor(
 
     fun changeDialogCheckIdSearchAuthEmail() {
         _dialogCheckIdSearchAuthEmail.value = !_dialogCheckIdSearchAuthEmail.value
+    }
+
+    fun changePWCodeDialog(){
+        _checkPWCode.value = 0
+    }
+
+    fun changePWValueDialog(){
+        _changePWValue.value = 0
     }
 
     fun updateRememberPW(newValue: String) {
@@ -86,34 +101,35 @@ class UserModifyViewModel @Inject constructor(
         _rememberPwLength.value = !(_rememberPW.value.length < 6 || _rememberPW.value.length > 20)
     }
 
-    fun postPwChange() {
-        viewModelScope.launch {
-            userModifyUseCase.searchPW(UserDTO(memberPassword = _rememberPW.value))
-        }
-    }
 
-    fun searchPW() {
+    fun createPWChangeCode() {
         viewModelScope.launch {
-            when(userModifyUseCase.searchPW(UserDTO(memberID = _rememberId.value, email = _email.value))) {
-                in (200..300) -> _checkIdSearchAuthEmail.value = true
-                !in (200..300) -> _dialogCheckIdSearchAuthEmail.value = true
+            when(userModifyRepository.createPWChangeCode(UserDTO(memberID = _rememberId.value, email = _email.value))) {
+                in (200..300) -> _checkPWCode.value = 1
+                !in (200..300) -> _checkPWCode.value = 2
             }
             Log.d("PWPW","!@#!@#")
         }
     }
 
+    fun checkAuthCode(){
+        viewModelScope.launch{
+
+        }
+    }
+
     fun changePW() {
         viewModelScope.launch {
-            when(userModifyUseCase.changePW(PassWordDTO(_rememberPW.value,_rememberPWCheck.value))){
-                in (200..300) -> _checkIdSearchAuthEmail.value = true
-                !in (200..300) -> _dialogCheckIdSearchAuthEmail.value = true
+            when(userModifyRepository.changePW(PassWordDTO(_rememberPW.value,_rememberPWCheck.value))){
+                in (200..300) -> _changePWValue.value = 1
+                !in (200..300) -> _changePWValue.value = 2
             }
         }
     }
 
-    fun postAuthEmail() {   //아이디 찾기에 있는 확인 메일 전송 버튼 함수
+    fun findUserID() {   //아이디 찾기에 있는 확인 메일 전송 버튼 함수 //완료
         viewModelScope.launch {
-            when (userModifyUseCase.postAuthCode(UserDTO(email = _email.value))) {
+            when (userModifyRepository.findUserID(_email.value)) {
                 in (200..300) -> _checkIdSearchAuthEmail.value = true
                 !in (200..300) -> _dialogCheckIdSearchAuthEmail.value = true
             }

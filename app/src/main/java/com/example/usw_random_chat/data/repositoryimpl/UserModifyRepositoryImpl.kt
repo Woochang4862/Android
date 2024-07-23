@@ -13,9 +13,9 @@ class UserModifyRepositoryImpl @Inject constructor(
     private val tokenSharedPreference: TokenSharedPreference
     ) : UserModifyRepository {
 
-    override suspend fun searchPW(param: UserDTO): Int {
-        val response = userModifyApiService.postCodePwSearch(param)
-        val uuid = response.body()?.data?.uuid
+    override suspend fun createPWChangeCode(param: UserDTO): Int {
+        val response = userModifyApiService.createPWChangeCode(param)
+        val uuid = response.body()?.message
         if (uuid != null) {
             tokenSharedPreference.setUUID("uuid",uuid)
         }
@@ -27,20 +27,9 @@ class UserModifyRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun postAuthCode(param: UserDTO): Int {
-        val response = userModifyApiService.postAuthCode(param)
 
-        if (response.isSuccessful){
-            Log.d("ID",response.body().toString())
-            return response.code()
-        }else{
-            Log.d("ID",response.body().toString())
-            throw Exception("Fail!!")
-        }
-    }
-
-    override suspend fun checkAuthCode(param: UserDTO): UserDTO {
-        val response = userModifyApiService.checkAuthCode(param)
+    override suspend fun checkAuthCode(param: String): UserDTO {
+        val response = userModifyApiService.checkAuthCode("",param)
 
         if (response.isSuccessful){
             return response.body()!!
@@ -50,7 +39,7 @@ class UserModifyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun changePW(param: PassWordDTO): Int {
-        val response = userModifyApiService.changePW(param,tokenSharedPreference.getUUID("uuid",""))
+        val response = userModifyApiService.changePW(tokenSharedPreference.getUUID("uuid",""),param)
 
         if (response.isSuccessful){
 
@@ -61,15 +50,12 @@ class UserModifyRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun postCheckEmail(param: UserDTO) : Int{
-        val response = userModifyApiService.registerPostCheckEmail(param)
+    override suspend fun findUserID(param: String): Int {
+        val response = userModifyApiService.findUserID(param)
 
-        return if (response.isSuccessful) {
-            response.code()
-        } else {
-            Log.d("아이디 중복 확인 실패",response.body().toString())
-            response.code()
-        }
+        return response.code()
     }
+
+
 
 }

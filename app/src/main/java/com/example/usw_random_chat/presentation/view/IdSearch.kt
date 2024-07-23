@@ -26,7 +26,7 @@ import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
 fun IdSearch(userModifyViewModel: UserModifyViewModel = viewModel(), navController: NavController){
     IdSearchEmail(email = userModifyViewModel.email){ userModifyViewModel.updateEmail(it) }
     IdText()
-    IdSearchEmailBtn(){userModifyViewModel.postAuthEmail()}
+    IdSearchEmailBtn(){userModifyViewModel.findUserID()}
     GoLogin(navController)
     IdSearchExitBtn{navController.popBackStack()}
 
@@ -161,7 +161,9 @@ fun GoLogin(navController: NavController){
                 .height(56.dp)
                 .background(color = Color.White)
         ){
-            navController.navigate(Screen.SignInScreen.route)
+            navController.navigate(Screen.SignInScreen.route) {
+                popUpTo(navController.graph.id) { inclusive = true }
+            }
         }
         Spacer(modifier = Modifier.weight(0.1f))
     }

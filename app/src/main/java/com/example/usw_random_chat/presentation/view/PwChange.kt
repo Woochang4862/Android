@@ -50,7 +50,7 @@ fun PwChangeScreen(
 
         Spacer(Modifier.padding(15.dp))
 
-        TextFieldOfPwChange( userModifyViewModel.rememberPW) {
+        TextFieldOfPwChange(userModifyViewModel.rememberPW) {
             userModifyViewModel.updateRememberPW(it)
         }
         Spacer(Modifier.padding(10.dp))
@@ -63,13 +63,16 @@ fun PwChangeScreen(
         Spacer(Modifier.padding(20.dp))
         PwChangeButton(userModifyViewModel.rememberTrigger.value, navController = navController) {
             userModifyViewModel.changePW()
+            navController.navigate(Screen.SignInScreen.route) {
+                popUpTo(navController.graph.id) { inclusive = true }
+            }
         }
     }
-    if (userModifyViewModel.checkIdSearchAuthEmail.value){
+    if (userModifyViewModel.changePWValue.value == 1){
         OneButtonDialog(
             contentText = "비밀번호가 변경되었습니다.",
             text = "확인",
-            onPress = { userModifyViewModel.changeCheckIdSearchAuthEmail() },
+            onPress = { userModifyViewModel.changePWValueDialog() },
             image = R.drawable.baseline_error_24
         )
     }

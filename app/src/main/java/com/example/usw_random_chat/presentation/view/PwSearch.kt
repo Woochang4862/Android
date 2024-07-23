@@ -55,23 +55,24 @@ fun PwSearchScreen(userModifyViewModel: UserModifyViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(21.dp))
         PortalEmail(text = userModifyViewModel.email) { userModifyViewModel.updateEmail(it) }
         explainText()
-        sendNumberButton() { userModifyViewModel.searchPW() }
+        sendNumberButton() { userModifyViewModel.createPWChangeCode() }
         inputCode(code = userModifyViewModel.rememberCode,
             { newValue -> userModifyViewModel.updateCode(newValue) }) { userModifyViewModel.changePW() }
     }
-    if (userModifyViewModel.checkIdSearchAuthEmail.value){
+    if (userModifyViewModel.checkPWCode.value == 1){
         OneButtonDialog(
             contentText = "인증코드가 전송되었습니다",
             text = "확인",
-            onPress = { userModifyViewModel.changeCheckIdSearchAuthEmail() },
+            onPress = { userModifyViewModel.changePWCodeDialog() },
             image = R.drawable.baseline_error_24
         )
     }
-    if(userModifyViewModel.dialogCheckIdSearchAuthEmail.value){
+
+    if(userModifyViewModel.checkPWCode.value == 2){
         OneButtonDialog(
             contentText = "올바르지 않은 아이디 혹은 이메일입니다",
             text = "확인",
-            onPress = { userModifyViewModel.changeDialogCheckIdSearchAuthEmail() },
+            onPress = { userModifyViewModel.changePWCodeDialog() },
             image = R.drawable.baseline_error_24
         )
     }

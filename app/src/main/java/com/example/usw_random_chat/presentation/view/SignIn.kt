@@ -45,7 +45,7 @@ fun SignInScreen(signInViewModel: SignInViewModel = viewModel(), navController: 
 
     if (signInViewModel.loginState.value) {
         navController.navigate(Screen.MainPageScreen.route) {
-            navController.popBackStack()
+            popUpTo(navController.graph.id) { inclusive = true }
         }
         signInViewModel.changeLoginState()
     }

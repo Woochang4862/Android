@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usw_random_chat.data.dto.PassWordDTO
 import com.example.usw_random_chat.data.dto.UserDTO
+import com.example.usw_random_chat.data.dto.response.PassWordCodeDTO
 import com.example.usw_random_chat.domain.repository.UserModifyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +15,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserModifyViewModel @Inject constructor(
-    //private val userModifyUseCase: UserModifyUseCase
     private val userModifyRepository: UserModifyRepository
 ) : ViewModel() {
 
@@ -31,7 +31,8 @@ class UserModifyViewModel @Inject constructor(
 
     private val _checkPWCode = mutableStateOf(0)
     private val _changePWValue = mutableStateOf(0)
-    //private val _dialogCheckIdSearchAuthEmail = mutableStateOf(false)
+    private val _checkPWAuthCode = mutableStateOf(0)
+
 
     val rememberPW: State<String> = _rememberPW
     val rememberPWCheck: State<String> = _rememberPWCheck
@@ -45,6 +46,7 @@ class UserModifyViewModel @Inject constructor(
     val rememberID: State<String> = _rememberId
     val checkPWCode = _checkPWCode
     val changePWValue = _changePWValue
+    val checkPWAuthCode = _checkPWAuthCode
 
 
     fun updateCode(newValue: String) {
@@ -75,6 +77,10 @@ class UserModifyViewModel @Inject constructor(
         _changePWValue.value = 0
     }
 
+    fun changePWAuthCodeDialog(){
+        _checkPWAuthCode.value = 0
+    }
+
     fun updateRememberPW(newValue: String) {
         _rememberPW.value = newValue
         updateRememberPwEqualOrNot()
@@ -102,7 +108,7 @@ class UserModifyViewModel @Inject constructor(
     }
 
 
-    fun createPWChangeCode() {
+    fun createPWChangeCode() { //인증코드 생성
         viewModelScope.launch {
             when(userModifyRepository.createPWChangeCode(UserDTO(memberID = _rememberId.value, email = _email.value))) {
                 in (200..300) -> _checkPWCode.value = 1
@@ -113,13 +119,16 @@ class UserModifyViewModel @Inject constructor(
     }
 
     fun checkAuthCode(){
-        viewModelScope.launch{
-
+        viewModelScope.launch{// 비밀번호 인증코드 확인
+            when(userModifyRepository.checkAuthCode(PassWordCodeDTO(_rememberCode.value))){
+                in (200..300) -> _checkPWAuthCode.value = 1
+                !in (200..300) -> _checkPWAuthCode.value = 2
+            }
         }
     }
 
     fun changePW() {
-        viewModelScope.launch {
+        viewModelScope.launch {//비밀번호 변경
             when(userModifyRepository.changePW(PassWordDTO(_rememberPW.value,_rememberPWCheck.value))){
                 in (200..300) -> _changePWValue.value = 1
                 !in (200..300) -> _changePWValue.value = 2

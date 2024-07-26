@@ -39,11 +39,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
 
 @Composable
-fun PwSearchScreen(userModifyViewModel: UserModifyViewModel = viewModel()) {
+fun PwSearchScreen(
+    navController: NavController,
+    userModifyViewModel: UserModifyViewModel = viewModel()
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -57,9 +61,9 @@ fun PwSearchScreen(userModifyViewModel: UserModifyViewModel = viewModel()) {
         explainText()
         sendNumberButton() { userModifyViewModel.createPWChangeCode() }
         inputCode(code = userModifyViewModel.rememberCode,
-            { newValue -> userModifyViewModel.updateCode(newValue) }) { userModifyViewModel.changePW() }
+            { newValue -> userModifyViewModel.updateCode(newValue) }) { userModifyViewModel.checkAuthCode() }
     }
-    if (userModifyViewModel.checkPWCode.value == 1){
+    if (userModifyViewModel.checkPWCode.value == 1) {
         OneButtonDialog(
             contentText = "인증코드가 전송되었습니다",
             text = "확인",
@@ -68,11 +72,23 @@ fun PwSearchScreen(userModifyViewModel: UserModifyViewModel = viewModel()) {
         )
     }
 
-    if(userModifyViewModel.checkPWCode.value == 2){
+    if (userModifyViewModel.checkPWCode.value == 2) {
         OneButtonDialog(
             contentText = "올바르지 않은 아이디 혹은 이메일입니다",
             text = "확인",
             onPress = { userModifyViewModel.changePWCodeDialog() },
+            image = R.drawable.baseline_error_24
+        )
+    }
+
+    if (userModifyViewModel.checkPWAuthCode.value == 1) {
+        navController.navigate(Screen.PwChangeScreen.route)
+        userModifyViewModel.changePWAuthCodeDialog()
+    } else if (userModifyViewModel.checkPWAuthCode.value == 2) {
+        OneButtonDialog(
+            contentText = "올바르지 않은 인증번호 입니다.",
+            text = "확인",
+            onPress = { userModifyViewModel.changePWAuthCodeDialog() },
             image = R.drawable.baseline_error_24
         )
     }
@@ -201,7 +217,7 @@ fun inputCode(code: State<String>, onChange: (String) -> Unit, onPress: () -> Un
                 contentColor = Color.White,
                 backgroundColor = Color(0xFF2D64D8)
             ),
-            enabled = code.value.length == 4
+            enabled = code.value.length == 6
         ) {
             Text(
                 "확인",

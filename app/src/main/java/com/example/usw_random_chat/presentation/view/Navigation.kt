@@ -36,14 +36,13 @@ fun Navigation () {
             PwChangeScreen(userModifyViewModel,navController)
         }
         composable(route = Screen.PwSearchScreen.route) {
-            PwSearchScreen(userModifyViewModel)
+            PwSearchScreen(navController,userModifyViewModel)
         }
         composable(route = Screen.IdSearchScreen.route) {
             IdSearch(userModifyViewModel,navController)
         }
         composable(route = Screen.ProfileScreen.route) {
-            val viewModel = hiltViewModel<ProfileViewModel>()
-            //ProfileScreen(viewModel,navController)
+
         }
         composable(route = Screen.FeedBackScreen.route) {
             FeedbackShow(navController)

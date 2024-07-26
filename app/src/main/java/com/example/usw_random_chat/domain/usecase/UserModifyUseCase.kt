@@ -21,7 +21,6 @@ class UserModifyUseCase(private val userModifyRepository: UserModifyRepository) 
     suspend fun changePW(param : PassWordDTO) : Int {
         return userModifyRepository.changePW(param)
     }
-
     suspend fun postCheckEmail(param : UserDTO) : Int {
         return userModifyRepository.postCheckEmail(param)
     }

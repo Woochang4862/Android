@@ -7,7 +7,6 @@ import com.example.usw_random_chat.domain.repository.UserModifyRepository
 import com.example.usw_random_chat.domain.usecase.ProfileUseCase
 import com.example.usw_random_chat.domain.usecase.SignInUseCase
 import com.example.usw_random_chat.domain.usecase.SignUpUseCase
-import com.example.usw_random_chat.domain.usecase.UserModifyUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,10 +32,10 @@ class UseCaseModule {
     fun provideSignUpUseCase(signUpRepository: SignUpRepository): SignUpUseCase {
         return SignUpUseCase(signUpRepository)
     }
-
+/*
     @Singleton
     @Provides
     fun provideUserModifyUseCase(userModifyRepository: UserModifyRepository): UserModifyUseCase {
         return UserModifyUseCase(userModifyRepository)
-    }
+    }*/
 }

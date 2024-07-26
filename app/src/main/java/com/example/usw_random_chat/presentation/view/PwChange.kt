@@ -61,19 +61,21 @@ fun PwChangeScreen(
         }
 
         Spacer(Modifier.padding(20.dp))
-        PwChangeButton(userModifyViewModel.rememberTrigger.value, navController = navController) {
+        PwChangeButton(userModifyViewModel.rememberTrigger.value) {
             userModifyViewModel.changePW()
-            navController.navigate(Screen.SignInScreen.route) {
-                popUpTo(navController.graph.id) { inclusive = true }
-            }
         }
     }
     if (userModifyViewModel.changePWValue.value == 1){
         OneButtonDialog(
-            contentText = "비밀번호가 변경되었습니다.",
+            contentText = "비밀번호가\n 변경되었습니다.",
             text = "확인",
-            onPress = { userModifyViewModel.changePWValueDialog() },
-            image = R.drawable.baseline_error_24
+            onPress = {
+                userModifyViewModel.changePWValueDialog()
+                navController.navigate(Screen.SignInScreen.route) {
+                    popUpTo(navController.graph.id) { inclusive = true }
+                }
+                      },
+            image = R.drawable.baseline_check_circle_24
         )
     }
 
@@ -140,7 +142,7 @@ fun TextFieldOfPwCheck(
 }
 
 @Composable
-fun PwChangeButton(trigger: Boolean, navController: NavController, onPress: () -> Unit) {
+fun PwChangeButton(trigger: Boolean, onPress: () -> Unit) {
     Row(
         Modifier
     ) {
@@ -156,7 +158,6 @@ fun PwChangeButton(trigger: Boolean, navController: NavController, onPress: () -
                 .height(56.dp)
         ){
             onPress()
-            navController.navigate(Screen.SignInScreen.route)
         }
         Spacer(Modifier.weight(0.1f))
     }
@@ -201,7 +202,7 @@ fun PwChangeScreenPreview() {
         }
 
         Spacer(Modifier.padding(20.dp))
-        PwChangeButton(false, navController = navController) {
+        PwChangeButton(false) {
            //userModifyViewModel.changePW()
         }
     }

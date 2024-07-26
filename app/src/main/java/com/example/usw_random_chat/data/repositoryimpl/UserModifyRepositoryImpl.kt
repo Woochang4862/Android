@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.usw_random_chat.data.api.UserModifyApiService
 import com.example.usw_random_chat.data.dto.PassWordDTO
 import com.example.usw_random_chat.data.dto.UserDTO
+import com.example.usw_random_chat.data.dto.response.PassWordCodeDTO
 import com.example.usw_random_chat.data.local.TokenSharedPreference
 import com.example.usw_random_chat.domain.repository.UserModifyRepository
 import javax.inject.Inject
@@ -15,7 +16,7 @@ class UserModifyRepositoryImpl @Inject constructor(
 
     override suspend fun createPWChangeCode(param: UserDTO): Int {
         val response = userModifyApiService.createPWChangeCode(param)
-        val uuid = response.body()?.message
+        val uuid = response.body()?.data
         if (uuid != null) {
             tokenSharedPreference.setUUID("uuid",uuid)
         }
@@ -28,14 +29,10 @@ class UserModifyRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun checkAuthCode(param: String): UserDTO {
-        val response = userModifyApiService.checkAuthCode("",param)
-
-        if (response.isSuccessful){
-            return response.body()!!
-        }else{
-            throw Exception("Fail!!")
-        }
+    override suspend fun checkAuthCode(param: PassWordCodeDTO): Int {
+        val response = userModifyApiService.checkAuthCode(tokenSharedPreference.getUUID("uuid",""),param)
+        Log.d("uuid",tokenSharedPreference.getUUID("uuid",""))
+        return response.code()
     }
 
     override suspend fun changePW(param: PassWordDTO): Int {

@@ -2,6 +2,8 @@ package com.example.usw_random_chat.data.api
 
 import com.example.usw_random_chat.data.dto.PassWordDTO
 import com.example.usw_random_chat.data.dto.UserDTO
+import com.example.usw_random_chat.data.dto.response.PassWordCodeDTO
+import com.example.usw_random_chat.data.dto.response.ResponseDTO
 import com.example.usw_random_chat.data.dto.response.SignUpFinishDTO
 import retrofit2.Response
 import retrofit2.http.Body
@@ -16,13 +18,13 @@ interface UserModifyApiService {
     @Headers("content-type: application/json")
     suspend fun createPWChangeCode(@Body jsonpath: UserDTO) : Response<SignUpFinishDTO>
 
-    @POST("verification/verify-code") // 인증번호 확인
+    @POST("open/member/verify-code") // 인증번호 확인
     @Headers("content-type: application/json")
-    suspend fun checkAuthCode(@Header("uuid") uuid : String, @Body jsonpath: String) : Response<UserDTO>
+    suspend fun checkAuthCode(@Header("X-User-ID") uuid : String, @Body jsonpath: PassWordCodeDTO) : Response<ResponseDTO>
 
     @PATCH("open/member/update-password") // 비밀번호 변경하기
     @Headers("content-type: application/json")
-    suspend fun changePW(@Header("uuid") uuid : String, @Body jsonpath: PassWordDTO ) : Response<PassWordDTO>
+    suspend fun changePW(@Header("X-User-ID")uuid : String, @Body jsonpath: PassWordDTO ) : Response<PassWordDTO>
 
     @POST("open/member/find-account") // 아이디 찾기 인증메일 전송
     @Headers("content-type: application/json")

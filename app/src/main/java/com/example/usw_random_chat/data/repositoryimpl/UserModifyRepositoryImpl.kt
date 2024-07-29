@@ -20,12 +20,7 @@ class UserModifyRepositoryImpl @Inject constructor(
         if (uuid != null) {
             tokenSharedPreference.setUUID("uuid",uuid)
         }
-        if (response.isSuccessful){
-            Log.d("PW",response.body().toString())
-            return response.code()
-        }else{
-            throw Exception("Fail!!")
-        }
+        return response.code()
     }
 
 

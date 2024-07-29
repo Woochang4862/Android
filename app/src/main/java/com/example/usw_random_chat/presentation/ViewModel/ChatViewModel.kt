@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usw_random_chat.data.TokenInterceptor
 import com.example.usw_random_chat.data.dto.MessageDTO
 import com.example.usw_random_chat.data.dto.ProfileDTO
@@ -50,6 +51,9 @@ class ChatViewModel @Inject constructor(
     private val _opponentUserProfile = mutableStateOf(ProfileDTO("", "", ""))
     private val _matchingPresence = mutableStateOf(false)
 
+    private val _checkDeleteMemberDialog = mutableStateOf(false)
+    private val _deleteMemberDialog = mutableStateOf(false)
+
     val matchingPresence = _matchingPresence
     val chatList = _chatList
     val msg: State<String> = _msg
@@ -58,6 +62,8 @@ class ChatViewModel @Inject constructor(
     val exitDialog: State<Boolean> = _exitDialog
     val reportDialog: State<Boolean> = _reportDialog
     val userProfile: State<ProfileDTO> = _userProfile
+    val deleteMemberDialog = _deleteMemberDialog
+    val checkDeleteMemberDialog = _checkDeleteMemberDialog
 
     fun exitChattingRoom() {
         stomp.join("/sub/chat/$roodID").subscribe{}.dispose()
@@ -79,10 +85,6 @@ class ChatViewModel @Inject constructor(
         }.dispose()
 
         disconnectStomp()
-    }
-
-    fun sendReport() {
-
     }
 
     private fun changeMatchingPresence(){
@@ -126,6 +128,28 @@ class ChatViewModel @Inject constructor(
 
     fun updateMSG(newValue: String) {
         _msg.value = newValue
+    }
+
+
+    fun changeDeleteMemberDialog(){
+        _deleteMemberDialog.value = !_deleteMemberDialog.value
+    }
+
+    fun changeCheckDeleteMemberDialog(){
+        _checkDeleteMemberDialog.value = !_checkDeleteMemberDialog.value
+    }
+
+    fun deleteMember(){
+        viewModelScope.launch {
+            when(profileRepository.deleteMember()){
+                in(200..300) -> {
+                    _deleteMemberDialog.value = true
+                    tokenSharedPreference.setToken("accessToken","")
+                    tokenSharedPreference.setToken("refreshToken","")
+                }
+            }
+
+        }
     }
 
     fun logout(){

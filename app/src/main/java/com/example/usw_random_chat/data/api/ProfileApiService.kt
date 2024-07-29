@@ -3,8 +3,10 @@ package com.example.usw_random_chat.data.api
 import com.example.usw_random_chat.data.dto.ProfileDTO
 import com.example.usw_random_chat.data.dto.response.ProfileResponseDTO
 import com.example.usw_random_chat.data.dto.response.ResponseDTO
+import com.example.usw_random_chat.data.dto.response.SignUpFinishDTO
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -29,5 +31,7 @@ interface ProfileApiService {
     @POST("/secure/member/sign-out") // 매칭하기
     suspend fun logout(@Header("Authorization") refreshToken : String) : Response<ResponseDTO>
 
+    @DELETE("secure/member/withdraw") // 회원탈퇴
+    suspend fun deleteMember(@Header("Authorization") accessToken: String): Response<SignUpFinishDTO>
 
 }

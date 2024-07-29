@@ -754,7 +754,7 @@ fun OneButtonDialog(
 }
 
 @Composable
-fun DrawerBottom() {
+fun DrawerBottom( onPress: () -> Unit ) {
     Column(verticalArrangement = Arrangement.Bottom) {
         Spacer(modifier = Modifier.height(26.dp))
         Image(
@@ -775,7 +775,7 @@ fun DrawerBottom() {
             letterSpacing = 0.25.sp,
         )
         Button(
-            onClick = {},
+            onClick = { onPress() },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
             elevation = ButtonDefaults.elevation(0.dp),
             contentPadding = PaddingValues(0.dp)

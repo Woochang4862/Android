@@ -59,7 +59,7 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(chatViewModel.userProfile.value){
+    LaunchedEffect(chatViewModel.userProfile.value) {
         chatViewModel.getProfile()
     }
 
@@ -82,7 +82,8 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
                         navController,
                         chatViewModel.userProfile.value.nickName,
                         chatViewModel.userProfile.value.mbti,
-                        {chatViewModel.logout()}) {
+                        { chatViewModel.logout() },
+                        {chatViewModel.changeCheckDeleteMemberDialog()}) {
                         scope.launch {
                             scaffoldState.drawerState.close()
                         }
@@ -93,7 +94,7 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
 
             content = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                    MainContents(){
+                    MainContents() {
                         navController.navigate(Screen.MatchingScreen.route)
                         chatViewModel.startMatching()
                     }
@@ -102,14 +103,48 @@ fun MainScreen(navController: NavController, chatViewModel: ChatViewModel = view
             drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
         )
     }
+
+    if(chatViewModel.checkDeleteMemberDialog.value){
+        TwoButtonDialog(
+            contentText = "회원을 탈퇴하시겠습니까?",
+            leftText = "취소",
+            rightText = "탈퇴",
+            leftonPress = { chatViewModel.changeCheckDeleteMemberDialog() },
+            rightonPress = {
+                chatViewModel.changeCheckDeleteMemberDialog()
+                chatViewModel.deleteMember()
+                           },
+            image = R.drawable.baseline_error_24
+        )
+    }
+
+    if (chatViewModel.deleteMemberDialog.value) {
+        OneButtonDialog(
+            contentText = "회원 탈퇴가\n완료되었습니다.",
+            text = "확인",
+            onPress = { chatViewModel.changeDeleteMemberDialog()
+                        navController.navigate(Screen.SignInScreen.route){
+                            popUpTo(navController.graph.id) { inclusive = true }
+                        }
+                      },
+            image = R.drawable.baseline_check_circle_24
+        )
+    }
 }
 
 @Composable
-fun DrawerScreen(navController: NavController, name : String, mbti : String, onPressLogout: () -> Unit ,onPress: () -> Unit) {
+fun DrawerScreen(
+    navController: NavController,
+    name: String,
+    mbti: String,
+    onPressLogout: () -> Unit,
+    onPressWithDrawal: () -> Unit,
+    onPress: () -> Unit
+) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         Column(modifier = Modifier.fillMaxSize()) {
             IconButton(
-                    onClick = {onPress()},
+                onClick = { onPress() },
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(top = 10.dp, end = 10.dp)
@@ -122,9 +157,9 @@ fun DrawerScreen(navController: NavController, name : String, mbti : String, onP
                         .height(16.dp)
                 )
             }
-            Row(){
+            Row() {
                 Spacer(modifier = Modifier.weight(0.1f))
-                DrawerProfile(name,mbti)
+                DrawerProfile(name, mbti)
                 Spacer(modifier = Modifier.weight(0.5f))
             }
             Box(
@@ -134,7 +169,7 @@ fun DrawerScreen(navController: NavController, name : String, mbti : String, onP
                     .height(1.dp)
                     .border(100.dp, Color(0xFFEDEDED))
             )
-            Column(modifier = Modifier.weight(1f)){
+            Column(modifier = Modifier.weight(1f)) {
                 Spacer(modifier = Modifier.height(30.dp))
                 DrawerMenu(image = R.drawable.profile_img, menuName = "내 정보 수정") {
                     navController.navigate(Screen.EditProfileScreen.route)
@@ -161,9 +196,9 @@ fun DrawerScreen(navController: NavController, name : String, mbti : String, onP
                     .fillMaxWidth()
                     .height(150.dp)
             ) {
-                Row(){
+                Row() {
                     Spacer(modifier = Modifier.weight(0.1f))
-                    DrawerBottom()
+                    DrawerBottom(onPressWithDrawal)
                     Spacer(modifier = Modifier.weight(0.7f))
                 }
             }

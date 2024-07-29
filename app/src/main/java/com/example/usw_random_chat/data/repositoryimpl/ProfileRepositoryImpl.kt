@@ -50,4 +50,10 @@ class ProfileRepositoryImpl @Inject constructor(
         val response = profileApiService.logout(refreshToken)
     }
 
+    override suspend fun deleteMember() : Int {
+        val response = profileApiService.deleteMember(tokenSharedPreference.getToken("accessToken",""))
+
+        return response.code()
+    }
+
 }

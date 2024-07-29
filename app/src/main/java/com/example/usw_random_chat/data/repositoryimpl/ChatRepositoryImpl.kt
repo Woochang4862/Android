@@ -33,18 +33,6 @@ class ChatRepositoryImpl @Inject constructor(
         }
 
     }
-    override suspend fun get(accessToken: String): Int {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun cancelMatching(accessToken: String): Int {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun outMatchingRoom(accessToken: String): Int {
-        TODO("Not yet implemented")
-    }
-
 
 
 }

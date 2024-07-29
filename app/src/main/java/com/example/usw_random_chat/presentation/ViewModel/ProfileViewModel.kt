@@ -103,9 +103,9 @@ class ProfileViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.Main) {
                 val response = profileRepository.getProfile()
                 response.apply {
-                    _mbti.value = response.data.mbti ?: "MBTI를 작성해주세요!"
+                    _mbti.value = response.data.mbti ?: ""
                     _nickname.value = response.data.nickName
-                    _selfintroduce.value = response.data.selfIntroduce ?:"자기소개를 작성해주세요!"
+                    _selfintroduce.value = response.data.selfIntroduce ?:""
                 }
             }
         }

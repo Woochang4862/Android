@@ -51,6 +51,8 @@ class SignInViewModel @Inject constructor(
                 }
                 !in (200..300) -> _dialogState.value = true
             }
+            _id.value = ""
+            _password.value = ""
         }
     }
 

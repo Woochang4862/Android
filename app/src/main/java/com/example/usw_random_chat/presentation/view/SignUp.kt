@@ -149,7 +149,8 @@ fun writeID(id: State<String>, onIdChanged: (String) -> Unit, onPress: () -> Uni
 fun writeNickName(
     nickname: State<String>,
     nicknameTrigger: Boolean,
-    onNickNAmeChanged: (String) -> Unit, onPress: () -> Unit
+    onNickNAmeChanged: (String) -> Unit,
+    onPress: () -> Unit
 ) {
     val nickNameLength = nickname.value.length in 1..8
     Row(

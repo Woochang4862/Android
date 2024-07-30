@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.UserModifyViewModel
 
@@ -54,7 +55,7 @@ fun PwSearchScreen(
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        setPwSearchTitle()
+        setPwSearchTitle(navController)
         inputId(id = userModifyViewModel.rememberID) { userModifyViewModel.updateId(it) }
         Spacer(modifier = Modifier.height(21.dp))
         PortalEmail(text = userModifyViewModel.email) { userModifyViewModel.updateEmail(it) }
@@ -95,14 +96,14 @@ fun PwSearchScreen(
 }
 
 @Composable
-fun setPwSearchTitle() {
+fun setPwSearchTitle(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 76.dp),
     ) {
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = { navController.popBackStack() },
             modifier = Modifier.padding(start = 22.dp)
         ) {
             Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
@@ -245,14 +246,14 @@ fun PwSearchScreenPreview() {
     val code = remember {
         mutableStateOf("")
     }
-
+    val navController = rememberNavController()
     Column(
         Modifier
             .fillMaxSize()
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        setPwSearchTitle()
+        setPwSearchTitle(navController)
         inputId(id = id) {}
         Spacer(modifier = Modifier.height(21.dp))
         inputEmail(email = email) {}

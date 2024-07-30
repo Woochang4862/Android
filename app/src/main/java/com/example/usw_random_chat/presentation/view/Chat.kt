@@ -80,8 +80,10 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
         listState.animateScrollToItem(chatViewModel.chatList.size)
     }
 
+    LaunchedEffect(Unit){
+        chatViewModel.getYourProfile()
+    }
 
-    chatViewModel.getYourProfile()
 
     BackHandler {
         chatViewModel.closeExitDialog()

@@ -29,10 +29,16 @@ class ProfileViewModel @Inject constructor(
     private val _checkMBTI = mutableStateOf(false)
     private val _checkNickname = mutableStateOf(false)
     private val _checkSelfIntroduce = mutableStateOf(false)
-    private val _dialogCheckSignUpNickNameState = mutableStateOf(false)
+    private val _dialogCheckSignUpNickNameState = mutableStateOf(0)
+    /*
+    0 -> 아무것도 아님
+    1 -> 닉변 가능
+    2 -> 닉네임 중복
+    3 -> 닉네임 30일 제한
+    4 -> 중복확인 안하고 프로필 수정한 경우
+    */
     private val _checkSignupNickNameState = mutableStateOf(false)
     private val _toast = mutableStateOf(false)
-
 
     val toast = _toast
     val nickname: State<String> = _nickname
@@ -41,11 +47,12 @@ class ProfileViewModel @Inject constructor(
     val checkMBTI: State<Boolean> = _checkMBTI
     val checkSelfIntroduce: State<Boolean> = _checkSelfIntroduce
     val checkSignupNickNameState: State<Boolean> = _checkSignupNickNameState
-    val dialogCheckSignUpNickNameState: State<Boolean> = _dialogCheckSignUpNickNameState
+    val dialogCheckSignUpNickNameState: State<Int> = _dialogCheckSignUpNickNameState
 
     init {
         getProfile()
     }
+
     fun updateNickname(newValue: String) {
         _nickname.value = newValue
         filterNickName()
@@ -63,7 +70,7 @@ class ProfileViewModel @Inject constructor(
 
     fun postProfile() {
         viewModelScope.launch {
-            if(_checkSignupNickNameState.value){ //중복확인 한 경우
+            if (_checkSignupNickNameState.value) { //중복확인 한 경우
                 val comment = profileRepository.setProfile(
                     ProfileDTO(
                         _nickname.value,
@@ -71,21 +78,20 @@ class ProfileViewModel @Inject constructor(
                         _selfintroduce.value
                     )
                 )
-                if (comment == "닉네임 변경 후 30일이 지나야 변경이 가능합니다."){
-                    // 프로필 변경에 실패하고 실패했단 다이얼로그를 띄워야함
+                if (comment in 400..500) {
+                    _dialogCheckSignUpNickNameState.value = 3
                 }
             } else if (_nickname.value.length > 1 && !_checkSignupNickNameState.value) {
                 // 중복확인은 안했지만 닉네임칸에 텍스트를 남긴경우 토스트를 띄움
                 profileRepository.setProfile(
                     ProfileDTO(
                         "",
-                        mbti.value,
-                        selfintroduce.value
+                        _mbti.value,
+                        _selfintroduce.value
                     )
                 )
-                _toast.value = true
-                //_toast.value = false
-            }else{
+                _dialogCheckSignUpNickNameState.value == 4
+            } else {
                 profileRepository.setProfile(
                     ProfileDTO(
                         _nickname.value,
@@ -99,14 +105,12 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getProfile() {
-        viewModelScope.launch(Dispatchers.IO) {
-            viewModelScope.launch(Dispatchers.Main) {
-                val response = profileRepository.getProfile()
-                response.apply {
-                    _mbti.value = response.data.mbti ?: ""
-                    _nickname.value = response.data.nickName
-                    _selfintroduce.value = response.data.selfIntroduce ?:""
-                }
+        viewModelScope.launch(Dispatchers.Main) {
+            val response = profileRepository.getProfile()
+            response.apply {
+                _mbti.value = response.data.mbti ?: ""
+                _nickname.value = response.data.nickName
+                _selfintroduce.value = response.data.selfIntroduce ?: ""
             }
         }
     }
@@ -114,17 +118,22 @@ class ProfileViewModel @Inject constructor(
     fun doubleCheckNickname() {
         viewModelScope.launch {
             when (signUpUseCase.checkSignUpNickName(UserDTO(nickname = _nickname.value))) {
-                in (200..300) -> _checkSignupNickNameState.value = true
-                !in (200..300) -> _dialogCheckSignUpNickNameState.value = true
+                in (200..300) -> {
+                    _checkSignupNickNameState.value = true
+                    _dialogCheckSignUpNickNameState.value =1
+                    Log.d("qrfqfq","닉네임중복확인 완")
+                }
+                !in (200..300) -> _dialogCheckSignUpNickNameState.value = 2
             }
         }
     }
 
     private fun filterMBTI() {
-        _checkMBTI.value = _mbti.value.length == 4 && _mbti.value[0].code in listOf(69, 73, 101, 105) &&
-                _mbti.value[1].code in listOf(78, 83, 110, 115) &&
-                _mbti.value[2].code in listOf(70, 84, 102, 116) &&
-                _mbti.value[3].code in listOf(74, 80, 106, 112)
+        _checkMBTI.value =
+            _mbti.value.length == 4 && _mbti.value[0].code in listOf(69, 73, 101, 105) &&
+                    _mbti.value[1].code in listOf(78, 83, 110, 115) &&
+                    _mbti.value[2].code in listOf(70, 84, 102, 116) &&
+                    _mbti.value[3].code in listOf(74, 80, 106, 112)
     }
 
     private fun filterNickName() {
@@ -140,6 +149,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun changeDialogCheckSignUpNickNameState() {
-        _dialogCheckSignUpNickNameState.value = !_dialogCheckSignUpNickNameState.value
+        _dialogCheckSignUpNickNameState.value = 0
     }
 }

@@ -42,7 +42,7 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle({profileViewModel.postProfile()},true) { navController.popBackStack() }
+        editSetTitle({profileViewModel.postProfile()},true){navController.popBackStack()}
         getNickName(profileViewModel.nickname,"",{profileViewModel.doubleCheckNickname()}) { profileViewModel.updateNickname(it) }
         getMBTI(profileViewModel.mbti,"",profileViewModel.checkMBTI.value) { profileViewModel.updateMBTI(it) }
         getSelfIntroduce(profileViewModel.selfintroduce,"",profileViewModel.checkSelfIntroduce.value) { profileViewModel.updateSelfIntroduce(it)}
@@ -56,22 +56,36 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
         Toast.makeText(LocalContext.current,"닉네임 변경은 중복확인 후 가능해요!",Toast.LENGTH_SHORT).show()
     }
 
-    if (profileViewModel.checkSignupNickNameState.value) {
+    if (profileViewModel.dialogCheckSignUpNickNameState.value == 1) {
         //중복확인 성공했을때 이벤트
         OneButtonDialog(
             contentText = "닉네임 사용이\n가능합니다.",
             text = "확인",
-            onPress = { profileViewModel.changeCheckSignUpNickNameState() },
-            image = R.drawable.baseline_error_24
+            onPress = { profileViewModel.changeDialogCheckSignUpNickNameState() },
+            image = R.drawable.baseline_check_circle_24
         )
     }
-    if (profileViewModel.dialogCheckSignUpNickNameState.value) {
+    if (profileViewModel.dialogCheckSignUpNickNameState.value == 2) {
         OneButtonDialog(
             contentText = "닉네임\n중복입니다.",
             text = "확인",
             onPress = { profileViewModel.changeDialogCheckSignUpNickNameState() },
             image = R.drawable.baseline_error_24
         )
+    }
+    if(profileViewModel.dialogCheckSignUpNickNameState.value == 3){
+        OneButtonDialog(
+            contentText = "닉네임 변경 후\n 30일이 지나야 변경이 가능합니다.",
+            text = "확인",
+            onPress = {profileViewModel.changeDialogCheckSignUpNickNameState()},
+            image = R.drawable.baseline_error_24)
+    }
+    if(profileViewModel.dialogCheckSignUpNickNameState.value == 4){
+        OneButtonDialog(
+            contentText = "닉네임 변경은\n 중복확인 후 가능합니다.",
+            text = "확인",
+            onPress = {profileViewModel.changeDialogCheckSignUpNickNameState()},
+            image = R.drawable.baseline_error_24)
     }
 
 }
@@ -85,7 +99,7 @@ fun editSetTitle(onCheckPress : () -> Unit, enableCheck : Boolean ,onBackPress :
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = onBackPress
+            onClick = {onBackPress()}
         ) {
             Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
         }
@@ -103,7 +117,6 @@ fun editSetTitle(onCheckPress : () -> Unit, enableCheck : Boolean ,onBackPress :
             enabled = true,
             onClick = {
                 onCheckPress()
-                onBackPress()
                       },
         ) {
             Icon(imageVector = Icons.Filled.Check, contentDescription = "check", tint = Color.Gray)
@@ -251,7 +264,11 @@ fun getSelfIntroduce(introduce: State<String>, text: String, filter: Boolean ,on
                 ),
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
-                    .border(width = 1.dp, color = Color(0xFFBFBFBF), shape = RoundedCornerShape(8.dp))
+                    .border(
+                        width = 1.dp,
+                        color = Color(0xFFBFBFBF),
+                        shape = RoundedCornerShape(8.dp)
+                    )
                     .height(90.dp)
                     .width(326.dp)
             )

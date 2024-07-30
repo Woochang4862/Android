@@ -53,9 +53,10 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
     fun postEmail() {
         viewModelScope.launch {
+            _dialogAuthEmailState.value = 1
             when(signUpUseCase.signUp(UserDTO(memberID = _rememberId.value, memberPassword = rememberPw.value, nickname = nickName.value, email = email.value))){
-                in (200..300) -> _dialogAuthEmailState.value = 1 // 성공
-                !in (200..300) -> _dialogAuthEmailState.value = 0 //실패
+                //in (200..300) -> _dialogAuthEmailState.value = 1 // 성공
+               //!in (200..300) -> _dialogAuthEmailState.value = 0 //실패
             }
         }
     }

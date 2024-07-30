@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomAppBar
@@ -73,6 +74,11 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = viewModel()) {
     val systemUiController = rememberSystemUiController()//상태바 색상변경
     systemUiController.setSystemBarsColor(color = Color(0xFF4D76C8))
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(chatViewModel.chatList.size) {
+        listState.animateScrollToItem(chatViewModel.chatList.size)
+    }
 
 
     chatViewModel.getYourProfile()
@@ -139,6 +145,7 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
         },
         content = {
             LazyColumn(
+                state = listState,
                 modifier = Modifier
                     .padding(bottom = 58.dp),
                 content = {
@@ -403,6 +410,7 @@ fun sendMsg(text: String) {
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.Bottom
     ) {
+        Spacer(modifier = Modifier.width(10.dp))
         TimeText()
         MSG(text = text, color = Color(0xFFD3DFFF))
     }
@@ -419,6 +427,7 @@ fun receiveMsg(text: String) {
     ) {
         MSG(text = text, color = Color(0xFFFFFFFF))
         TimeText()
+        Spacer(modifier = Modifier.width(10.dp))
     }
 }
 
@@ -426,7 +435,7 @@ fun receiveMsg(text: String) {
 @Composable
 fun sendMsgPreView() {
     //msg("tghaiuwga", Alignment.Center, Color.White)
-    sendMsg(text = "나우밞낭ㄴ홀마ㅕㅈㅁㄹ함ㄹㅈ함한ㅇㅁ")
+    sendMsg(text = "나우밞낭ㄴ홀마ㅕㅈㅁㄹ함ㄹㅈ함한ㅇaaaaaaaaaaaaaㅁ")
 }
 
 @Preview(showBackground = true)

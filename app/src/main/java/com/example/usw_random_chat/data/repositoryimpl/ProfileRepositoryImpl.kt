@@ -13,16 +13,10 @@ class ProfileRepositoryImpl @Inject constructor(
     private val tokenSharedPreference: TokenSharedPreference
 ) : ProfileRepository {
 
-    override suspend fun setProfile(param: ProfileDTO) : String {
+    override suspend fun setProfile(param: ProfileDTO) : Int {
         val response = profileApiService.setProfile(param)
 
-        return if (response.isSuccessful) {
-            Log.d("프로필 전송 성공",response.body().toString())
-            response.body()?.message.toString()
-        } else {
-            Log.d("프로필 전송 실패",response.body().toString())
-            response.body()?.message.toString()
-        }
+        return response.code()
     }
 
     override suspend fun getProfile(): ProfileResponseDTO {

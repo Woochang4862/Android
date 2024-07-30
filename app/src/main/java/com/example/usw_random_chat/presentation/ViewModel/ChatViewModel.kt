@@ -68,6 +68,7 @@ class ChatViewModel @Inject constructor(
     fun exitChattingRoom() {
         stomp.join("/sub/chat/$roodID").subscribe{}.dispose()
         disconnectStomp()
+        _chatList.clear()
     }
 
     fun stopMatching(){

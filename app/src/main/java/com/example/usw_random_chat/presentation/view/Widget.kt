@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -41,9 +42,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusState
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -51,6 +59,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -181,6 +190,8 @@ fun LoginFindIdAndPassword(navController: NavController) {
 fun LoginTextFieldID(
     text: State<String>,
     text2: String,
+    focusState : FocusRequester,
+    nextFocusState : FocusRequester,
     onValueChange: (String) -> Unit
 ) {
     Column(
@@ -200,6 +211,7 @@ fun LoginTextFieldID(
                 singleLine = true,
                 modifier = Modifier
                     .border(1.dp, Color.Gray, RoundedCornerShape(10.dp))
+                    .focusRequester(focusState)
                     .weight(1f)
                     .height(48.dp)
                     //.wrapContentHeight()
@@ -211,6 +223,13 @@ fun LoginTextFieldID(
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                     textDecoration = null
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {nextFocusState.requestFocus()}
                 ),
                 decorationBox = {
                     TextFieldDefaults.TextFieldDecorationBox(
@@ -272,8 +291,10 @@ fun LoginTextFieldID(
 fun LoginTextFieldPW(
     text: State<String>,
     text2: String,
+    focusState : FocusRequester,
     onValueChange: (String) -> Unit
 ) {
+    val focusManage = LocalFocusManager.current
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -290,6 +311,7 @@ fun LoginTextFieldPW(
                 onValueChange = onValueChange,
                 singleLine = true,
                 modifier = Modifier
+                    .focusRequester(focusState)
                     .border(1.dp, Color.Gray, RoundedCornerShape(10.dp))
                     .weight(1f)
                     .height(48.dp)
@@ -303,6 +325,9 @@ fun LoginTextFieldPW(
                     fontFamily = FontFamily(Font(R.font.pretendard_regular))
                 ),
                 keyboardOptions = if (text2 == "PASSWORD") KeyboardOptions(keyboardType = KeyboardType.Password) else KeyboardOptions.Default,
+                keyboardActions = KeyboardActions(
+                    onDone = {focusManage.clearFocus()}
+                ),
                 visualTransformation = if (text2 == "PASSWORD") PasswordVisualTransformation() else VisualTransformation.None,
             ) {
                 TextFieldDefaults.TextFieldDecorationBox(
@@ -459,6 +484,7 @@ fun PortalEmail(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFieldSearchBtn(
     graytext: String,
@@ -467,6 +493,7 @@ fun TextFieldSearchBtn(
     trigger: Boolean,
     onPress: () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -488,7 +515,13 @@ fun TextFieldSearchBtn(
                 unfocusedIndicatorColor = Color.Transparent, // 포커스가 해제되었을 때의 밑줄 색상
                 disabledIndicatorColor = Color.Transparent // 비활성화되었을 때의 밑줄 색상
             ),
-            modifier = Modifier.weight(0.8f)
+            modifier = Modifier.weight(0.8f),
+            keyboardActions = KeyboardActions(
+                onDone = {focusManager.clearFocus()}
+            ),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            )
         )
         Button(
             enabled = !trigger,
@@ -670,7 +703,7 @@ fun MSG(text: String, color: Color) {
 @Composable
 fun TimeText() {
     Text(
-        text = SimpleDateFormat("HH:mm").format(System.currentTimeMillis()),
+        text = SimpleDateFormat("HH:mm").format(System.currentTimeMillis()).toString(),
         fontSize = 12.sp,
         lineHeight = 14.sp,
         fontFamily = FontFamily(Font(R.font.kcc_chassam)),
@@ -928,7 +961,6 @@ fun TextFiledTitle(
         color = Color(0xFF000000),
         textAlign = TextAlign.Left,
         modifier = textModifier
-
     )
     if (redBool) {
         RedWarning(
@@ -1003,5 +1035,5 @@ fun VisibleTextPreview1() {
     val sad: State<String> = remember {
         mutableStateOf("가나다라마바사자ㅇㄹ")
     }
-    LoginTextFieldID(text = sad, text2 = "ID", onValueChange = {})
+    //LoginTextFieldID(text = sad, text2 = "ID", onValueChange = {})
 }

@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,12 +33,20 @@ import com.example.usw_random_chat.presentation.ViewModel.SignInViewModel
 @Composable // 제가 만들어 놓은 viewmodel 함수를 적용해서 완벽한 signin 화면을 만들어주세요, 어려우면 profile 화면 참고!!
 fun SignInScreen(signInViewModel: SignInViewModel = viewModel(), navController: NavController) {
 
+    val focusRequesterID = remember { FocusRequester() }
+    val focusRequesterPW = remember { FocusRequester() }
+
     LoginImage()
-    LoginTextFieldId(
-        id = signInViewModel.id
+    LoginTextFieldID(
+        text = signInViewModel.id,
+        text2 = "ID",
+        focusRequesterID,
+        focusRequesterPW
     ) { newId -> signInViewModel.updateID(newId) }
-    LoginTextFieldPw(
-        password = signInViewModel.password
+    LoginTextFieldPW(
+        text = signInViewModel.password,
+        text2 = "PASSWORD",
+        focusRequesterPW
     ) { signInViewModel.updatePassWord(it) }
     LoginBtn() { signInViewModel.postSignIn() }
     OnLoginFindIdAndPassword(navController)
@@ -81,7 +91,7 @@ fun LoginImage() {
         }
     }
 }
-
+/*
 @Composable
 fun LoginTextFieldId(  // textfield를 하나만 만들고 이름만 바꿔서 함수를 재사용 할 수 있게 변경해주세요
     id: State<String>,
@@ -105,7 +115,7 @@ fun LoginTextFieldPw(  // textfield를 하나만 만들고 이름만 바꿔서 �
         onValueChange = onValuePw
     )
 }
-
+*/
 @Composable
 fun LoginBtn(onPress: () -> Unit) { //onPress란 람다 함수를 추가시키세요
     Column(
@@ -200,9 +210,9 @@ fun SignInPreview(navController: NavController = rememberNavController()) {
     val password: State<String> = mutableStateOf("")
 
     LoginImage()
-    LoginTextFieldId(id)
-    { }
-    LoginTextFieldPw(password) { }
+    //LoginTextFieldId(id)
+    //{ }
+    //LoginTextFieldPw(password) { }
     LoginBtn() {}
     OnLoginFindIdAndPassword(navController)
     MadeAccountText()

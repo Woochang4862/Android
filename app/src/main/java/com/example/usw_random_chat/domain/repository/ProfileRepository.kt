@@ -10,7 +10,7 @@ interface ProfileRepository {
 
     suspend fun getYourProfile(targetAccount : String) : ProfileResponseDTO
 
-    suspend fun logout(refreshToken : String)
+    suspend fun logout(refreshToken : String) : Int
 
     suspend fun deleteMember() : Int
 }

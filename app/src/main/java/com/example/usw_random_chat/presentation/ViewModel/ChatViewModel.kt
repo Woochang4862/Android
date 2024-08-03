@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usw_random_chat.data.TokenInterceptor
 import com.example.usw_random_chat.data.dto.MessageDTO
 import com.example.usw_random_chat.data.dto.ProfileDTO
@@ -65,6 +64,15 @@ class ChatViewModel @Inject constructor(
     val deleteMemberDialog = _deleteMemberDialog
     val checkDeleteMemberDialog = _checkDeleteMemberDialog
 
+    val textList = mutableStateListOf(
+        "체대옆 공터는 원래 방송반이 있던 큰 건물이었습니다.",
+        "떴다분수(본관앞)의 유래는 총장님이 오셨을때만 분수가 켜져서 떴다분수 입니다.",
+        "수원대<->수원역 가장 빠른 버스는 700-2, 6-1입니다.",
+        "음대로 가는 오르막 길의 경사도는 66도입니다.",
+        "데이터 과학부는 IT건물이 아닌 글로벌 경상관에 있습니다.",
+        "벚꽃 시즌의 수원대는 정말 아름답습니다.",
+    )
+
     fun exitChattingRoom() {
         stomp.join("/sub/chat/$roodID").subscribe{}.dispose()
         disconnectStomp()
@@ -112,7 +120,6 @@ class ChatViewModel @Inject constructor(
                 Log.d("startMatching","2323")
             }
         }
-
     }
 
     fun closeProfileDialog() {
@@ -155,13 +162,16 @@ class ChatViewModel @Inject constructor(
 
     fun logout(){
         viewModelScope.launch {
-            profileRepository.logout(tokenSharedPreference.getToken("refreshToken",""))
-            tokenSharedPreference.setToken("accessToken","")
-            tokenSharedPreference.setToken("refreshToken","")
+            when(profileRepository.logout(tokenSharedPreference.getToken("refreshToken",""))){
+                in (200..300) -> {
+                    tokenSharedPreference.setToken("accessToken","")
+                    tokenSharedPreference.setToken("refreshToken","")
+                }
+            }
         }
     }
+
     fun getProfile() {
-        Log.d("실행됨","프로필 가져오기")
         viewModelScope.launch(Dispatchers.Main) {
             val response = profileRepository.getProfile()
             _userProfile.value.apply {

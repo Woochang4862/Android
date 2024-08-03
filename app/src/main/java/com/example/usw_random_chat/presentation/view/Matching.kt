@@ -23,54 +23,13 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun MatchingScreen(navController: NavController, chatViewModel: ChatViewModel = viewModel()) {
-    val matchingBlank = remember {
-        mutableStateOf(false)
-    }
-    val matchingDot1 = remember {
-        mutableStateOf(false)
-    }
-    val matchingDot2 = remember {
-        mutableStateOf(false)
-    }
-    val matchingDot3 = remember {
-        mutableStateOf(false)
-    }
-    val matchingDot4 = remember {
-        mutableStateOf(false)
-    }
-    if(!matchingDot4.value){
-        LaunchedEffect(Unit) {
-            matchingBlank.value = true
-            delay(1000L)
-            matchingDot1.value = true
-            delay(1000L)
-            matchingDot2.value = true
-            delay(1000L)
-            matchingDot3.value = true
-            delay(1000L)
-            matchingDot4.value = true
-        }
-    }
-    if(matchingDot4.value){
-        matchingBlank.value = false
-        matchingDot1.value = false
-        matchingDot2.value = false
-        matchingDot3.value = false
-        matchingDot4.value = false
-    }
     TextBlue()
-    TextBlack()
+    TextBlack(chatViewModel.textList.random())
     MatchingStopBtn{
         navController.popBackStack()
         chatViewModel.stopMatching()
     }
-    MatchingAnimation(
-        screen1 = matchingBlank.value,
-        screen2 = matchingDot1.value,
-        screen3 = matchingDot2.value,
-        screen4 = matchingDot3.value,
-        screen5 = matchingDot4.value
-    )
+    MatchingAnimation()
     if (chatViewModel.matchingPresence.value){
         navController.navigate(Screen.ChatScreen.route) {
             navController.popBackStack()
@@ -107,7 +66,7 @@ fun TextBlue(){
 
 
 @Composable
-fun TextBlack(){
+fun TextBlack(ment : String){
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -117,7 +76,7 @@ fun TextBlack(){
     ) {
         Spacer(modifier = Modifier.weight(0.1f))
         Text(
-            text = "체대옆 공터는 원래 방송반이 있던 큰 건물이었습니다.",
+            text = ment,
             style = TextStyle(
                 fontSize = 16.sp,
                 lineHeight = 20.sp,
@@ -162,60 +121,7 @@ fun MatchingStopBtn(onPress: () -> Unit){
 }
 
 @Composable
-fun MatchingAnimation(screen1: Boolean, screen2: Boolean, screen3: Boolean, screen4:Boolean, screen5:Boolean) {
-
-    Box(
-        modifier = Modifier
-            .width(312.dp)
-            .height(400.dp)
-            .padding(
-                start = 129.dp,
-                top = 265.dp
-            ),
-    ) {
-        AnimatedVisibility(
-            visible = screen1,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            MatchingAnimationText(text = "매칭 중")
-        }
-        AnimatedVisibility(
-            visible = screen2,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            MatchingAnimationText(text = "매칭 중.")
-        }
-        AnimatedVisibility(
-            visible = screen3,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            MatchingAnimationText(text = "매칭 중..")
-        }
-        AnimatedVisibility(
-            visible = screen4,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            MatchingAnimationText(text = "매칭 중...")
-        }
-        AnimatedVisibility(
-            visible = screen5,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            MatchingAnimationText(text = "")
-        }
-    }
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun MatchingScreenPreview() {
+fun MatchingAnimation() {
     val matchingBlank = remember {
         mutableStateOf(false)
     }
@@ -231,15 +137,81 @@ fun MatchingScreenPreview() {
     val matchingDot4 = remember {
         mutableStateOf(false)
     }
+    if(!matchingDot4.value){
+        LaunchedEffect(Unit) {
+            matchingBlank.value = true
+            delay(1000L)
+            matchingDot1.value = true
+            delay(1000L)
+            matchingDot2.value = true
+            delay(1000L)
+            matchingDot3.value = true
+            delay(1000L)
+            matchingDot4.value = true
+        }
+    }
+    if(matchingDot4.value){
+        matchingBlank.value = false
+        matchingDot1.value = false
+        matchingDot2.value = false
+        matchingDot3.value = false
+        matchingDot4.value = false
+    }
+    Box(
+        modifier = Modifier
+            .width(312.dp)
+            .height(400.dp)
+            .padding(
+                start = 129.dp,
+                top = 265.dp
+            ),
+    ) {
+        AnimatedVisibility(
+            visible = matchingBlank.value,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            MatchingAnimationText(text = "매칭 중")
+        }
+        AnimatedVisibility(
+            visible = matchingDot1.value,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            MatchingAnimationText(text = "매칭 중.")
+        }
+        AnimatedVisibility(
+            visible = matchingDot2.value,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            MatchingAnimationText(text = "매칭 중..")
+        }
+        AnimatedVisibility(
+            visible = matchingDot3.value,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            MatchingAnimationText(text = "매칭 중...")
+        }
+        AnimatedVisibility(
+            visible = matchingDot4.value,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            MatchingAnimationText(text = "")
+        }
+    }
+}
 
+
+
+@Preview(showBackground = true)
+@Composable
+fun MatchingScreenPreview() {
     TextBlue()
-    TextBlack()
+    TextBlack("asdasd")
     MatchingStopBtn{}
     MatchingAnimation(
-        screen1 = matchingBlank.value,
-        screen2 = matchingDot1.value,
-        screen3 = matchingDot2.value,
-        screen4 = matchingDot3.value,
-        screen5 = matchingDot4.value
     )
 }

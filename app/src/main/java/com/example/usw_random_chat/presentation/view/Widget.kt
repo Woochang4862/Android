@@ -176,7 +176,7 @@ fun LoginFindIdAndPassword(navController: NavController) {
 
     ) {
         Text(
-            text = "비밀번호 찾기",
+            text = "비밀번호 변경",
             color = Color(0xFF232323),
             style = TextStyle(
                 fontFamily = FontFamily(Font(R.font.pretendard_regular))

@@ -40,8 +40,10 @@ class ProfileRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun logout(refreshToken: String) {
+    override suspend fun logout(refreshToken: String) : Int {
         val response = profileApiService.logout(refreshToken)
+
+        return response.code()
     }
 
     override suspend fun deleteMember() : Int {

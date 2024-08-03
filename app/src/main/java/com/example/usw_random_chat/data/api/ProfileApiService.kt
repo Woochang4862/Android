@@ -29,7 +29,7 @@ interface ProfileApiService {
     suspend fun getYourProfile(@Query("targetAccount") param : String) : Response<ProfileResponseDTO>
 
     @POST("/secure/member/sign-out") // 매칭하기
-    suspend fun logout(@Header("Authorization") refreshToken : String) : Response<ResponseDTO>
+    suspend fun logout(@Header("refreshToken") refreshToken : String) : Response<ResponseDTO>
 
     @DELETE("secure/member/withdraw") // 회원탈퇴
     suspend fun deleteMember(@Header("Authorization") accessToken: String): Response<SignUpFinishDTO>

@@ -26,10 +26,11 @@ class ProfileViewModel @Inject constructor(
     private val _nickname = mutableStateOf("")
     private val _mbti = mutableStateOf("")
     private val _selfintroduce = mutableStateOf("")
-    private val _checkMBTI = mutableStateOf(false)
-    private val _checkNickname = mutableStateOf(false)
-    private val _checkSelfIntroduce = mutableStateOf(false)
+    private val _checkMBTI = mutableStateOf(1)
+    private val _checkNickname = mutableStateOf(0)
+    private val _checkSelfIntroduce = mutableStateOf(0)
     private val _dialogCheckSignUpNickNameState = mutableStateOf(0)
+
     /*
     0 -> 아무것도 아님
     1 -> 닉변 가능
@@ -38,15 +39,12 @@ class ProfileViewModel @Inject constructor(
     4 -> 중복확인 안하고 프로필 수정한 경우
     */
     private val _checkSignupNickNameState = mutableStateOf(false)
-    private val _toast = mutableStateOf(false)
 
-    val toast = _toast
     val nickname: State<String> = _nickname
     val mbti: State<String> = _mbti
     val selfintroduce: State<String> = _selfintroduce
-    val checkMBTI: State<Boolean> = _checkMBTI
-    val checkSelfIntroduce: State<Boolean> = _checkSelfIntroduce
-    val checkSignupNickNameState: State<Boolean> = _checkSignupNickNameState
+    val checkMBTI: State<Int> = _checkMBTI
+    val checkSelfIntroduce: State<Int> = _checkSelfIntroduce
     val dialogCheckSignUpNickNameState: State<Int> = _dialogCheckSignUpNickNameState
 
     init {
@@ -71,18 +69,18 @@ class ProfileViewModel @Inject constructor(
     fun postProfile() {
         viewModelScope.launch {
             if (_checkSignupNickNameState.value) { //중복확인 한 경우
-                val comment = profileRepository.setProfile(
+                val code = profileRepository.setProfile(
                     ProfileDTO(
                         _nickname.value,
                         _mbti.value,
                         _selfintroduce.value
                     )
                 )
-                if (comment in 400..500) {
+                Log.d("닉변","1")
+                if (code in 400..500) {
                     _dialogCheckSignUpNickNameState.value = 3
                 }
             } else if (_nickname.value.length > 1 && !_checkSignupNickNameState.value) {
-                // 중복확인은 안했지만 닉네임칸에 텍스트를 남긴경우 토스트를 띄움
                 profileRepository.setProfile(
                     ProfileDTO(
                         "",
@@ -90,15 +88,20 @@ class ProfileViewModel @Inject constructor(
                         _selfintroduce.value
                     )
                 )
+                Log.d("닉변","2")
                 _dialogCheckSignUpNickNameState.value == 4
             } else {
-                profileRepository.setProfile(
+                val code = profileRepository.setProfile(
                     ProfileDTO(
                         _nickname.value,
                         _mbti.value,
                         _selfintroduce.value
                     )
                 )
+                Log.d("닉변","3")
+                if (code in 200..300){
+                    _dialogCheckSignUpNickNameState.value == 5
+                }
             }
 
         }
@@ -120,28 +123,52 @@ class ProfileViewModel @Inject constructor(
             when (signUpUseCase.checkSignUpNickName(UserDTO(nickname = _nickname.value))) {
                 in (200..300) -> {
                     _checkSignupNickNameState.value = true
-                    _dialogCheckSignUpNickNameState.value =1
-                    Log.d("qrfqfq","닉네임중복확인 완")
+                    _dialogCheckSignUpNickNameState.value = 1
+                    Log.d("qrfqfq", "닉네임중복확인 완")
                 }
+
                 !in (200..300) -> _dialogCheckSignUpNickNameState.value = 2
             }
         }
     }
 
     private fun filterMBTI() {
-        _checkMBTI.value =
-            _mbti.value.length == 4 && _mbti.value[0].code in listOf(69, 73, 101, 105) &&
-                    _mbti.value[1].code in listOf(78, 83, 110, 115) &&
-                    _mbti.value[2].code in listOf(70, 84, 102, 116) &&
-                    _mbti.value[3].code in listOf(74, 80, 106, 112)
+        if (_mbti.value.length == 4 && _mbti.value[0].code in listOf(69, 73, 101, 105) &&
+            _mbti.value[1].code in listOf(78, 83, 110, 115) &&
+            _mbti.value[2].code in listOf(70, 84, 102, 116) &&
+            _mbti.value[3].code in listOf(74, 80, 106, 112)
+        ) {
+            _checkMBTI.value = 1
+        }else if (_mbti.value.isEmpty()){
+            _checkMBTI.value = 0
+        }
+        else{
+            _checkMBTI.value = 2
+        }
+
     }
 
     private fun filterNickName() {
-        _checkNickname.value = _nickname.value.length <= 8
+        if (_nickname.value.length <= 8) {
+            _checkNickname.value = 1
+        }else if (_nickname.value.isEmpty()){
+            _checkNickname.value = 0
+        }
+        else{
+            _checkNickname.value = 2
+        }
     }
 
     private fun filterSelfIntroduce() {
-        _checkSelfIntroduce.value = _selfintroduce.value.length <= 40
+        if (_selfintroduce.value.length <= 40) {
+            _checkSelfIntroduce.value = 1
+        }else if (_selfintroduce.value.isEmpty()){
+            _checkSelfIntroduce.value = 0
+        }
+        else{
+            _checkSelfIntroduce.value = 2
+        }
+
     }
 
     fun changeCheckSignUpNickNameState() {

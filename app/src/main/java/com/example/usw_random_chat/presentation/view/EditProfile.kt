@@ -35,25 +35,40 @@ import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
 
 @Composable
-fun EditProfileScreen(navController: NavController, profileViewModel: ProfileViewModel = viewModel()) {
+fun EditProfileScreen(
+    navController: NavController,
+    profileViewModel: ProfileViewModel = viewModel()
+) {
     Column(
         Modifier
             .fillMaxSize()
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle({profileViewModel.postProfile()},true){navController.popBackStack()}
-        getNickName(profileViewModel.nickname,"",{profileViewModel.doubleCheckNickname()}) { profileViewModel.updateNickname(it) }
-        getMBTI(profileViewModel.mbti,"",profileViewModel.checkMBTI.value) { profileViewModel.updateMBTI(it) }
-        getSelfIntroduce(profileViewModel.selfintroduce,"",profileViewModel.checkSelfIntroduce.value) { profileViewModel.updateSelfIntroduce(it)}
-        PasswordChange {
+        editSetTitle({
+            profileViewModel.postProfile()
+            if (profileViewModel.dialogCheckSignUpNickNameState.value == 5){
+                navController.popBackStack()
+            }
+                     },profileViewModel.checkMBTI.value == 1) {
+            navController.popBackStack()
 
         }
+        getNickName(
+            profileViewModel.nickname,
+            "",
+            { profileViewModel.doubleCheckNickname() }) { profileViewModel.updateNickname(it) }
+        getMBTI(
+            profileViewModel.mbti,
+            "",
+            profileViewModel.checkMBTI.value
+        ) { profileViewModel.updateMBTI(it) }
+        getSelfIntroduce(
+            profileViewModel.selfintroduce,
+            "",
+            profileViewModel.checkSelfIntroduce.value
+        ) { profileViewModel.updateSelfIntroduce(it) }
         SuChatImg()
-    }
-
-    if(profileViewModel.toast.value){
-        Toast.makeText(LocalContext.current,"닉네임 변경은 중복확인 후 가능해요!",Toast.LENGTH_SHORT).show()
     }
 
     if (profileViewModel.dialogCheckSignUpNickNameState.value == 1) {
@@ -73,25 +88,27 @@ fun EditProfileScreen(navController: NavController, profileViewModel: ProfileVie
             image = R.drawable.baseline_error_24
         )
     }
-    if(profileViewModel.dialogCheckSignUpNickNameState.value == 3){
+    if (profileViewModel.dialogCheckSignUpNickNameState.value == 3) {
         OneButtonDialog(
             contentText = "닉네임 변경 후\n 30일이 지나야 변경이 가능합니다.",
             text = "확인",
-            onPress = {profileViewModel.changeDialogCheckSignUpNickNameState()},
-            image = R.drawable.baseline_error_24)
+            onPress = { profileViewModel.changeDialogCheckSignUpNickNameState() },
+            image = R.drawable.baseline_error_24
+        )
     }
-    if(profileViewModel.dialogCheckSignUpNickNameState.value == 4){
+    if (profileViewModel.dialogCheckSignUpNickNameState.value == 4) {
         OneButtonDialog(
             contentText = "닉네임 변경은\n 중복확인 후 가능합니다.",
             text = "확인",
-            onPress = {profileViewModel.changeDialogCheckSignUpNickNameState()},
-            image = R.drawable.baseline_error_24)
+            onPress = { profileViewModel.changeDialogCheckSignUpNickNameState() },
+            image = R.drawable.baseline_error_24
+        )
     }
 
 }
 
 @Composable
-fun editSetTitle(onCheckPress : () -> Unit, enableCheck : Boolean ,onBackPress : () -> Unit) {
+fun editSetTitle( onCheckPress: () -> Unit, trigger : Boolean ,onBackPress: () -> Unit ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -99,7 +116,7 @@ fun editSetTitle(onCheckPress : () -> Unit, enableCheck : Boolean ,onBackPress :
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = {onBackPress()}
+            onClick = { onBackPress() }
         ) {
             Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
         }
@@ -114,10 +131,10 @@ fun editSetTitle(onCheckPress : () -> Unit, enableCheck : Boolean ,onBackPress :
         )
         Spacer(modifier = Modifier.weight(0.1f))
         IconButton(
-            enabled = true,
+            enabled = trigger,
             onClick = {
                 onCheckPress()
-                      },
+            },
         ) {
             Icon(imageVector = Icons.Filled.Check, contentDescription = "check", tint = Color.Gray)
         }
@@ -125,7 +142,12 @@ fun editSetTitle(onCheckPress : () -> Unit, enableCheck : Boolean ,onBackPress :
 }
 
 @Composable
-fun getNickName(nickname: State<String>, text : String, onPress: () -> Unit ,onNicknameChanged: (String) -> Unit) {
+fun getNickName(
+    nickname: State<String>,
+    text: String,
+    onPress: () -> Unit,
+    onNicknameChanged: (String) -> Unit
+) {
     Column(Modifier.padding(top = 40.dp, start = 32.dp)) {
         Row() {
             Text(text = "닉네임", fontSize = 16.sp, modifier = Modifier.padding(start = 5.dp))
@@ -148,7 +170,7 @@ fun getNickName(nickname: State<String>, text : String, onPress: () -> Unit ,onN
         ) {
             TextField(
                 value = nickname.value,
-                onValueChange = {if(it.length <=8 )onNicknameChanged(it)},
+                onValueChange = { if (it.length <= 8) onNicknameChanged(it) },
                 placeholder = { Text(text = "#NICKNAME", color = Color.Gray, fontSize = 13.sp) },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.White,
@@ -187,15 +209,26 @@ fun getNickName(nickname: State<String>, text : String, onPress: () -> Unit ,onN
                 )
             }
         }
-        Text(text = "* 닉네임은 8자 이내로 작성해 주세요", color = Color(0xFFFF6565), fontSize = 12.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),modifier = Modifier.padding(start = 5.dp))
+        Text(
+            text = "* 닉네임은 8자 이내로 작성해 주세요",
+            color = Color(0xFFFF6565),
+            fontSize = 12.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            modifier = Modifier.padding(start = 5.dp)
+        )
     }
 }
 
 @Composable
-fun getMBTI(mbti: State<String>, text: String, filter : Boolean ,onMBTIChanged: (String) -> Unit) {
+fun getMBTI(mbti: State<String>, text: String, filter: Int, onMBTIChanged: (String) -> Unit) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
-            Text(text = "MBTI", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),modifier = Modifier.padding(start = 5.dp))
+            Text(
+                text = "MBTI",
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                modifier = Modifier.padding(start = 5.dp)
+            )
             Text(
                 text = text,
                 fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -207,8 +240,14 @@ fun getMBTI(mbti: State<String>, text: String, filter : Boolean ,onMBTIChanged: 
         Column {
             TextField(
                 value = mbti.value,
-                onValueChange = {if(it.length <=4 ) onMBTIChanged(it)},
-                placeholder = { Text(text = "#MBTI",fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 13.sp) },
+                onValueChange = { if (it.length <= 4) onMBTIChanged(it) },
+                placeholder = {
+                    Text(
+                        text = "#MBTI",
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                        fontSize = 13.sp
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = Color.Black,
                     backgroundColor = Color.Transparent,
@@ -227,8 +266,14 @@ fun getMBTI(mbti: State<String>, text: String, filter : Boolean ,onMBTIChanged: 
                     .height(50.dp)
                     .width(326.dp)
             )
-            if (!filter){
-                Text(text = "처음보는 MBTI에요! 올바른 MBTI를 입력해주세요! ", color = Color(0xFFFF6565), fontSize = 12.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),modifier = Modifier.padding(start = 5.dp))
+            if (filter == 2) {
+                Text(
+                    text = "처음보는 MBTI에요! 올바른 MBTI를 입력해주세요! ",
+                    color = Color(0xFFFF6565),
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                    modifier = Modifier.padding(start = 5.dp)
+                )
             }
 
         }
@@ -237,10 +282,20 @@ fun getMBTI(mbti: State<String>, text: String, filter : Boolean ,onMBTIChanged: 
 }
 
 @Composable
-fun getSelfIntroduce(introduce: State<String>, text: String, filter: Boolean ,onSelfIntroduceChanged: (String) -> Unit) {
+fun getSelfIntroduce(
+    introduce: State<String>,
+    text: String,
+    filter: Int,
+    onSelfIntroduceChanged: (String) -> Unit
+) {
     Column(Modifier.padding(top = 10.dp)) {
         Row() {
-            Text(text = "자기소개", fontSize = 16.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),modifier = Modifier.padding(start = 5.dp))
+            Text(
+                text = "자기소개",
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                modifier = Modifier.padding(start = 5.dp)
+            )
             Text(
                 text = text,
                 color = Color.Gray,
@@ -252,8 +307,18 @@ fun getSelfIntroduce(introduce: State<String>, text: String, filter: Boolean ,on
         Column {
             TextField(
                 value = introduce.value,
-                onValueChange = {if(it.length<=40){onSelfIntroduceChanged(it)}},
-                placeholder = { Text(text = if (introduce.value == "") "학과, 학번 등 소개를 자유롭게 입력하세요(40자 이내)" else introduce.value,fontFamily = FontFamily(Font(R.font.pretendard_regular)), fontSize = 13.sp) },
+                onValueChange = {
+                    if (it.length <= 40) {
+                        onSelfIntroduceChanged(it)
+                    }
+                },
+                placeholder = {
+                    Text(
+                        text = if (introduce.value == "") "학과, 학번 등 소개를 자유롭게 입력하세요(40자 이내)" else introduce.value,
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                        fontSize = 13.sp
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = Color.Black,
                     backgroundColor = Color.Transparent,
@@ -272,14 +337,19 @@ fun getSelfIntroduce(introduce: State<String>, text: String, filter: Boolean ,on
                     .height(90.dp)
                     .width(326.dp)
             )
-            if (!filter){
-                Text(text = "자기소개는 최대 40자에요!", color = Color(0xFFFF6565), fontSize = 12.sp,fontFamily = FontFamily(Font(R.font.pretendard_regular)),modifier = Modifier.padding(start = 5.dp))
-            }
+            Text(
+                text = "${introduce.value.length} 자",
+                color = Color.DarkGray,
+                fontSize = 12.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                modifier = Modifier.padding(start = 5.dp)
+            )
         }
 
     }
 }
 
+/*
 @Composable
 fun PasswordChange(onPress: () -> Unit){
     TextButton(
@@ -294,11 +364,11 @@ fun PasswordChange(onPress: () -> Unit){
         )
     }
 }
-
+*/
 @Composable
 fun SuChatImg() {
     Column(
-        Modifier.padding(top = 252.dp),
+        Modifier.padding(top = 302.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -327,25 +397,22 @@ fun SuChatImg() {
 @Preview(showBackground = true)
 @Composable
 fun EditProfileScreenPreview() {
-    val nickname : State<String> = mutableStateOf("")
-    val mbti : State<String> = mutableStateOf("")
-    val selfintroduce : State<String> = mutableStateOf("")
+    val nickname: State<String> = mutableStateOf("")
+    val mbti: State<String> = mutableStateOf("")
+    val selfintroduce: State<String> = mutableStateOf("")
     Column(
         Modifier
             .fillMaxSize()
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle({},true){}
+        editSetTitle({}, true) {}
         /*editGetNickName(nickname = editNickName)
         editGetMBTI(mbti = editMBTI)
         editGetSelfIntroduce(introduce = editSelfIntroduce)*/
-        getNickName(nickname,"",{}) {  }
-        getMBTI(mbti,"",false) { }
-        getSelfIntroduce(selfintroduce,"",false) {}
-        PasswordChange {
-
-        }
+        getNickName(nickname, "", {}) { }
+        getMBTI(mbti, "", 1) { }
+        getSelfIntroduce(selfintroduce, "", 1) {}
         SuChatImg()
     }
 }

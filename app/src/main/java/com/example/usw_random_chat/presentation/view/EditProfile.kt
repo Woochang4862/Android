@@ -1,7 +1,7 @@
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
-import android.widget.Toast
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,18 +14,16 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.ProfileViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditProfileScreen(
@@ -45,8 +44,9 @@ fun EditProfileScreen(
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        editSetTitle({
+        editSetTitle(suspend {
             profileViewModel.postProfile()
+            Log.d("TAG", "EditProfileScreen: postProfile End!")
             if (profileViewModel.dialogCheckSignUpNickNameState.value == 5){
                 navController.popBackStack()
             }
@@ -108,7 +108,8 @@ fun EditProfileScreen(
 }
 
 @Composable
-fun editSetTitle( onCheckPress: () -> Unit, trigger : Boolean ,onBackPress: () -> Unit ) {
+fun editSetTitle(onCheckPress: suspend () -> Unit, trigger: Boolean, onBackPress: () -> Unit ) {
+    val coroutineScope = rememberCoroutineScope()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -133,7 +134,9 @@ fun editSetTitle( onCheckPress: () -> Unit, trigger : Boolean ,onBackPress: () -
         IconButton(
             enabled = trigger,
             onClick = {
-                onCheckPress()
+                coroutineScope.launch {
+                    onCheckPress()
+                }
             },
         ) {
             Icon(imageVector = Icons.Filled.Check, contentDescription = "check", tint = Color.Gray)

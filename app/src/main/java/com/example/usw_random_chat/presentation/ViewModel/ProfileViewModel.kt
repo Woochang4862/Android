@@ -47,6 +47,10 @@ class ProfileViewModel @Inject constructor(
     val checkSelfIntroduce: State<Int> = _checkSelfIntroduce
     val dialogCheckSignUpNickNameState: State<Int> = _dialogCheckSignUpNickNameState
 
+    lateinit var firstNickname: String
+    lateinit var firstMbti: String
+    lateinit var firstSelfIntroduce: String
+
     init {
         getProfile()
     }
@@ -66,45 +70,47 @@ class ProfileViewModel @Inject constructor(
         filterSelfIntroduce()
     }
 
-    fun postProfile() {
+    suspend fun postProfile() {
         viewModelScope.launch {
-            if (_checkSignupNickNameState.value) { //중복확인 한 경우
-                val code = profileRepository.setProfile(
-                    ProfileDTO(
-                        _nickname.value,
-                        _mbti.value,
-                        _selfintroduce.value
-                    )
-                )
-                Log.d("닉변","1")
-                if (code in 400..500) {
-                    _dialogCheckSignUpNickNameState.value = 3
+            /**
+             * 수정 사항이 있는지 확인
+             * 닉네임 수정이 있었을시 중복확인 검사
+             * */
+            _dialogCheckSignUpNickNameState.value =
+                if (firstMbti == _mbti.value && firstNickname == _nickname.value && firstSelfIntroduce == _selfintroduce.value) { // 변경사항 없음
+                    5
+                } else if (firstNickname != _nickname.value) { // 닉네임 변경시만 체크
+                    if (_checkSignupNickNameState.value) {
+                        if (profileRepository.setProfile(
+                                ProfileDTO(
+                                    _nickname.value,
+                                    _mbti.value,
+                                    _selfintroduce.value
+                                )
+                            ) in 400..500
+                        ) {
+                            3 // 닉네임 변경 오류 : 30일 이전에 변경함
+                        } else {
+                            5 // 정상 변경
+                        }
+                    } else {
+                        4 // 닉네임 변경했지만 중복확인 안함
+                    }
+                } else { // 닉네임은 변경되지 않음
+                    if (profileRepository.setProfile(
+                            ProfileDTO(
+                                _nickname.value,
+                                _mbti.value,
+                                _selfintroduce.value
+                            )
+                        ) in 400..500
+                    ) {
+                        3
+                    } else {
+                        5
+                    }
                 }
-            } else if (_nickname.value.length > 1 && !_checkSignupNickNameState.value) {
-                profileRepository.setProfile(
-                    ProfileDTO(
-                        "",
-                        _mbti.value,
-                        _selfintroduce.value
-                    )
-                )
-                Log.d("닉변","2")
-                _dialogCheckSignUpNickNameState.value == 4
-            } else {
-                val code = profileRepository.setProfile(
-                    ProfileDTO(
-                        _nickname.value,
-                        _mbti.value,
-                        _selfintroduce.value
-                    )
-                )
-                Log.d("닉변","3")
-                if (code in 200..300){
-                    _dialogCheckSignUpNickNameState.value == 5
-                }
-            }
-
-        }
+        }.join()
     }
 
     private fun getProfile() {
@@ -114,6 +120,10 @@ class ProfileViewModel @Inject constructor(
                 _mbti.value = response.data.mbti ?: ""
                 _nickname.value = response.data.nickName
                 _selfintroduce.value = response.data.selfIntroduce ?: ""
+
+                firstMbti = response.data.mbti
+                firstNickname = response.data.nickName
+                firstSelfIntroduce = response.data.selfIntroduce
             }
         }
     }
@@ -139,10 +149,9 @@ class ProfileViewModel @Inject constructor(
             _mbti.value[3].code in listOf(74, 80, 106, 112)
         ) {
             _checkMBTI.value = 1
-        }else if (_mbti.value.isEmpty()){
+        } else if (_mbti.value.isEmpty()) {
             _checkMBTI.value = 0
-        }
-        else{
+        } else {
             _checkMBTI.value = 2
         }
 
@@ -151,10 +160,9 @@ class ProfileViewModel @Inject constructor(
     private fun filterNickName() {
         if (_nickname.value.length <= 8) {
             _checkNickname.value = 1
-        }else if (_nickname.value.isEmpty()){
+        } else if (_nickname.value.isEmpty()) {
             _checkNickname.value = 0
-        }
-        else{
+        } else {
             _checkNickname.value = 2
         }
     }
@@ -162,10 +170,9 @@ class ProfileViewModel @Inject constructor(
     private fun filterSelfIntroduce() {
         if (_selfintroduce.value.length <= 40) {
             _checkSelfIntroduce.value = 1
-        }else if (_selfintroduce.value.isEmpty()){
+        } else if (_selfintroduce.value.isEmpty()) {
             _checkSelfIntroduce.value = 0
-        }
-        else{
+        } else {
             _checkSelfIntroduce.value = 2
         }
 

@@ -121,9 +121,9 @@ class ProfileViewModel @Inject constructor(
                 _nickname.value = response.data.nickName
                 _selfintroduce.value = response.data.selfIntroduce ?: ""
 
-                firstMbti = response.data.mbti
-                firstNickname = response.data.nickName
-                firstSelfIntroduce = response.data.selfIntroduce
+                firstMbti = response.data.mbti ?: ""
+                firstNickname = response.data.nickName ?: ""
+                firstSelfIntroduce = response.data.selfIntroduce ?: ""
             }
         }
     }

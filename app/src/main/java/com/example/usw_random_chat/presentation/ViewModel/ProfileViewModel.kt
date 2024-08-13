@@ -76,40 +76,37 @@ class ProfileViewModel @Inject constructor(
              * 수정 사항이 있는지 확인
              * 닉네임 수정이 있었을시 중복확인 검사
              * */
-            _dialogCheckSignUpNickNameState.value =
-                if (firstMbti == _mbti.value && firstNickname == _nickname.value && firstSelfIntroduce == _selfintroduce.value) { // 변경사항 없음
-                    5
-                } else if (firstNickname != _nickname.value) { // 닉네임 변경시만 체크
-                    if (_checkSignupNickNameState.value) {
-                        if (profileRepository.setProfile(
-                                ProfileDTO(
-                                    _nickname.value,
-                                    _mbti.value,
-                                    _selfintroduce.value
-                                )
-                            ) in 400..500
-                        ) {
-                            3 // 닉네임 변경 오류 : 30일 이전에 변경함
-                        } else {
-                            5 // 정상 변경
-                        }
-                    } else {
-                        4 // 닉네임 변경했지만 중복확인 안함
-                    }
-                } else { // 닉네임은 변경되지 않음
-                    if (profileRepository.setProfile(
+            _dialogCheckSignUpNickNameState.value = when {
+                // 변경사항 없음
+                firstMbti == _mbti.value && firstNickname == _nickname.value && firstSelfIntroduce == _selfintroduce.value -> 5 // 페이지 이동
+                // 닉네임 변경시만 체크
+                firstNickname != _nickname.value -> when {
+                    _checkSignupNickNameState.value -> when {
+                        profileRepository.setProfile(
                             ProfileDTO(
                                 _nickname.value,
                                 _mbti.value,
                                 _selfintroduce.value
                             )
-                        ) in 400..500
-                    ) {
-                        3
-                    } else {
-                        5
+                        ) in 400..500 -> 3 // 닉네임 변경 오류 : 30일 이전에 변경함
+                        else -> 5 // 정상 변경
                     }
+
+                    else -> 4 // 닉네임 변경F했지만 중복확인 안함
                 }
+
+                else -> when {
+                    profileRepository.setProfile(
+                        ProfileDTO(
+                            _nickname.value,
+                            _mbti.value,
+                            _selfintroduce.value
+                        )
+                    ) in 400..500 -> 3
+
+                    else -> 5
+                }
+            }
         }.join()
     }
 

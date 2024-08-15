@@ -74,9 +74,12 @@ class ChatViewModel @Inject constructor(
     )
 
     fun exitChattingRoom() {
+        _msg.value = "${_userProfile.value.nickName}님이 나갔습니다."
+        sendMSG(true)
         stomp.join("/sub/chat/$roodID").subscribe{}.dispose()
         disconnectStomp()
         _chatList.clear()
+        _matchingPresence.value = false
     }
 
     fun stopMatching(){
@@ -196,12 +199,13 @@ class ChatViewModel @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
-    fun sendMSG() {
+    fun sendMSG(isExitMsg:Boolean = false) {
         viewModelScope.launch {
             val jsonObject = JSONObject().apply {
                 put("roomId", roodID)
-                put("sender", _userProfile.value.nickName)
+                put("sender",  if  (isExitMsg) "EXIT_MSG" else _userProfile.value.nickName)
                 put("contents", _msg.value)
+
 
             }
             stomp.send(

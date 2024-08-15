@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class MessageDTO(
     val roomId : String = "",
     val sender : String = "",
-    val contents : String = ""
+    val contents : String = "",
 )

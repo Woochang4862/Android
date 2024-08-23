@@ -1,62 +1,57 @@
 package com.example.usw_random_chat.presentation.view
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.BottomAppBar
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,6 +63,13 @@ import androidx.navigation.NavController
 import com.example.usw_random_chat.R
 import com.example.usw_random_chat.presentation.ViewModel.ChatViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.launch
+
+val Any.TAG: String
+    get() {
+        val tag = javaClass.simpleName
+        return if (tag.length <= 23) tag else tag.substring(0, 23)
+    }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -75,13 +77,31 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
     val systemUiController = rememberSystemUiController()//상태바 색상변경
     systemUiController.setSystemBarsColor(color = Color(0xFF4D76C8))
     val listState = rememberLazyListState()
-
-    LaunchedEffect(chatViewModel.chatList.size) {
-        listState.animateScrollToItem(chatViewModel.chatList.size)
+    val coroutineScope = rememberCoroutineScope()
+    var newMessageButtonIsVisible by remember {
+        mutableStateOf(false)
     }
 
-    LaunchedEffect(Unit){
+    fun LazyListState.getLastIndex() = layoutInfo.visibleItemsInfo.lastOrNull()?.index
+
+    LaunchedEffect(chatViewModel.chatList.size) {
+        Log.d(TAG, "ChattingScreen: ${listState.getLastIndex()}")
+        if (listState.getLastIndex() == chatViewModel.chatList.size - 1) {
+            listState.animateScrollToItem(chatViewModel.chatList.size)
+        } else if (listState.getLastIndex() != null) {
+            Log.d(TAG, "ChattingScreen: 채팅이 추가되었습니다")
+            newMessageButtonIsVisible = true
+        }
+    }
+
+    LaunchedEffect(Unit) {
         chatViewModel.getYourProfile()
+    }
+
+    LaunchedEffect(listState.getLastIndex()) {
+        if (listState.getLastIndex() == chatViewModel.chatList.size - 1) {
+            newMessageButtonIsVisible = false
+        }
     }
 
 
@@ -143,25 +163,50 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
                 chatViewModel.msg,
                 { chatViewModel.updateMSG(it) }
             )
-            { chatViewModel.sendMSG() }
+            {
+                chatViewModel.sendMSG {
+                    coroutineScope.launch {
+                        listState.animateScrollToItem(chatViewModel.chatList.size)
+                    }
+                }
+            }
         },
         content = {
-            LazyColumn(
-                state = listState,
+            Box(
                 modifier = Modifier
-                    .padding(bottom = 58.dp),
-                content = {
-                    items(chatViewModel.chatList) {
-                        if (it.sender == chatViewModel.userProfile.value.nickName) {
-                            sendMsg(text = it.contents)
-                        } else  if (it.sender == "EXIT_MSG"){
-                            exitMsg(text=it.contents)
-                        } else {
-                            receiveMsg(text = it.contents)
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+            ) {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier
+                        .padding(bottom = 58.dp),
+                    content = {
+                        items(chatViewModel.chatList) {
+                            if (it.sender == chatViewModel.userProfile.value.nickName) {
+                                sendMsg(text = it.contents)
+                            } else if (it.sender == "EXIT_MSG") {
+                                exitMsg(text = it.contents)
+                            } else {
+                                receiveMsg(text = it.contents)
+                            }
+                        }
+                    },
+                )
+                if (newMessageButtonIsVisible) {
+                    NewMessageButton(
+                        modifier = Modifier
+                            .padding(bottom = 64.dp)
+                            .align(Alignment.BottomCenter),
+                        text = chatViewModel.chatList.last().contents
+                    ) {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(chatViewModel.chatList.size)
+                            newMessageButtonIsVisible = false
                         }
                     }
-                },
-            )
+                }
+            }
         },
     )
 }
@@ -250,7 +295,7 @@ fun ChatBottomAppBar(
             .imePadding()
             .height(59.dp)
     ) {
-        Row{
+        Row {
             Spacer(modifier = Modifier.weight(0.5f))
             Row(
                 modifier = Modifier
@@ -479,6 +524,52 @@ fun Dialog1Preview() {
     }
     ChatBottomAppBar(text = a, onChange = {}) {
 
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun NewMessageButtonPreview() {
+    val text = "new message"
+    val color = Color(0x8A5F5F5F)
+    NewMessageButton(Modifier, text) {
+
+    }
+}
+
+@Composable
+fun NewMessageButton(modifier: Modifier, text: String, onClick: () -> Unit) {
+    val color = Color(0xB2D3DFFF)
+    Box(
+        modifier
+            .fillMaxWidth()
+            .padding(start = 6.dp, end = 6.dp)
+            .background(
+                color = color,
+                shape = RoundedCornerShape(size = 8.dp)
+            )
+            .clickable {
+                onClick()
+            },
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 17.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = text,
+                fontSize = 16.sp,
+                lineHeight = 18.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontWeight = FontWeight(400),
+                color = Color(0xFF191919),
+                maxLines = 5
+            )
+            Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)
+        }
     }
 }
 /*

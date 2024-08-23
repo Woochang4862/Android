@@ -105,7 +105,10 @@ class ChatViewModel @Inject constructor(
 
     @SuppressLint("CheckResult")
     fun startMatching() {
+        Log.d(TAG, "startMatching: before connectStomp()")
         connectStomp()
+        Log.d(TAG, "startMatching: after connectStomp()")
+        Log.d(TAG, "startMatching: before stomp.join()")
         stomp.join("/queue/match/in/$userID").subscribe {
             Log.d("receive", it)
             if(it.slice(1..4) == "매칭완료"){
@@ -118,11 +121,14 @@ class ChatViewModel @Inject constructor(
                 changeMatchingPresence()
             }
         }
+        Log.d(TAG, "startMatching: after stomp.join()")
+        Log.d(TAG, "startMatching: before stomp.send()")
         stomp.send("/pub/queue/match/in/$userID", "").subscribe {
             if (it){
                 Log.d("startMatching","2323")
             }
         }
+        Log.d(TAG, "startMatching: after stomp.send()")
     }
 
     fun closeProfileDialog() {
@@ -199,7 +205,7 @@ class ChatViewModel @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
-    fun sendMSG(isExitMsg:Boolean = false) {
+    fun sendMSG(isExitMsg:Boolean = false, onSendMessageCompleted: (() -> Unit)? =null) {
         viewModelScope.launch {
             val jsonObject = JSONObject().apply {
                 put("roomId", roodID)
@@ -214,6 +220,7 @@ class ChatViewModel @Inject constructor(
             ).subscribe {
                 if (it) {
                     Log.d(tag, "send Success : ${_msg.value}")
+                    onSendMessageCompleted?.invoke()
                 } else {
                     Log.d(tag, "send Fail : ${_msg.value}")
                 }
@@ -224,6 +231,7 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun connectStomp() {
+        Log.d(TAG, "connectStomp: start!")
         viewModelScope.launch {
             stompConnection = stomp.connect().subscribe() {
                 when (it.type) {
@@ -243,6 +251,7 @@ class ChatViewModel @Inject constructor(
                 }
             }
         }
+        Log.d(TAG, "connectStomp: end!")
     }
 
     private fun disconnectStomp() {
@@ -265,5 +274,9 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
            // stomp.join(wss).subscribe{ Log.d(tag,"Unsubscribe Success") }.dispose()
         }
+    }
+
+    companion object {
+        var TAG : String = ChatViewModel::class.java.simpleName
     }
 }

@@ -152,10 +152,12 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
                     .padding(bottom = 58.dp),
                 content = {
                     items(chatViewModel.chatList) {
-                        if (it.sender != chatViewModel.userProfile.value.nickName) {
-                            receiveMsg(text = it.contents)
-                        } else {
+                        if (it.sender == chatViewModel.userProfile.value.nickName) {
                             sendMsg(text = it.contents)
+                        } else  if (it.sender == "EXIT_MSG"){
+                            exitMsg(text=it.contents)
+                        } else {
+                            receiveMsg(text = it.contents)
                         }
                     }
                 },
@@ -431,6 +433,27 @@ fun receiveMsg(text: String) {
         TimeText()
         Spacer(modifier = Modifier.width(10.dp))
     }
+}
+
+@Composable
+fun exitMsg(text: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp, bottom = 4.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Spacer(modifier = Modifier.width(10.dp))
+        MSG(text = text, color = Color(0xFFCFCFCF))
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun exitMsgPreView() {
+    //msg("tghaiuwga", Alignment.Center, Color.White)
+    exitMsg(text = "admin님이 나갔습니다.")
 }
 
 @Preview(showBackground = true)

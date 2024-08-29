@@ -20,7 +20,8 @@
             android:screenOrientation="portrait"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.USW_Random_Chat">
+            android:theme="@style/Theme.USW_Random_Chat"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

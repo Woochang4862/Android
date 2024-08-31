@@ -176,6 +176,7 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
+                    .imePadding()
             ) {
                 LazyColumn(
                     state = listState,

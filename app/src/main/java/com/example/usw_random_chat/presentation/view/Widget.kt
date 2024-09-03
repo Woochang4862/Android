@@ -106,22 +106,21 @@ fun CustomText(
 fun MadeAccount() {
     Column(
         modifier = Modifier
-            .fillMaxHeight()
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
-        Spacer(modifier = Modifier.weight(5.6f))
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .fillMaxSize()
-                .weight(0.5f)
+                .fillMaxWidth()
+                .wrapContentHeight()
         ) {
-            Spacer(modifier = Modifier.weight(0.4f))
             Divider(
                 color = Color(0xFFBFBFBF),
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(top = 9.dp)
+                    .weight(1.1f)
+                    .padding(end = 10.dp)
             )
-            Spacer(modifier = Modifier.weight(0.3f))
 
             Text(
                 text = "계정이 없으신가요?",
@@ -129,20 +128,17 @@ fun MadeAccount() {
                     fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                     fontSize = 14.sp
                 ),
-                modifier = Modifier
-                    .weight(1.3f)
             )
-            Spacer(modifier = Modifier.weight(0.3f))
 
             Divider(
                 color = Color(0xFFBFBFBF),
                 modifier = Modifier
                     .weight(1.1f)
-                    .padding(top = 9.dp)
+                    .padding(start = 10.dp)
             )
-            Spacer(modifier = Modifier.weight(0.4f))
+
         }
-        Spacer(modifier = Modifier.weight(1.1f))
+
     }
 }
 
@@ -196,15 +192,14 @@ fun LoginTextFieldID(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxHeight()
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
-        Spacer(modifier = Modifier.weight(11f))
         Row(
             modifier = Modifier
-                .weight(5f)
+                .wrapContentHeight()
                 .fillMaxWidth()
         ) {
-            Spacer(modifier = Modifier.weight(0.1f))
             BasicTextField(
                 value = text.value,
                 onValueChange = onValueChange,
@@ -212,9 +207,8 @@ fun LoginTextFieldID(
                 modifier = Modifier
                     .border(1.dp, Color.Gray, RoundedCornerShape(10.dp))
                     .focusRequester(focusState)
-                    .weight(1f)
+                    .fillMaxWidth()
                     .height(48.dp)
-                    //.wrapContentHeight()
                     .background(
                         color = Color.Transparent,
                         shape = RoundedCornerShape(10.dp)
@@ -295,67 +289,58 @@ fun LoginTextFieldPW(
     onValueChange: (String) -> Unit
 ) {
     val focusManage = LocalFocusManager.current
-    Column(
+    Row(
         modifier = Modifier
-            .fillMaxHeight()
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
-        Spacer(modifier = Modifier.weight(3f))
-        Row(
+        BasicTextField(
+            value = text.value,
+            onValueChange = onValueChange,
+            singleLine = true,
             modifier = Modifier
-                .weight(1f)
+                .focusRequester(focusState)
+                .border(1.dp, Color.Gray, RoundedCornerShape(10.dp))
+                .height(48.dp)
                 .fillMaxWidth()
+                //.wrapContentHeight()
+                .background(
+                    color = Color.Transparent,
+                    shape = RoundedCornerShape(10.dp)
+                ),
+            textStyle = TextStyle(
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular))
+            ),
+            keyboardOptions = if (text2 == "PASSWORD") KeyboardOptions(keyboardType = KeyboardType.Password) else KeyboardOptions.Default,
+            keyboardActions = KeyboardActions(
+                onDone = {focusManage.clearFocus()}
+            ),
+            visualTransformation = if (text2 == "PASSWORD") PasswordVisualTransformation() else VisualTransformation.None,
         ) {
-            Spacer(modifier = Modifier.weight(0.1f))
-            BasicTextField(
+            TextFieldDefaults.TextFieldDecorationBox(
                 value = text.value,
-                onValueChange = onValueChange,
+                innerTextField = it,
+                enabled = true,
                 singleLine = true,
-                modifier = Modifier
-                    .focusRequester(focusState)
-                    .border(1.dp, Color.Gray, RoundedCornerShape(10.dp))
-                    .weight(1f)
-                    .height(48.dp)
-                    //.wrapContentHeight()
-                    .background(
-                        color = Color.Transparent,
-                        shape = RoundedCornerShape(10.dp)
-                    ),
-                textStyle = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                visualTransformation = VisualTransformation.None,
+                interactionSource = MutableInteractionSource(),
+                contentPadding = TextFieldDefaults.textFieldWithoutLabelPadding(
+                    bottom = 5.dp
                 ),
-                keyboardOptions = if (text2 == "PASSWORD") KeyboardOptions(keyboardType = KeyboardType.Password) else KeyboardOptions.Default,
-                keyboardActions = KeyboardActions(
-                    onDone = {focusManage.clearFocus()}
-                ),
-                visualTransformation = if (text2 == "PASSWORD") PasswordVisualTransformation() else VisualTransformation.None,
-            ) {
-                TextFieldDefaults.TextFieldDecorationBox(
-                    value = text.value,
-                    innerTextField = it,
-                    enabled = true,
-                    singleLine = true,
-                    visualTransformation = VisualTransformation.None,
-                    interactionSource = MutableInteractionSource(),
-                    contentPadding = TextFieldDefaults.textFieldWithoutLabelPadding(
-                        bottom = 5.dp
-                    ),
-                    placeholder = {
-                        Text(
-                            text = text2,
-                            color = Color(0xFF989898),
-                            style = TextStyle(
-                                fontSize = 14.sp,
-                                fontFamily = FontFamily(Font(R.font.pretendard_regular))
-                            ),
-                            modifier = Modifier
-                        )
-                    }
-                )
-            }
-            Spacer(modifier = Modifier.weight(0.1f))
+                placeholder = {
+                    Text(
+                        text = text2,
+                        color = Color(0xFF989898),
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                        ),
+                        modifier = Modifier
+                    )
+                }
+            )
         }
-        Spacer(modifier = Modifier.weight(1.6f))
     }
 }
 

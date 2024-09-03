@@ -12,6 +12,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -35,37 +40,54 @@ fun SignInScreen(signInViewModel: SignInViewModel = viewModel(), navController: 
 
     val focusRequesterID = remember { FocusRequester() }
     val focusRequesterPW = remember { FocusRequester() }
+    val scrollState = rememberScrollState()
 
-    LoginImage()
-    LoginTextFieldID(
-        text = signInViewModel.id,
-        text2 = "ID",
-        focusRequesterID,
-        focusRequesterPW
-    ) { newId -> signInViewModel.updateID(newId) }
-    LoginTextFieldPW(
-        text = signInViewModel.password,
-        text2 = "PASSWORD",
-        focusRequesterPW
-    ) { signInViewModel.updatePassWord(it) }
-    LoginBtn() { signInViewModel.postSignIn() }
-    OnLoginFindIdAndPassword(navController)
-    MadeAccountText()
-    SignUpBtn(navController)
-
-    if (signInViewModel.loginState.value) {
-        navController.navigate(Screen.MainPageScreen.route) {
-            popUpTo(navController.graph.id) { inclusive = true }
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+    ) {
+        LoginImage()
+        Spacer(modifier = Modifier.height(90.dp))
+        Column (
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+        ) {
+            LoginTextFieldID(
+                text = signInViewModel.id,
+                text2 = "ID",
+                focusRequesterID,
+                focusRequesterPW
+            ) { newId -> signInViewModel.updateID(newId) }
+            Spacer(modifier = Modifier.height(10.dp))
+            LoginTextFieldPW(
+                text = signInViewModel.password,
+                text2 = "PASSWORD",
+                focusRequesterPW
+            ) { signInViewModel.updatePassWord(it) }
+            Spacer(modifier = Modifier.height(10.dp))
+            LoginBtn() { signInViewModel.postSignIn() }
+            OnLoginFindIdAndPassword(navController)
+            Spacer(modifier = Modifier.height(10.dp))
+            MadeAccountText()
+            Spacer(modifier = Modifier.height(10.dp))
+            SignUpBtn(navController)
         }
-        signInViewModel.changeLoginState()
-    }
-    if (signInViewModel.dialogState.value) {
-        OneButtonDialog(
-            contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
-            text = "확인",
-            onPress = { signInViewModel.changeDrawerState() },
-            image = R.drawable.baseline_error_24
-        )
+
+        if (signInViewModel.loginState.value) {
+            navController.navigate(Screen.MainPageScreen.route) {
+                popUpTo(navController.graph.id) { inclusive = true }
+            }
+            signInViewModel.changeLoginState()
+        }
+        if (signInViewModel.dialogState.value) {
+            OneButtonDialog(
+                contentText = "아이디 혹은 비밀번호가\n올바르지 않습니다.",
+                text = "확인",
+                onPress = { signInViewModel.changeDrawerState() },
+                image = R.drawable.baseline_error_24
+            )
+        }
     }
 }
 
@@ -74,18 +96,17 @@ fun LoginImage() {
     Box(
         modifier = Modifier
             .padding(top = 10.dp)
-            .fillMaxSize(),
+            .fillMaxWidth(),
         contentAlignment = Alignment.TopEnd
     ) {
-        Row() {
-            Spacer(modifier = Modifier.weight(0.1f))
+        Row {
+            Spacer(modifier = Modifier.width(32.dp))
             Image(
                 painter = painterResource(id = R.drawable.balloon),
                 contentDescription = "image description",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(331.dp)
-                    .weight(1f),
+                    .height(331.dp),
                 alignment = Alignment.TopEnd
             )
         }
@@ -120,15 +141,14 @@ fun LoginTextFieldPw(  // textfield를 하나만 만들고 이름만 바꿔서 �
 fun LoginBtn(onPress: () -> Unit) { //onPress란 람다 함수를 추가시키세요
     Column(
         modifier = Modifier
-            .fillMaxHeight()
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
-        Spacer(modifier = Modifier.weight(4.9f))
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .weight(0.8f)
+                .fillMaxWidth()
+                .wrapContentHeight()
         ) {
-            Spacer(modifier = Modifier.weight(0.1f))
             CustomButton(
                 text = "로그인",
                 enable = true,
@@ -136,13 +156,11 @@ fun LoginBtn(onPress: () -> Unit) { //onPress란 람다 함수를 추가시키�
                 back = Color(0xFF2D64D8),
                 modifier = Modifier
                     .height(56.dp)
-                    .weight(1f),
+                    .fillMaxWidth(),
             ) {
                 onPress()
             }
-            Spacer(modifier = Modifier.weight(0.1f))
         }
-        Spacer(modifier = Modifier.weight(2.2f))
     }
 }
 
@@ -150,18 +168,16 @@ fun LoginBtn(onPress: () -> Unit) { //onPress란 람다 함수를 추가시키�
 fun OnLoginFindIdAndPassword(navController: NavController) { //textbutton 이름만 바꿔서 재사용 할 수 있게 수정해주세요 widget폴더에다 만들고 불러오세요
     Column(
         modifier = Modifier
-            .fillMaxHeight()
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
-        Spacer(modifier = Modifier.weight(5.2f))
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .weight(0.5f),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
             LoginFindIdAndPassword(navController)
         }
-        Spacer(modifier = Modifier.weight(1.8f))
     }
 }
 
@@ -175,15 +191,12 @@ fun MadeAccountText() { // 디바이더 함수도 widget폴더에 만들고 불�
 fun SignUpBtn(navController: NavController) { // asdasd변수 이름 적절하게 바꿔주세여
     Column(
         modifier = Modifier
-            .fillMaxHeight()
+            .fillMaxWidth()
     ) {
-        Spacer(modifier = Modifier.weight(6.4f))
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .weight(0.8f)
+                .fillMaxWidth()
         ) {
-            Spacer(modifier = Modifier.weight(0.1f))
             CustomButton(
                 "회원가입",
                 enable = true,
@@ -191,13 +204,11 @@ fun SignUpBtn(navController: NavController) { // asdasd변수 이름 적절하�
                 Color.Black,
                 Modifier
                     .height(56.dp)
-                    .weight(1f)
+                    .fillMaxWidth()
             ) {
                 navController.navigate(Screen.SignUpScreen.route)
             }
-            Spacer(modifier = Modifier.weight(0.1f))
         }
-        Spacer(modifier = Modifier.weight(0.6f))
     }
 }
 
@@ -208,15 +219,41 @@ fun SignUpBtn(navController: NavController) { // asdasd변수 이름 적절하�
 fun SignInPreview(navController: NavController = rememberNavController()) {
     val id: State<String> = mutableStateOf("미ㅑ녀휵ㅇ리ㅑㅛ뮾ㄴㄷ겨라ㅣㅛㅁㅍㅈ")
     val password: State<String> = mutableStateOf("")
+    val focusRequesterID = remember { FocusRequester() }
+    val focusRequesterPW = remember { FocusRequester() }
+    val scrollState = rememberScrollState()
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+    ) {
+        LoginImage()
+        Spacer(modifier = Modifier.height(90.dp))
+        Column (
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+        ) {
+            LoginTextFieldID(
+                text = id,
+                text2 = "ID",
+                focusRequesterID,
+                focusRequesterPW
+            ) { }
+            Spacer(modifier = Modifier.height(10.dp))
+            LoginTextFieldPW(
+                text = password,
+                text2 = "PASSWORD",
+                focusRequesterPW
+            ) { }
+            Spacer(modifier = Modifier.height(10.dp))
+            LoginBtn() { }
+            OnLoginFindIdAndPassword(navController)
+            Spacer(modifier = Modifier.height(10.dp))
+            MadeAccountText()
+            SignUpBtn(navController)
+        }
+    }
 
-    LoginImage()
-    //LoginTextFieldId(id)
-    //{ }
-    //LoginTextFieldPw(password) { }
-    LoginBtn() {}
-    OnLoginFindIdAndPassword(navController)
-    MadeAccountText()
-    SignUpBtn(navController)
 }
 
 /*@Preview(showBackground = true)

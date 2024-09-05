@@ -42,6 +42,8 @@ class ChatViewModel @Inject constructor(
     private val stomp = StompClient(client, 5000L).apply { this@apply.url = serverUrl }
 
     private val _chatList = mutableStateListOf<MessageDTO>()
+    private val _hiddenChatList = mutableStateListOf<MessageDTO>()
+    private val _isLastChat = mutableStateOf(true)
     private val _msg = mutableStateOf("")
     private val _profileDialog = mutableStateOf(false)
     private val _reportDialog = mutableStateOf(false)
@@ -55,6 +57,8 @@ class ChatViewModel @Inject constructor(
 
     val matchingPresence = _matchingPresence
     val chatList = _chatList
+    val hiddenChatList = _hiddenChatList
+    val isLastChat = _isLastChat
     val msg: State<String> = _msg
     val profileDialog: State<Boolean> = _profileDialog
     val opponentUserProfile : State<ProfileDTO> = _opponentUserProfile
@@ -265,15 +269,34 @@ class ChatViewModel @Inject constructor(
             stomp.join("/sub/chat/$roodID").subscribe { message ->
                 Log.d("receive", message)
                 val data = Gson().fromJson(message, MessageDTO::class.java)
-                _chatList.add(data)
+                if (isLastChat.value) {
+                    _chatList.add(data)
+                } else {
+                    _hiddenChatList.add(data)
+                }
             }
         }
+    }
+
+    fun moveHiddenMessagesToChatList():Int{
+        val size = _hiddenChatList.size
+        _chatList.addAll(_hiddenChatList)
+        _hiddenChatList.clear()
+        return size
     }
 
     fun unsubscribeStomp() {
         viewModelScope.launch {
            // stomp.join(wss).subscribe{ Log.d(tag,"Unsubscribe Success") }.dispose()
         }
+    }
+
+    fun setIsLastChat(newIsLastChat: Boolean) {
+        _isLastChat.value = newIsLastChat
+    }
+
+    fun getLastChatContent(): String {
+        return hiddenChatList.last { it.sender != "EXIT_MSG" }.contents
     }
 
     companion object {

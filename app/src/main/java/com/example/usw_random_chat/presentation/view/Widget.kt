@@ -686,9 +686,9 @@ fun MSG(text: String, color: Color) {
 }
 
 @Composable
-fun TimeText() {
+fun TimeText(time:String) {
     Text(
-        text = SimpleDateFormat("HH:mm").format(System.currentTimeMillis()).toString(),
+        text = time,
         fontSize = 12.sp,
         lineHeight = 14.sp,
         fontFamily = FontFamily(Font(R.font.kcc_chassam)),

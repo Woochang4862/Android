@@ -81,21 +81,14 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     fun LazyListState.getFirstIndex() = layoutInfo.visibleItemsInfo.firstOrNull()?.index?: -1
-    var needToSendMsg = false
-
-    LaunchedEffect(chatViewModel.chatList.size) {
-        Log.d(TAG, "ChattingScreen: getLastIndex() - ${listState.getFirstIndex()}")
-        Log.d(TAG, "ChattingScreen: visibleItemsInfo's last - ${listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index?:-1}")
-    }
 
     LaunchedEffect(listState.getFirstIndex()) {
-        Log.d(TAG, "ChattingScreen: ${listState.getFirstIndex()}")
+        // 현재 보여지는 리스트가 최근 메시지인지 체크
         if (listState.getFirstIndex() <= 0){
             chatViewModel.setIsLastChat(true)
+            // 최신 메시지로 스크롤되면 숨겨진 채팅을 불러옴
+            // ==> 채팅 보낼 때와 가장 최근 메시지를 보여주는 버튼을 눌렀을때 스크롤을 가장 아래로 내림
             chatViewModel.moveHiddenMessagesToChatList()
-            if (needToSendMsg) {
-
-            }
         } else {
             chatViewModel.setIsLastChat(false)
         }
@@ -186,7 +179,7 @@ fun ChattingScreen(navController: NavController, chatViewModel: ChatViewModel = 
                     content = {
                         items(chatViewModel.chatList.reversed()) {
                             val dateTime = LocalDateTime.parse(it.sendTime.split(".")[0], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
-                            val timeString = dateTime.format(DateTimeFormatter.ofPattern("HH: mm"))
+                            val timeString = dateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
                             if (it.sender == chatViewModel.userProfile.value.nickName) {
                                 sendMsg(text = it.contents, timeString)
                             } else if (it.sender == "EXIT_MSG") {

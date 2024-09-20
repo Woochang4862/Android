@@ -312,7 +312,7 @@ class ChatViewModel @Inject constructor(
      * @return 확인하지 않은 메시지가 있는지에 대한 여부 반환
      * */
     fun hasNewMessage(): Boolean {
-        return _visibleChatSet.size != chatList.size
+        return _visibleChatSet.size != chatList.map { it.sender != "EXIT_MSG" }.size
     }
 
     companion object {

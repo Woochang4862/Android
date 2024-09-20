@@ -2,6 +2,7 @@ package com.example.usw_random_chat.presentation.ViewModel
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -35,14 +36,14 @@ class ChatViewModel @Inject constructor(
 
     private lateinit var stompConnection: Disposable
     private lateinit var roodID: String
-    private lateinit var targetAccount : String
-    private val userID = tokenSharedPreference.getID("ID","")
+    private lateinit var targetAccount: String
+    private val userID = tokenSharedPreference.getID("ID", "")
     private val tag = "STOMP"
     private val serverUrl: String = "ws://43.202.91.160:8080/stomp"
     private val stomp = StompClient(client, 5000L).apply { this@apply.url = serverUrl }
 
     private val _chatList = mutableStateListOf<MessageDTO>() // 현재 화면에 보여질 메시지 리스트
-    private val _hiddenChatList = mutableStateListOf<MessageDTO>() // 바로 추가되지 않는 메시지가 여기로 들어감
+    private val _visibleChatSet = mutableSetOf<String>() // 한번 보여진 메시지에 대한 정보를 가지고 있음
     private val _isLastChat = mutableStateOf(true)
     private val _msg = mutableStateOf("")
     private val _profileDialog = mutableStateOf(false)
@@ -57,11 +58,11 @@ class ChatViewModel @Inject constructor(
 
     val matchingPresence = _matchingPresence
     val chatList = _chatList
-    val hiddenChatList = _hiddenChatList
+    val visibleChatSet = _visibleChatSet
     val isLastChat = _isLastChat
     val msg: State<String> = _msg
     val profileDialog: State<Boolean> = _profileDialog
-    val opponentUserProfile : State<ProfileDTO> = _opponentUserProfile
+    val opponentUserProfile: State<ProfileDTO> = _opponentUserProfile
     val exitDialog: State<Boolean> = _exitDialog
     val reportDialog: State<Boolean> = _reportDialog
     val userProfile: State<ProfileDTO> = _userProfile
@@ -80,14 +81,15 @@ class ChatViewModel @Inject constructor(
     fun exitChattingRoom() {
         _msg.value = "${_userProfile.value.nickName}님이 나갔습니다."
         sendMSG(true)
-        stomp.join("/sub/chat/$roodID").subscribe{}.dispose()
+        stomp.join("/sub/chat/$roodID").subscribe {}.dispose()
         disconnectStomp()
         _chatList.clear()
         _matchingPresence.value = false
     }
 
-    fun stopMatching(){
-        stomp.join("/queue/match/in/$userID").subscribe { Log.d(tag, "Unsubscribe Success") }.dispose()
+    fun stopMatching() {
+        stomp.join("/queue/match/in/$userID").subscribe { Log.d(tag, "Unsubscribe Success") }
+            .dispose()
 
         stomp.join("/queue/match/cancel/$userID").subscribe {
             Log.d("receive", it)
@@ -103,7 +105,7 @@ class ChatViewModel @Inject constructor(
         disconnectStomp()
     }
 
-    private fun changeMatchingPresence(){
+    private fun changeMatchingPresence() {
         _matchingPresence.value = !_matchingPresence.value
     }
 
@@ -115,12 +117,13 @@ class ChatViewModel @Inject constructor(
         Log.d(TAG, "startMatching: before stomp.join()")
         stomp.join("/queue/match/in/$userID").subscribe {
             Log.d("receive", it)
-            if(it.slice(1..4) == "매칭완료"){
+            if (it.slice(1..4) == "매칭완료") {
                 roodID = it.slice(6..41)
                 targetAccount = it.substring(43)
-                Log.d("RoomID",roodID)
-                Log.d("targetAccount",targetAccount)
-                stomp.join("/queue/match/in/$userID").subscribe { Log.d(tag, "Unsubscribe Success") }.dispose()
+                Log.d("RoomID", roodID)
+                Log.d("targetAccount", targetAccount)
+                stomp.join("/queue/match/in/$userID")
+                    .subscribe { Log.d(tag, "Unsubscribe Success") }.dispose()
                 subscribeStomp()
                 changeMatchingPresence()
             }
@@ -128,8 +131,8 @@ class ChatViewModel @Inject constructor(
         Log.d(TAG, "startMatching: after stomp.join()")
         Log.d(TAG, "startMatching: before stomp.send()")
         stomp.send("/pub/queue/match/in/$userID", "").subscribe {
-            if (it){
-                Log.d("startMatching","2323")
+            if (it) {
+                Log.d("startMatching", "2323")
             }
         }
         Log.d(TAG, "startMatching: after stomp.send()")
@@ -152,33 +155,33 @@ class ChatViewModel @Inject constructor(
     }
 
 
-    fun changeDeleteMemberDialog(){
+    fun changeDeleteMemberDialog() {
         _deleteMemberDialog.value = !_deleteMemberDialog.value
     }
 
-    fun changeCheckDeleteMemberDialog(){
+    fun changeCheckDeleteMemberDialog() {
         _checkDeleteMemberDialog.value = !_checkDeleteMemberDialog.value
     }
 
-    fun deleteMember(){
+    fun deleteMember() {
         viewModelScope.launch {
-            when(profileRepository.deleteMember()){
-                in(200..300) -> {
+            when (profileRepository.deleteMember()) {
+                in (200..300) -> {
                     _deleteMemberDialog.value = true
-                    tokenSharedPreference.setToken("accessToken","")
-                    tokenSharedPreference.setToken("refreshToken","")
+                    tokenSharedPreference.setToken("accessToken", "")
+                    tokenSharedPreference.setToken("refreshToken", "")
                 }
             }
 
         }
     }
 
-    fun logout(){
+    fun logout() {
         viewModelScope.launch {
-            when(profileRepository.logout(tokenSharedPreference.getToken("refreshToken",""))){
+            when (profileRepository.logout(tokenSharedPreference.getToken("refreshToken", ""))) {
                 in (200..300) -> {
-                    tokenSharedPreference.setToken("accessToken","")
-                    tokenSharedPreference.setToken("refreshToken","")
+                    tokenSharedPreference.setToken("accessToken", "")
+                    tokenSharedPreference.setToken("refreshToken", "")
                 }
             }
         }
@@ -190,7 +193,7 @@ class ChatViewModel @Inject constructor(
             _userProfile.value.apply {
                 mbti = response.data.mbti ?: "MBTI를 작성해주세요!"
                 nickName = response.data.nickName
-                selfIntroduce = response.data.selfIntroduce ?:"자기소개를 작성해주세요!"
+                selfIntroduce = response.data.selfIntroduce ?: "자기소개를 작성해주세요!"
             }
         }
     }
@@ -209,11 +212,11 @@ class ChatViewModel @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
-    fun sendMSG(isExitMsg:Boolean = false, onSendMessageCompleted: (() -> Unit)? =null) {
+    fun sendMSG(isExitMsg: Boolean = false, onSendMessageCompleted: (() -> Unit)? = null) {
         viewModelScope.launch {
             val jsonObject = JSONObject().apply {
                 put("roomId", roodID)
-                put("sender",  if  (isExitMsg) "EXIT_MSG" else _userProfile.value.nickName)
+                put("sender", if (isExitMsg) "EXIT_MSG" else _userProfile.value.nickName)
                 put("contents", _msg.value)
             }
             stomp.send(
@@ -267,29 +270,14 @@ class ChatViewModel @Inject constructor(
             stomp.join("/sub/chat/$roodID").subscribe { message ->
                 Log.d("receive", message)
                 val data = Gson().fromJson(message, MessageDTO::class.java)
-                if (isLastChat.value) {
-                    _chatList.add(data)
-                } else {
-                    _hiddenChatList.add(data)
-                }
+                _chatList.add(data)
             }
         }
     }
 
-    /**
-     * hiddenChatList 에 있는 항목을 chatList 로 옮겨줌
-     * @return 옮겨진 hiddenChatList Size
-     * */
-    fun moveHiddenMessagesToChatList():Int{
-        val size = _hiddenChatList.size
-        _chatList.addAll(_hiddenChatList)
-        _hiddenChatList.clear()
-        return size
-    }
-
     fun unsubscribeStomp() {
         viewModelScope.launch {
-           // stomp.join(wss).subscribe{ Log.d(tag,"Unsubscribe Success") }.dispose()
+            // stomp.join(wss).subscribe{ Log.d(tag,"Unsubscribe Success") }.dispose()
         }
     }
 
@@ -306,10 +294,28 @@ class ChatViewModel @Inject constructor(
      * @return 히든 메시지 중 마지막 내용 반환
      * */
     fun getLastChatContent(): String {
-        return hiddenChatList.last { it.sender != "EXIT_MSG" }.contents
+        return chatList.last { it.sender != "EXIT_MSG" }.contents
+    }
+
+    /**
+     * visibleChatSet 을 최신화
+     * @param 현재 보여지고 있는 메시지에 대한 리스트
+     * */
+    fun updateVisibleChatSet(visibleItemsInfo: List<LazyListItemInfo>?) {
+        (visibleItemsInfo?: listOf()).forEach {
+            _visibleChatSet.add(it.key as String)
+        }
+    }
+
+    /**
+     *
+     * @return 확인하지 않은 메시지가 있는지에 대한 여부 반환
+     * */
+    fun hasNewMessage(): Boolean {
+        return _visibleChatSet.size != chatList.size
     }
 
     companion object {
-        var TAG : String = ChatViewModel::class.java.simpleName
+        var TAG: String = ChatViewModel::class.java.simpleName
     }
 }
